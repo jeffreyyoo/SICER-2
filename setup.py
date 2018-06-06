@@ -7,7 +7,7 @@ setup(
     version='0.1dev',
     description='Re-implementation of SICER algorithm. Still in development',
     long_description='Re-implementation of SICER algorithm. Still in development',
-    url = ''
+    url = 'https://github.com/jeffreyyoo/SICER-2'
     author = 'Jeffrey Yoo',
     author_email = 'jy2ma@virginia.edu'
     license = 'MIT',
