@@ -1,0 +1,71 @@
+#author:Jeffrey Yoo
+#main pipeline for SICER run with control file
+#used python 3.5
+
+
+import tempfile
+import os
+import shutil
+curr_path = os.getcwd()
+
+import copy
+
+#From SICER Package
+from main import run_SICER
+from src import find_union_islands
+from src import compare_two_libraries_on_islands
+from src import filter_islands_by_significance
+
+def main(args):
+
+	#Checks if there is a control library
+	control_lib_exists = True
+	if(len(args.control_file)==0):
+		control_lib_exists = False
+
+	#Create deep copy of the 'args' object for each treatment
+	args_1 = copy.deepcopy(args)
+	args_2 = copy.deepcopy(args)
+
+	#Format each args for SICER run
+	args_1.treatment_file = str(args.treatment_file[0])
+	args_2.treatment_file = str(args.treatment_file[1])
+
+	if(control_lib_exists):
+		args_1.control_file = str(args.control_file[0])
+		args_2.control_file = str(args.control_file[1])
+
+		#Execute run_SICER for each treatment library
+	temp_dir_1 = run_SICER.main(args_1, True)
+	temp_dir_2 = run_SICER.main(args_2, True)
+
+	#Creates temporary directory to contain all intermediate files
+	dir_prefix = "SICER-df_"+str(os.getpid())+"_"
+	temp_dir = tempfile.mkdtemp(prefix=dir_prefix,dir=curr_path)
+
+	#Change current working directory to temp_dir
+	os.chdir(temp_dir)
+
+	#Find the union island between two treatment files. It will generate a summary file
+	print("\n")
+	print("Finding all the union islands of ", args.treatment_file[0], "and ",args.treatment_file[1], ".")
+	find_union_islands.main(args,temp_dir_1,temp_dir_2)
+	print("\n")
+
+	#Compare two treatment libraries
+	print("Comparing two treatment libraries.")
+	compare_two_libraries_on_islands.main(args,temp_dir_1,temp_dir_2,curr_path)
+	print("\n")
+
+	print("Identify significantly increased islands using BH corrected p-value cutoff")
+	filter_islands_by_significance.main(args,9)
+	print("\n")
+
+	print("Identify significantly decreased islands using BH-corrected p-value cutoff")
+	filter_islands_by_significance.main(args,12)
+	print("\n")
+
+	print("Removing all temporary directories and all files in it.")
+	shutil.rmtree(temp_dir)
+	shutil.rmtree(temp_dir_1)
+	shutil.rmtree(temp_dir_2)
