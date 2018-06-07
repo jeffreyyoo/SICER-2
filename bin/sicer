@@ -1,7 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
+
 dir_path = os.getcwd()
 
 import argparse
@@ -119,6 +120,24 @@ def main():
 		default=1000,
 		help='E-value. Requires user input when no control library is provided.\nDefault value is 1000'
 		)
+
+	parser.add_argument(
+		'--step_size',
+		'-s_size',
+		required=False,
+		type=int,
+		default=3,
+		help='Step Size: the number of windows in one graining unit. Used for RECOGNICER algorithm '
+	)
+
+	parser.add_argument(
+		'--step_score',
+		'-s_score',
+		required=False,
+		type=int,
+		default=2,
+		help='Step Score: The minimum number of positive elements in the graining unit to call the unit positive. Used for RECOGNICER algorithm'
+	)
 
 	parser.add_argument(
 		'--output_directory',

@@ -1,5 +1,4 @@
 #author:Jeffrey Yoo
-#main pipeline for SICER run with control file
 #used python 3.5
 
 
@@ -12,7 +11,7 @@ curr_path = os.getcwd()
 from src import remove_redundant_reads
 from src import run_make_graph_file_by_chrom
 from src import normalize
-from src import find_islands_in_pr
+from src import coarsegraining
 from src import associate_tags_with_chip_and_control_w_fc_q
 from src import filter_islands_by_significance
 from src import make_normalized_wig
@@ -64,7 +63,7 @@ def main(args, df_run = False):  #df_run indicates if run_RECOGNICER is being ca
 
 	#Step 6: Find condidate islands exhbiing clustering
 	print("Finding candidate islands exhitiitng clustering \n")
-	find_islands_in_pr.main(args,total_tag_in_windows)
+	coarsegraining.main(args,total_tag_in_windows)
 	print("\n")
 
 	#Running SICER with a control library
