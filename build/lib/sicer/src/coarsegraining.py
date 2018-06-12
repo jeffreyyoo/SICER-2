@@ -303,7 +303,7 @@ def main(args,read_count):
 	print ("Generate preprocessed data list")
 	#read in the summary graph file
 	#Use multiprocessing to find islands separately by chromosome
-	pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+	pool = mp.Pool()
 	filter_and_find_islands_partial = partial(filter_and_find_islands, args,min_tags_in_window)
 	filtered_islands_result = pool.map(filter_and_find_islands_partial,chroms)
 	pool.close()

@@ -10,7 +10,7 @@ curr_path = os.getcwd()
 import copy
 
 #From SICER Package
-from sicer.main import run_SICER
+from sicer.main import run_RECOGNICER
 from sicer.src import find_union_islands
 from sicer.src import compare_two_libraries_on_islands
 from sicer.src import filter_islands_by_significance
@@ -35,8 +35,8 @@ def main(args):
 		args_2.control_file = str(args.control_file[1])
 
 		#Execute run_SICER for each treatment library
-	temp_dir_1 = run_SICER.main(args_1, True)
-	temp_dir_2 = run_SICER.main(args_2, True)
+	temp_dir_1 = run_RECOGNICER.main(args_1, True)
+	temp_dir_2 = run_RECOGNICER.main(args_2, True)
 
 	#Creates temporary directory to contain all intermediate files
 	dir_prefix = "SICER-df_"+str(os.getpid())+"_"

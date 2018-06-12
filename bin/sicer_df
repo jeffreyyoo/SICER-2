@@ -9,8 +9,8 @@ import argparse
 from argparse import RawTextHelpFormatter
 
 #Imports from SICER package
-from sicer.main import run_SICER
-from sicer.main import run_RECOGNICER
+from sicer.main import run_SICER_df
+from sicer.main import run_RECOGNICER_df
 from sicer.lib import Utility, GenomeData
 
 
@@ -19,17 +19,19 @@ def sub_arg_SICER (sub_parser):
 
 	parser = sub_parser.add_parser("SICER", help="Enter arguments for SICER algorithm")
 	parser.add_argument(
-	    '--treatment_file',
-	    '-t',
-	    required=True,
-	    type=str,
-	    help='''Name of the sample file you wish to run SICER on. Must be in BED or BAM format.'''
-	    )
+		'--treatment_file',
+		'-t',
+		required=True,
+		nargs='+',
+		type=str,
+		help='''Name of the sample file you wish to run SICER on. Must be in BED or BAM format.'''
+		)
 
 	parser.add_argument(
 	    '--control_file',
 	    '-c',
 	    required=False,
+		nargs='+',
 	    type=str,
 	    help='''Name of the control library in BED or BAM format. \nIf you wish to run SICER without a control library, simply do not enter the file. '''
 	    )
@@ -87,6 +89,15 @@ def sub_arg_SICER (sub_parser):
 	    )
 
 	parser.add_argument(
+		'--false_discovery_rate_df',
+		'-fdr_df',
+		required=False,
+		default=0.01,
+		type=float,
+		help='Cutoff for identification of significant changes been wild-type library and knockout library.\nOnly provide a value when comparing two libraries.'
+	)
+
+	parser.add_argument(
 		'--output_directory',
 		'-o',
 		required=False,
@@ -121,16 +132,18 @@ def sub_arg_RECOGNICER (sub_parser):
 	    '--treatment_file',
 	    '-t',
 	    required=True,
+	    nargs='+',
 	    type=str,
-	    help='''Name of the sample file you wish to run RECOGNICER on. Must be in BED or BAM format.'''
+	    help='''Names of the sample file you wish to run RECOGNICER on. Must be in BED or BAM format.'''
 	    )
 
 	parser.add_argument(
 	    '--control_file',
 	    '-c',
 	    required=False,
+		nargs='+',
 	    type=str,
-	    help='''Name of the control library in BED or BAM format. \nIf you wish to run RECOGNICERS without a control library, simply do not enter the file. '''
+	    help='''Name of the control library in BED or BAM format. \nIf you wish to run RECOGNICER without a control library, simply do not enter the file. '''
 	    )
 
 	parser.add_argument(
@@ -156,7 +169,7 @@ def sub_arg_RECOGNICER (sub_parser):
 		required=False,
 		type=int,
 		default=200,
-		help='Resolution of RECOGNICERS.\nDefault value is 200 (bp)'
+		help='Resolution of RECOGNICER.\nDefault value is 200 (bp)'
 	)
 	parser.add_argument(
 		'--fragment_size',
@@ -186,6 +199,15 @@ def sub_arg_RECOGNICER (sub_parser):
 	    )
 
 	parser.add_argument(
+		'--false_discovery_rate_df',
+		'-fdr_df',
+		required=False,
+		default=0.01,
+		type=float,
+		help='Cutoff for identification of significant changes been wild-type library and knockout library.\nOnly provide a value when comparing two libraries.'
+	)
+
+	parser.add_argument(
 		'--output_directory',
 		'-o',
 		required=False,
@@ -212,8 +234,9 @@ def sub_arg_RECOGNICER (sub_parser):
 		help='Step Score: The minimum number of positive elements in the graining unit to call the unit positive. Used for RECOGNICER algorithm'
 	)
 
+
 def main():
-	'''The main function/pipeline for SICER'''
+	'''The main function/pipeline for SICER-differential enrichment'''
 	parser = argparse.ArgumentParser(description='Processing Arguments for SICER', formatter_class=RawTextHelpFormatter)
 
 	sub_parsers = parser.add_subparsers(dest = 'subcommand')
@@ -228,18 +251,32 @@ def main():
 
 	#check if valid subcommand has been entered
 	if(args.subcommand!="SICER" and args.subcommand!="RECOGNICER"):
-		sys.stderr.write("Error: no valid version of algorithm entered. Enter \"sicer SICER\" for original SICER algorithm or \"sicer RECOGNICER\" to use the RECOGNICER algorithm.\n")
+		sys,stderr.write("Error: no valid version of algorithm entered. Enter \"sicer_df SICER\" for original SICER algorithm or \"sicer_df RECOGNICER\" to use the RECOGNICER algorithm.\n")
 		sys.exit(1)
 
 	#Check if argument inputs are valid
-	if(not(Utility.fileExists(args.treatment_file))):
-		sys.stderr.write("Error: "+args.treatment_file+" file is not found.\n")
+	if(len(args.treatment_file)!=2):
+		sys.stderr.write("Error: SICER needs two treatment files as input\n")
 		sys.exit(1)
 
-	if(args.control_file!=""):
-		if(not(Utility.fileExists(args.control_file))):
-			sys.stderr.write("Error: "+args.control_file+" file is not found.\n")
+	if(len(args.control_file)>2):
+		sys.stderr.write("Error: Too many control file inputs. SICER accepts at max two files.\n")
+		sys.exit(1)
+
+	#User cannot input 2 treatment libraries and only 1 control library
+	if(len(args.treatment_file)==2 and len(args.control_file)%2==1):
+		sys.stderr.write("Error: Mismatch between the number of treatment file inputs and control file inputs.\n")
+
+	for file in args.treatment_file:
+		if(not(Utility.fileExists(file))):
+			sys.stderr.write("Error: "+file+" file is not found.\n")
 			sys.exit(1)
+
+	if(len(args.control_file)>0):
+		for file in args.control_file:
+			if(not(Utility.fileExists(file))):
+				sys.stderr.write("Error: "+file+" file is not found.\n")
+				sys.exit(1)
 
 	if (not(args.species in GenomeData.species_chroms.keys())):
 		sys.stderr.write("Error: Species "+args.species+" not recognized.\n")
@@ -263,31 +300,30 @@ def main():
 		try:
 			os.makedirs( args.output_directory )
 		except:
-			sys.exit( "Output directory (%s) could not be created. Terminating program." % args.output_directory)
+			sys.exit( "Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
 
-
-	'''Checks if the inputs files are in BAM format. If they are, convert them into BED format using bamToBed
-	functionality from bedtools2 (https://github.com/arq5x/bedtools2). Therefore bedtools2 must be installed'''
-
-	if(".bam" in args.treatment_file):
-		bed_file_name = args.treatment_file.replace('.bam','.bed')
-		try:
-			subprocess.call("bedtools bamtobed -i %s > %s" %(args.treatment_file,bed_file_name), shell=True)
-			args.treatment_file = bed_file_name
-		except:
-			sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly")
-
-	if(args.control_file!=''):
-		if(".bam" in args.control_file):
-			bed_file_name = args.control_file.replace('.bam','.bed')
+	for i,file in enumerate(args.treatment_file):
+		if(".bam" in file):
+			bed_file_name = file.replace('.bam','.bed')
 			try:
-				subprocess.call("bedtools bamtobed -i %s > %s" %(args.control_file,bed_file_name), shell=True)
-				args.control_file = bed_file_name
+				subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
+				args.treatment_file[i]=bed_file_name
 			except:
-				sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly")
+				sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
+
+	if(len(args.control_file)>0):
+		for i,file in enumerate(args.control_file):
+			if(".bam" in file):
+				bed_file_name = file.replace('.bam','.bed')
+				try:
+					subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
+					args.control_file[i]=bed_file_name
+				except:
+					sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
 
 
-	'''In this version of SICER, there are 2 different al> %sgorithms available for finding significant islands.
+
+	'''In this version of SICER, there are 2 different algorithms available for finding significant islands.
 	The first one is the original SICER algorithm and the second one is RECOGNICER, which
 	uses coarse-graining model identiy significant islands. "Version" argument determines which algorithm to run
 	Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
@@ -295,11 +331,11 @@ def main():
 
 	if(args.subcommand=="SICER"):
 		print("Running SICER with given arguments \n")
-		run_SICER.main(args)
+		run_SICER_df.main(args)
 
 	elif(args.subcommand=="RECOGNICER"):
 		print("Running RECOGNICER with given arguments \n")
-		run_RECOGNICER.main(args)
+		run_RECOGNICER_df.main(args)
 
 	print("\nProgram Finished Running")
 

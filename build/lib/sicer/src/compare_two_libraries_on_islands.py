@@ -130,7 +130,7 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2,path_to_treatment_files):
 
 	library_scaling_factor = A_library_size*1.0/B_library_size; #A vs B
 
-	pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+	pool = mp.Pool()
 	associate_tag_count_to_regions_partial = partial(associate_tags_count_to_regions,args, path_to_tempdir_1,path_to_tempdir_2, library_scaling_factor)
 	tag_counts = pool.map(associate_tag_count_to_regions_partial, chroms)
 	pool.close()

@@ -179,7 +179,7 @@ def main(args,total_read_count):
 
 	#Use multiprocessing to filter windows with tag count below minimum requirement
 	print ("Generate the enriched probscore summary graph and filter the summary graph to eliminate ineligible windows ");
-	pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+	pool = mp.Pool()
 	filter_and_find_islands_partial = partial(filter_and_find_islands,min_tags_in_window,args.gap_size,score_threshold,average)
 	filtered_islands_result = pool.map(filter_and_find_islands_partial,list_of_graph_files)
 	pool.close()

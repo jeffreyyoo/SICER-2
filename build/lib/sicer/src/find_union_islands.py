@@ -103,7 +103,7 @@ def main(args,temp_dir_1,temp_dir_2):
 		no_control = True
 
 	#Use multiprocessing module to run parallel processes for each chromosome
-	pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+	pool = mp.Pool()
 	find_union_islands_partial = partial(find_union_islands,no_control,temp_dir_1,temp_dir_2)
 	pool.map(find_union_islands_partial, chroms)
 	pool.close()
