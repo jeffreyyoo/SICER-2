@@ -104,8 +104,6 @@ def find_and_filter_reads (path_to_file, cutoff, chrom):
 	return strand_broken_remove(chrom, cutoff, file_name, chrom_reads)
 
 
-
-
 '''path_to_file: complete path to the .bed file that needs to processed for redudant reads'''
 def main(args,path_to_file):
 	chroms = GenomeData.species_chroms[args.species];  #list of chromsomes of the given species

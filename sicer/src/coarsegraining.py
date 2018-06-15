@@ -1,4 +1,4 @@
-#Author: Yiren Wang
+#Author: Chongzhi Zang, Yiren Wang
 #Edits made by Jeffrey Yoo
 
 import re, os, sys, shutil
@@ -309,8 +309,8 @@ def main(args,read_count):
 	pool.close()
 
 	file_name = args.treatment_file.replace('.bed','')
-	outfile_path = (args.output_directory+'/'+file_name+'-W'+str(args.window_size)
-					+'-G'+str(args.gap_size)+'.cgisland')
+	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)
+					+'-G'+str(args.gap_size)+'.cgisland'))
 	total_number_islands = 0
 	path_to_filtered_graph = []
 	with open(outfile_path,'w') as outfile:
@@ -325,19 +325,6 @@ def main(args,read_count):
 				outfile.write(line)
 
 	print ("Total number of islands: ", total_number_islands);
-
-
-
-	# o = open(opt.out_file, 'w')
-	# o.write('track type=bedGraph name=' + opt.out_file + '\n')
-	# o.close()
-	# SeparateByChrom.combineAllGraphFiles(chroms, ".islandstemp", opt.out_file)
-	# SeparateByChrom.cleanup(chroms, ".islandstemp")
-	# #else:
-	# 	#print "input data error!"
-
-
-
 
 if __name__ == "__main__":
 	main(sys.argv)

@@ -1,20 +1,4 @@
 #!/usr/bin/env python
-#
-# Authors: Chongzhi Zang, Weiqun Peng
-#
-# This module compares two libraries on islands, which by definition are NON-OVERLAPPING! It can not be used for comparison of
-# libraries on genes, which are potentially overlapping!
-
-# Disclaimer
-#
-# This software is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# Comments and/or additions are welcome (send e-mail to:
-# wpeng@gwu.edu).
-#
 
 import re, os, sys, shutil
 from math import *
@@ -76,7 +60,7 @@ def associate_tags_count_to_regions (args, path_A,path_B, scaling_factor,chrom):
 	totalA=0
 	island_A_readcount_list=[0]*len(island_list);
 	treatment_A_file_name = args.treatment_file[0].replace('.bed','')+'_'+chrom+'.npy'
-	treatment_A_reads = np.load(path_A+'/'+treatment_A_file_name)
+	treatment_A_reads = np.load(os.path.join(path_A,treatment_A_file_name))
 	for read in treatment_A_reads:
 		position = associate_tags_with_regions.tag_position(read, args.fragment_size)
 		index = associate_tags_with_regions.find_readcount_on_islands(island_start_list, island_end_list, position);
@@ -87,7 +71,7 @@ def associate_tags_count_to_regions (args, path_A,path_B, scaling_factor,chrom):
 	totalB=0
 	island_B_readcount_list=[0]*len(island_list);
 	treatment_B_file_name = args.treatment_file[1].replace('.bed','')+'_'+chrom+'.npy'
-	treatment_B_reads = np.load(path_B+'/'+treatment_B_file_name)
+	treatment_B_reads = np.load(os.path.join(path_B,treatment_B_file_name))
 	for read in treatment_B_reads:
 		position = associate_tags_with_regions.tag_position(read, args.fragment_size)
 		index = associate_tags_with_regions.find_readcount_on_islands(island_start_list, island_end_list, position);
@@ -122,8 +106,8 @@ def associate_tags_count_to_regions (args, path_A,path_B, scaling_factor,chrom):
 def main(args, path_to_tempdir_1, path_to_tempdir_2,path_to_treatment_files):
 	chroms = GenomeData.species_chroms[args.species];
 
-	A_library_size = Utility.get_total_tag_counts(path_to_treatment_files+'/'+args.treatment_file[0]);
-	B_library_size = Utility.get_total_tag_counts(path_to_treatment_files+'/'+args.treatment_file[1]);
+	A_library_size = Utility.get_total_tag_counts(os.path.join(path_to_treatment_files,args.treatment_file[0]));
+	B_library_size = Utility.get_total_tag_counts(os.path.join(path_to_treatment_files,args.treatment_file[1]));
 
 	print ("Library size of ", args.treatment_file[0], ":  ", A_library_size)
 	print ("Library size of ", args.treatment_file[1], ":  ", B_library_size)
@@ -173,7 +157,7 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2,path_to_treatment_files):
 	pseudo_count=1
 	outfile_name = (args.treatment_file[0].replace('.bed','')+'-and-'+args.treatment_file[1].replace('.bed','')+
 					'-W'+str(args.window_size)+'-G'+str(args.gap_size)+'-summary')
-	outfile_path = args.output_directory+'/'+outfile_name
+	outfile_path = os.path.join(args.output_directory,outfile_name)
 	with open (outfile_path, 'w') as outfile:
 		outline = ('#chrom' + "\t" + 'start' + "\t" + 'end' + "\t" + "Readcount_A" + "\t" + 'Normalized_Readcount_A' + "\t" + 'ReadcountB' + "\t" + 'Normalized_Readcount_B'
 				+ "\t" + "Fc_A_vs_B" + "\t" + "pvalue_A_vs_B" + "\t" + "FDR_A_vs_B" + "\t" + "Fc_B_vs_A" + "\t" + "pvalue_B_vs_A" + "\t" + "FDR_B_vs_A"  + "\n")

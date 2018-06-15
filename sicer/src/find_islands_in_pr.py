@@ -111,7 +111,7 @@ def filter_ineligible_windows(chrom_graph,min_tags_in_window,average):
 			if prob <1e-250:
 				score = 1000; #outside of the scale, take an arbitrary number.
 			else:
-				score = round(-log(prob),10)
+				score = -log(prob)
 		eligible_window = (window[0],window[1],window[2],score)
 		if score > 0:
 			filtered_chrom_graph.append(eligible_window);
@@ -185,8 +185,8 @@ def main(args,total_read_count):
 	pool.close()
 
 	file_name = args.treatment_file.replace('.bed','')
-	outfile_path = (args.output_directory+'/'+file_name+'-W'+str(args.window_size)
-					+'-G'+str(args.gap_size)+'.scoreisland')
+	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)
+					+'-G'+str(args.gap_size)+'.scoreisland'))
 	total_number_islands = 0
 	path_to_filtered_graph = []
 	with open(outfile_path,'w') as outfile:

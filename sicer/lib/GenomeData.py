@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Authors: Chongzhi Zang 
+# Authors: Chongzhi Zang
 #
 # This software is distributable under the terms of the GNU General
 # Public License (GPL) v2, the text of which can be found at
@@ -8,7 +8,7 @@
 # this License.
 #
 # Disclaimer
-# 
+#
 # This software is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -26,8 +26,8 @@ import re, os, sys, shutil
 
 GenomeDataError = "Error in GenomeData class";
 
-bg_number_chroms = 1; 
-bg_length_of_chrom = 100000000; 
+bg_number_chroms = 1;
+bg_length_of_chrom = 100000000;
 
 background_chroms = [];
 background_chrom_lengths = {};
@@ -82,7 +82,7 @@ mm8_chrom_lengths = {'chr1':197069962, 'chr2':181976762, 'chr3':159872112,
 		     'chr4':155029701, 'chr5':152003063, 'chr6':149525685,
 		     'chr7':145134094, 'chr8':132085098, 'chr9':124000669,
 		     'chr10':129959148, 'chr11':121798632, 'chr12':120463159,
-		     'chr13':120614378, 'chr14':123978870, 'chr15':103492577, 
+		     'chr13':120614378, 'chr14':123978870, 'chr15':103492577,
 		     'chr16':98252459, 'chr17':95177420, 'chr18':90736837,
 		     'chr19':61321190, 'chrX':165556469, 'chrY':16029404,
 		     'chrM':16299}
@@ -91,7 +91,7 @@ mm9_chrom_lengths = {'chr1':197195432, 'chr2':181748087, 'chr3':159599783,
                      'chr4':155630120, 'chr5':152537259, 'chr6':149517037,
                      'chr7':152524553, 'chr8':131738871, 'chr9':124076172,
                      'chr10':129993255, 'chr11':121843856, 'chr12':121257530,
-                     'chr13':120284312, 'chr14':125194864, 'chr15':103494974, 
+                     'chr13':120284312, 'chr14':125194864, 'chr15':103494974,
                      'chr16':98319150, 'chr17':95272651, 'chr18':90772031,
                      'chr19':61342430, 'chrX':166650296, 'chrY':15902555,
                      'chrM':16299}
@@ -100,7 +100,7 @@ mm10_chrom_lengths = {'chr1':195471971, 'chr2':182113224, 'chr3':160039680,
                      'chr4':156508116, 'chr5':151834684, 'chr6':149736546,
                      'chr7':145441459, 'chr8':129401213, 'chr9':124595110,
                      'chr10':130694993, 'chr11':122082543, 'chr12':120129022,
-                     'chr13':120421639, 'chr14':124902244, 'chr15':104043685, 
+                     'chr13':120421639, 'chr14':124902244, 'chr15':104043685,
                      'chr16':98207768, 'chr17':94987271, 'chr18':90702639,
                      'chr19':61431566, 'chrX':171031299, 'chrY':91744698,
                      'chrM':16299}
@@ -109,7 +109,7 @@ rn4_chrom_lengths = {'chr1':267910886, 'chr2':258207540, 'chr3':171063335,
 		     'chr4':187126005, 'chr5':173096209, 'chr6':147636619,
 		     'chr7':143002779, 'chr8':129041809, 'chr9':113440463,
 		     'chr10':110718848, 'chr11':87759784, 'chr12':46782294,
-		     'chr13':111154910, 'chr14':112194335, 'chr15':109758846, 
+		     'chr13':111154910, 'chr14':112194335, 'chr15':109758846,
 		     'chr16':90238779, 'chr17':97296363, 'chr18':87265094,
 		     'chr19':59218465, 'chr20':55268282, 'chrX':160699376,
 		     'chrM':16300}
@@ -150,20 +150,20 @@ dm2_chrom_lengths = {'chr2h':1694122, 'chr2L':22407834, 'chr2R':20766785,
 		     'chrX':22224390, 'chrYh':396896, 'chrM':19517,
 		     'chrU':8724946}
 
-dm3_chrom_lengths = {'chr2L':23011544, 
-			'chr2LHet':368872, 
-			'chr2R':21146708, 
-			'chr2RHet':3288761, 
-			'chr3L':24543557, 
+dm3_chrom_lengths = {'chr2L':23011544,
+			'chr2LHet':368872,
+			'chr2R':21146708,
+			'chr2RHet':3288761,
+			'chr3L':24543557,
 			'chr3LHet':2555491,
 			'chr3R':27905053,
-			'chr3RHet':2517507, 
+			'chr3RHet':2517507,
 			'chr4':1351857,
 			'chrX':22422827,
-			'chrXHet':204112, 
-			'chrYHet':347038, 
-			'chrU':10049037, 
-			'chrUextra':29004656, 
+			'chrXHet':204112,
+			'chrYHet':347038,
+			'chrU':10049037,
+			'chrUextra':29004656,
 			'chrM':19517}
 
 tair8_chrom_lengths = {'chr1':30427671, 'chr2':19698289, 'chr3':23459830,
@@ -182,16 +182,16 @@ pombe_chrom_lengths = {'chr1':5580032,'chr2':4541604,'chr3':2453783,
 
 
 
-species_chroms = {'mm8':mm8_chroms, 
-			'mm9':mm9_chroms, 
-			'mm10':mm10_chroms, 
+species_chroms = {'mm8':mm8_chroms,
+			'mm9':mm9_chroms,
+			'mm10':mm10_chroms,
 			'hg18':hg18_chroms,
 			'hg19':hg19_chroms,
 			'hg38':hg38_chroms,
-		  	"dm2":dm2_chroms, 
-			"dm3":dm3_chroms, 
+		  	"dm2":dm2_chroms,
+			"dm3":dm3_chroms,
 			"sacCer1":sacCer1_chroms,
-		  	"pombe":pombe_chroms, 
+		  	"pombe":pombe_chroms,
 			'rn4':rn4_chroms,
 			'tair8':tair8_chroms,
 		  	'background':background_chroms};
@@ -210,7 +210,3 @@ species_chrom_lengths={'mm8':mm8_chrom_lengths,
 		       'rn4':rn4_chrom_lengths,
 		       'tair8':tair8_chrom_lengths,
 		       'background':background_chrom_lengths};
-
-
-
-

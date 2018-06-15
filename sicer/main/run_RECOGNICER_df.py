@@ -5,9 +5,8 @@
 import tempfile
 import os
 import shutil
-curr_path = os.getcwd()
-
 import copy
+curr_path =os.getcwd()
 
 #From SICER Package
 from sicer.main import run_RECOGNICER
@@ -38,12 +37,13 @@ def main(args):
 	temp_dir_1 = run_RECOGNICER.main(args_1, True)
 	temp_dir_2 = run_RECOGNICER.main(args_2, True)
 
-	#Creates temporary directory to contain all intermediate files
-	dir_prefix = "SICER-df_"+str(os.getpid())+"_"
-	temp_dir = tempfile.mkdtemp(prefix=dir_prefix,dir=curr_path)
-
-	#Change current working directory to temp_dir
-	os.chdir(temp_dir)
+	try:
+		dir_prefix = "SICER_df_"+str(os.getpid())+"_"
+		temp_dir = tempfile.mkdtemp(prefix=dir_prefix,dir=curr_path)
+		#Change current working directory to temp_dir
+		os.chdir(temp_dir)
+	except:
+		sys.exit( "Temporary directory required for SICER cannot be created. Check if directories can be created in %s." % args.input_directory)
 
 	#Find the union island between two treatment files. It will generate a summary file
 	print("\n")
@@ -53,7 +53,7 @@ def main(args):
 
 	#Compare two treatment libraries
 	print("Comparing two treatment libraries.")
-	compare_two_libraries_on_islands.main(args,temp_dir_1,temp_dir_2,curr_path)
+	compare_two_libraries_on_islands.main(args,temp_dir_1,temp_dir_2,args.input_directory)
 	print("\n")
 
 	print("Identify significantly increased islands using BH corrected p-value cutoff")

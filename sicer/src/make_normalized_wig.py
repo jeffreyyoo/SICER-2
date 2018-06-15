@@ -34,19 +34,19 @@ def main(args, file):
 
     scaling_factor = total_count/1000000*(args.window_size/1000)
     file_name = args.treatment_file.replace('.bed','')
-    outfile_path = (args.output_directory+'/'+file_name
-                    +"-W"+str(args.window_size)+"-normalized.wig")
+    outfile_path = os.path.join(args.output_directory, (file_name+"-W"+str(args.window_size)+"-normalized.wig"))
 
     #Normalize tag count using the scaling factor and generate a file in WIG format
     with open(outfile_path,'w') as outfile:
         outfile.write("track type=wiggle_0 name="+file_name+"\n")
         for i in range (0,len(chroms)):
             chrom_graph = np.load(list_of_graph_files[i])
-            outfile.write("variableStep chrom="+chroms[i]+" span="+str(args.window_size)+"\n")
-            for window in chrom_graph:
-                normalized_tag_count = round(float(window[3]/scaling_factor),2)
-                start_coord = window[1]+1
-                outfile.write(str(start_coord)+"\t"+str(normalized_tag_count)+"\n")
+            if(len(chrom_graph)>0):
+                outfile.write("variableStep chrom="+chroms[i]+" span="+str(args.window_size)+"\n")
+                for window in chrom_graph:
+                    normalized_tag_count = round(float(window[3]/scaling_factor),2)
+                    start_coord = window[1]+1
+                    outfile.write(str(start_coord)+"\t"+str(normalized_tag_count)+"\n")
 
 if __name__ == "__main__":
     main(sys.argv)

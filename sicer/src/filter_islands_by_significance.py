@@ -1,20 +1,3 @@
-#!/usr/bin/env python
-#
-# Authors: Chongzhi Zang, Weiqun Peng
-#
-# Disclaimer
-#
-# This software is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# Comments and/or additions are welcome (send e-mail to:
-# wpeng@gwu.edu).
-#
-# Version 1.1  6/9/2010
-
-
 import re, os, sys, shutil
 from math import *
 from string import *
@@ -77,7 +60,7 @@ def main(args,columnindex):
 		outfile_name = (args.treatment_file.replace('.bed','')+'-W'+str(args.window_size)+'-G'
 					+str(args.gap_size)+'-FDR'+str(args.false_discovery_rate)+'-island.bed')
 
-	outfile_path = args.output_directory+'/'+outfile_name
+	outfile_path = os.path.join(args.output_directory,outfile_name)
 	with open(outfile_path,'w') as outfile:
 		for chrom in chroms:
 			island_file_name=''

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
+#Developed by Zang Lab at University of Virginia - 2018
 
 import os
 import sys
-dir_path = os.getcwd()
+curr_path = os.getcwd()
 import subprocess
 
 import argparse
@@ -98,10 +99,19 @@ def sub_arg_SICER (sub_parser):
 	)
 
 	parser.add_argument(
+		'--input_directory',
+		'-i',
+		required=False,
+		default=curr_path,
+		type=str,
+		help='Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files'
+		)
+
+	parser.add_argument(
 		'--output_directory',
 		'-o',
 		required=False,
-		default=dir_path,
+		default=curr_path,
 		type=str,
 		help='Path of the directory in which results will be stored.\nDefault path is the current path'
 		)
@@ -208,10 +218,19 @@ def sub_arg_RECOGNICER (sub_parser):
 	)
 
 	parser.add_argument(
+		'--input_directory',
+		'-i',
+		required=False,
+		default=curr_path,
+		type=str,
+		help='Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files'
+		)
+
+	parser.add_argument(
 		'--output_directory',
 		'-o',
 		required=False,
-		default=dir_path,
+		default=curr_path,
 		type=str,
 		help='Path of the directory in which results will be stored.\nDefault path is the current path'
 		)
@@ -255,6 +274,10 @@ def main():
 		sys.exit(1)
 
 	#Check if argument inputs are valid
+	if (not os.path.exists(args.input_directory)):
+		sys.stderr.write("Error: Invalid input directory\n")
+		sys.exit(1)
+
 	if(len(args.treatment_file)!=2):
 		sys.stderr.write("Error: SICER needs two treatment files as input\n")
 		sys.exit(1)
@@ -268,13 +291,13 @@ def main():
 		sys.stderr.write("Error: Mismatch between the number of treatment file inputs and control file inputs.\n")
 
 	for file in args.treatment_file:
-		if(not(Utility.fileExists(file))):
+		if(not(Utility.fileExists(os.path.join(args.input_directory,file)))):
 			sys.stderr.write("Error: "+file+" file is not found.\n")
 			sys.exit(1)
 
 	if(len(args.control_file)>0):
 		for file in args.control_file:
-			if(not(Utility.fileExists(file))):
+			if(not(Utility.fileExists(os.path.join(args.input_directory,file)))):
 				sys.stderr.write("Error: "+file+" file is not found.\n")
 				sys.exit(1)
 
@@ -303,8 +326,9 @@ def main():
 			sys.exit( "Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
 
 	for i,file in enumerate(args.treatment_file):
-		if(".bam" in file):
+		if(file.lower().endswith('.bam')):
 			bed_file_name = file.replace('.bam','.bed')
+			bed_file_name = file.replace('.BAM','.bed')
 			try:
 				subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
 				args.treatment_file[i]=bed_file_name
@@ -313,8 +337,9 @@ def main():
 
 	if(len(args.control_file)>0):
 		for i,file in enumerate(args.control_file):
-			if(".bam" in file):
+			if(file.lower().endswith('.bam')):
 				bed_file_name = file.replace('.bam','.bed')
+				bed_file_name = file.replace('.BAM','.bed')
 				try:
 					subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
 					args.control_file[i]=bed_file_name

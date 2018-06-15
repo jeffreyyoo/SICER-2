@@ -1,20 +1,3 @@
-#!/usr/bin/env python
-#
-# Authors: Chongzhi Zang, Weiqun Peng
-#
-#
-# Disclaimer
-#
-# This software is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# Comments and/or additions are welcome (send e-mail to:
-# wpeng@gwu.edu).
-#
-# Version 1.1  6/9/2010
-
 import re, os, sys, shutil
 from math import *
 from string import *
@@ -83,9 +66,6 @@ def associate_tag_count_to_regions(args,scaling_factor, control_library_size, ge
 		else:
 			pvalue = 1
 
-		pvalue=round(pvalue,21)
-		fc=round(fc,8)
-
 		pvalue_list.append(pvalue)
 		output_line = [island[0],island[1],island[2],observation_count,control_count, pvalue,fc]
 		output_lines.append(output_line)
@@ -132,7 +112,7 @@ def main(args,chip_library_size, control_library_size):
 
 	index = 0
 	file_name = args.treatment_file.replace('.bed','')
-	outfile_path = (args.output_directory+'/'+file_name+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+'-islands-summary')
+	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+'-islands-summary'))
 	with open(outfile_path,'w') as outfile:
 		for chrom in chroms:
 			island_file_name = file_name+'_'+chrom+'_'+'island_summary.npy'
@@ -144,7 +124,7 @@ def main(args,chip_library_size, control_library_size):
 				alpha_stat = p_value_list[index] * total_num_of_pvalue/p_value_rank_array[index];
 				if alpha_stat > 1:
 					alpha_stat = 1;
-				alpha_stat = round(alpha_stat,20)
+
 				line=line.tolist()
 				line.append(alpha_stat)
 				outputline=(line[0]+'\t'+str(line[1])+'\t'+str(line[2])+'\t'+str(line[3])+'\t'+str(line[4])+'\t'+

@@ -1,19 +1,4 @@
 #!/usr/bin/env python
-# Copyright (c) 2010 The George Washington University
-# Authors: Chongzhi Zang, Weiqun Peng
-#
-# Disclaimer
-#
-# This software is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# Comments and/or additions are welcome (send e-mail to:
-# wpeng@gwu.edu).
-#
-# Version 1.1  6/9/2010
-
 
 import re, os, sys, shutil
 from math import *
@@ -34,22 +19,6 @@ def write(item, out):
 	#chrom, start, end, name, score, strand
 	outline = item.chrom + "\t" + str(item.start) + "\t" + str(item.end) + "\n";
 	out.write(outline);
-
-# #Opens the given file and greps all the reads of the given chromsome and stores them in a list of tuples
-# #Tuple format: (chrom,start,end,score/count)
-# def match_by_chrom(file, chrom):
-# 	match = chrom + "[[:space:]]"
-# 	matched_reads = subprocess.Popen('grep %s %s' % (match,file), stdout=subprocess.PIPE,shell=True)
-# 	chrom_reads= str(matched_reads.stdout.read(),'utf-8').splitlines()
-#
-# 	for i,reads in enumerate(chrom_reads):
-# 		reads=re.split('\t', reads)
-# 		reads[1]=int(reads[1])
-# 		reads[2]=int(reads[2])
-# 		reads[3]=float(reads[3])
-# 		chrom_reads[i]=tuple(reads)
-#
-# 	return chrom_reads
 
 #Function designed for handling multiprocessing. Executes the redundancy removal algorithm
 #for each independent chromosome
