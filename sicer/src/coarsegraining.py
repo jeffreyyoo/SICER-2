@@ -62,8 +62,8 @@ def start_list_correlation_r_rev(List, win, r, chrom_length):
 	n = int((chrom_length - x)/win)
 	if n - d > 0:
 		a = [0] * n
-		for item in List:
-			i = int(item - x) // int(win)
+		for island in List:
+			i = int(island - x) // int(win)
 			if i >= 0 and i < n:
 				a[i] = 1
 		for i in range(0, n - d):
@@ -181,7 +181,7 @@ def write_islandlist(List, win,chrom):
 	return output_list
 
 
-def backstep(islandlist, List, win):
+def backstep(islandlist, List, win,chrom):
 	'''one step trace back
 		island[0]=chromosome
 		island[1]=start position of island
@@ -189,21 +189,27 @@ def backstep(islandlist, List, win):
 	#result_list = []
 	#fine_islands = []
 	addtional_islands = write_islandlist(List, win,chrom)
+	modified_islandlist = []
 	for island in islandlist:
-		start_left = (item[1] - win) in List
-		start_right = item[1] in List
+		start_left = (island[1] - win) in List
+		start_right = island[1] in List
 		if start_left and start_right:
-			item[1] = item[1] - win
+			start_pos = island[1] - win
 		elif (not start_left) and (not start_right):
-			item[1] = item[1] + win
-		end_left = (item[2] + 1 - win) in List
-		end_right = (item[2] + 1) in List
+			start_pos = island[1] + win
+		else:
+			start_pos = island[1]
+		end_left = (island[2] + 1 - win) in List
+		end_right = (island[2] + 1) in List
 		if end_left and end_right:
-			item[2] = item[2] + win
+			end_pos = island[2] + win
 		elif (not end_left) and (not end_right):
-			item[2] = item[2] - win
-		assert item[1] < item[2]
-	return union_islands_to_list(islandlist + addtional_islands, win)
+			end_pos = island[2] - win
+		else:
+			end_post = island[2]
+		assert start_pos < end_pos
+		modified_islandlist.append((chrom,start_pos,end_pos))
+	return union_islands_to_list(modified_islandlist + addtional_islands, win)
 
 
 def traceback(List, win_min, step, level, genome_length, chrom):
@@ -309,8 +315,7 @@ def main(args,read_count):
 	pool.close()
 
 	file_name = args.treatment_file.replace('.bed','')
-	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)
-					+'-G'+str(args.gap_size)+'.cgisland'))
+	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)+'.cgisland'))
 	total_number_islands = 0
 	path_to_filtered_graph = []
 	with open(outfile_path,'w') as outfile:

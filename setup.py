@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='SICER',
-    version='0.3.4',
+    version='0.3.5',
     description='Re-implementation of SICER algorithm. Still in development',
     long_description='Re-implementation of SICER algorithm. Still in development',
     url = 'https://github.com/jeffreyyoo/SICER-2',

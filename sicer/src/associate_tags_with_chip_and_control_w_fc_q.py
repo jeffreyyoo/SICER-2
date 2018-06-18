@@ -112,7 +112,12 @@ def main(args,chip_library_size, control_library_size):
 
 	index = 0
 	file_name = args.treatment_file.replace('.bed','')
-	outfile_path = os.path.join(args.output_directory,(file_name+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+'-islands-summary'))
+	output_file_name = file_name+'-W'+str(args.window_size)
+	if(args.subcommand == "SICER"):
+		output_file_name +='-G'+str(args.gap_size)+'-islands-summary'
+	elif(args.subcommand == "RECOGNICER"):
+		output_file_name += '-islands-summary'
+	outfile_path = os.path.join(args.output_directory,output_file_name)
 	with open(outfile_path,'w') as outfile:
 		for chrom in chroms:
 			island_file_name = file_name+'_'+chrom+'_'+'island_summary.npy'

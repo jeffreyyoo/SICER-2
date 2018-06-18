@@ -53,12 +53,17 @@ def main(args,columnindex):
 		filtered_output = pool.map(filter_by_fdr_partial, chroms)
 
 	outfile_name = ''
-	if(df_call):
+	if(df_call and args.subcommand == "SICER"):
 		outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+
 						'-increased-islands-summary-FDR'+str(args.false_discovery_rate_df))
-	else:
+	elif(not(df_call) and args.subcommand == "SICER"):
 		outfile_name = (args.treatment_file.replace('.bed','')+'-W'+str(args.window_size)+'-G'
 					+str(args.gap_size)+'-FDR'+str(args.false_discovery_rate)+'-island.bed')
+	elif(df_call and args.subcommand == "RECOGNICER"):
+		outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+
+						'-increased-islands-summary-FDR'+str(args.false_discovery_rate_df))
+	elif(not(df_call) and args.subcommand == "RECOGNICER"):
+		outfile_name = (args.treatment_file.replace('.bed','')+'-W'+str(args.window_size)+'-FDR'+str(args.false_discovery_rate)+'-island.bed')
 
 	outfile_path = os.path.join(args.output_directory,outfile_name)
 	with open(outfile_path,'w') as outfile:
