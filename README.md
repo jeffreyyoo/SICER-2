@@ -22,7 +22,7 @@ Unlike the original version of SICER, SICER 2.0 runs in python3.
 Please use **python3** to install and run SICER 2.0. The program should work with most of versions of python3.
 
 *Numpy* and *scipy* are required to run SICER. Please have these installed before installing SICER. 
-This can be done by simply typing in `pip install numpy` and `pip install scipy` (note that numpy must be installed before installing scipy). If python2.7 is your default python version, remember to call `pip3` to install these.
+This can be done by simply typing `pip install numpy scipy` under command line (if python2.7 is your default python version, use `pip3`).
 
 *GCC* is required to compile C codes that are part of the SICER package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommneded that you install Xcode.
 
@@ -33,5 +33,14 @@ To install SICER through PyPI, simply open the terminal and type `pip install SI
 
 To update SICER, you can type in `pip install -U SICER`
 
+## Using SICER
+There are multiple modes when it comes to running SICER
+
+### 1. Running SICER 
 
 
+### 2. Running SICER to Identify Differentially Enriched Regions
+
+### 3. Running RECOGNICER
+
+### 4. Running RECOGNICER to Identify Differentially Enriched Regions
