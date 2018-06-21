@@ -21,13 +21,15 @@ Unlike the original version of SICER, SICER 2.0 runs in python3.
 
 Please use **python3** to install and run SICER 2.0. The program should work with most of versions of python3.
 
-Also, numpy and scipy are required to run SICER. Please have these installed before installing SICER. 
+*Numpy* and *scipy* are required to run SICER. Please have these installed before installing SICER. 
 This can be done by simply typing in `pip install numpy` and `pip install scipy` (note that numpy must be installed before installing scipy). If python2.7 is your default python version, remember to call `pip3` to install these.
 
-GCC is required to compile .c codes in SICER 2.0 package, and python header files are needed. If you are using Mac OSX, I recommend you install Xcode; if you are using Linux, you need to make sure python-dev is installed.
+*GCC* is required to compile C codes that are part of the SICER package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommneded that you install Xcode.
+
+Lastly, if you would like to directly pass BAM files as input files for SICER, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
 
 ### Easy Installation Through PyPI
-To install SICER through PyPI, simply open the terminal and type in `pip install SICER` (or pip3 if python2.7 is your default python). 
+To install SICER through PyPI, simply open the terminal and type `pip install SICER` (or pip3 if python2.7 is your default python). 
 
 To update SICER, you can type in `pip install -U SICER`
 
