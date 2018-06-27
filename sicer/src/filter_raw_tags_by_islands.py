@@ -1,85 +1,64 @@
-#!/usr/bin/env python
-#
-# Authors: Chongzhi Zang, Weiqun Peng
-#
-#
-# Disclaimer
-#
-# This software is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# Comments and/or additions are welcome (send e-mail to:
-# wpeng@gwu.edu).
-#
-# Version 1.1  6/9/2010
-
+#!/usr/bin/env python3
 
 import re, os, sys, shutil
 from math import *
 from string import *
-from optparse import OptionParser
-import operator
 import bisect
+import multiprocessing as mp
+import numpy as np
+from functools import partial
 
-from lib.GenomeData import *
+from sicer.lib import GenomeData
 
-plus = re.compile("\+");
-minus = re.compile("\-");
+def tag_position(read, fragment_size):
+    shift = int(round(fragment_size/2))
+    if (read[5]=='+'):
+        return int(read + shift)
+    elif (read[5]=='-'):
+        return read[2]-1-shift
 
-def tag_position(sline, fragment_size):
-	shift = int(round(fragment_size/2))
-	if plus.match(sline[5]):
-		return int(sline[1]) + shift
-	elif minus.match(sline[5]):
-		return int(sline[2]) - 1 - shift
+def filter_tags_by_islands(file_name, fragment_size, chrom):
+    island_list = np.load(file_name+'_'+chrom+'_island_summary.npy')
+    read_list = np.load(file_name+'_'+chrom+'.npy')
+    if(len(island_list)>0):
+        island_start_list = []
+        island_end_list = []
+        for island in island_list:
+            island_start_list.append(island[1])
+            island_end_list.append(island[2])
 
+        island_start_list.sort()
+        island_end_list.sort()
 
-def filter_tags_by_islands(chroms, islands, fragment_size):
-	for chrom in chroms:
-		if chrom in islands.keys():
-			island_start_list = []
-			island_end_list = []
-			for item in islands[chrom]:
-				island_start_list.append(item.start)
-				island_end_list.append(item.end)
-			island_start_list.sort()
-			island_end_list.sort()
-			bed_file = chrom + ".bed1"
-			filtered_file = chrom +"_filtered.bed1"
-			f = open(bed_file,'r')
-			o = open(filtered_file, 'w')
+        filtered_reads=[]
+        for read in read_list:
+            position = tag_position(read, fragment_size)
+            if bisect.bisect_right(island_start_list, position) - bisect.bisect_left(island_end_list, position) == 1:
+                filtered_reads.append(read)
+        np_filtered_reads=np.array(filtered_reads,data=object)
+        np.save(file_name+'_'+chrom+'.npy',np_filtered_reads)
 
-			for line in f:
-				if not re.match("#", line):
-					line = line.strip()
-					sline = line.split()
-					position = tag_position(sline, fragment_size)
-					if bisect.bisect_right(island_start_list, position) - bisect.bisect_left(island_end_list, position) == 1:
-						o.write('\t'.join(sline)+'\n')
+def main(args):
+    chroms = GenomeData.species_chroms[args.species];
+    treatment_file = args.treatment_file.replace('.bed','')
 
-			f.close()
-			o.close()
+    #Use multiprocessing to filter raw tags by islands in parallel processes
+    pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+    filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file,args.fragment_size)
+    pool.map(makeGraphFile_partial,chroms)
+    pool.close()
 
-def main(args,bed_file, island_file):
-
-	if args.species in species_chroms.keys():
-		chroms = species_chroms[args.species];
-	else:
-		print ("This species is not recognized, exiting");
-		sys.exit(1);
-	out_file = bed_file+"island_filtered.bed"
-	islands = BED.BED(args.species, island_file, "BED3", 0);
-	SeparateByChrom.separateByChrom(chroms, bed_file, '.bed1')
-	filter_tags_by_islands(chroms, islands, args.fragment_size)
-	final_output_file = out_file;
-	final_output_file = SeparateByChrom.combineAllGraphFiles(chroms,
-								   '_filtered.bed1',
-								   final_output_file);
-	SeparateByChrom.cleanup(chroms,'.bed1');
-	SeparateByChrom.cleanup(chroms,'_filtered.bed1');
-
+    output_file_name = treatment_file+'-W'+str(args.window_size)
+    if(args.subcommand == "SICER"):
+        output_file_name +='-G'+str(args.gap_size)
+    output_file_name += '-FDR'+args.false_discovery_rate+'-islandfiltered.bed'
+    outfile_path = os.path.join(args.output_directory,output_file_name)
+    with open(outfile_path,'w') as outfile:
+        for chrom in chroms:
+            filtered_bed = np.load(treatment_file+'_'+chrom+'.npy')
+            for read in island_list:
+                output_line = read[0]+'\t'+read[1]+'\t'+read[2]+'\t'+read[3]+'\t'+read[4]+'\t'+read[5]+'\n'
+                outfile.write(output_line)
 
 if __name__ == "__main__":
-	main(sys.argv)
+    main(sys.argv)

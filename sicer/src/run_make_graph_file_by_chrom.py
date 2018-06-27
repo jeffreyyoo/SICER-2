@@ -9,162 +9,162 @@ from functools import partial
 
 from sicer.lib import GenomeData
 
-def get_bed_coords(chrom_reads, chrom_length, fragment_size, file):
-	"""
-	*This takes into account the identical tags
-	*Tags on different strands are positioned differently
-		-> tag start (int(sline[1])) + fragment_size/2
-		<- tag start (int(sline[2])) - 1 - fragment_size/2, the extra -1 is because that bed format has open-half, the sline[2] is not included.
-	The stored positions are not the midpoint rather than the start
-	The interface is no longer the same as that for getBedCoords(file)
-	input:
-		file:  the file that has the raw tag data from one chromosome
-		fragment_size: the fragment size after CHIP experiment.
-	output:
-		return: a sorted list of positions which might have redundent entries
-	"""
+def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
+    """
+    *This takes into account the identical tags
+    *Tags on different strands are positioned differently
+        -> tag start (int(sline[1])) + fragment_size/2
+        <- tag start (int(sline[2])) - 1 - fragment_size/2, the extra -1 is because that bed format has open-half, the sline[2] is not included.
+    The stored positions are not the midpoint rather than the start
+    The interface is no longer the same as that for getBedCoords(file)
+    input:
+        file:  the file that has the raw tag data from one chromosome
+        fragment_size: the fragment size after CHIP experiment.
+    output:
+        return: a sorted list of positions which might have redundent entries
+    """
 
-	postive_tag_counts = 0
-	negative_tag_counts = 0
-	shift = int(round(fragment_size/2));
-	taglist = [];
-	print_return=""
-	for read in chrom_reads:
-		chrom = read[0]
-		start = read[1]
-		end = read[2]
-		name = read[3]
-		score = read[4]
-		strand = read[5]
-		if (start < 0):
-			print_return +=("Ilegitimate read with start less than zero is ignored \n"
-							+chrom+"\t"+str(start)+"\t"+str(end)+"\t"+name+"\t"+score+"\t"+strand+"\n")
-		elif (end >= chrom_length):
-			print_return += ("Ilegitimate read with end beyond chromosome length "+str(chrom_length)+" is ignored \n"
-							+chrom+"\t"+str(start)+"\t"+str(end)+"\t"+name+"\t"+score+"\t"+strand+"\n")
-		else:
-			if (strand == '+'):
-				position = start + shift;
-				#If the position is beyond limit then don't shift.
-				if (position >= chrom_length):
-					position = chrom_length-1
-				taglist.append(position)
-				postive_tag_counts += 1
+    postive_tag_counts = 0
+    negative_tag_counts = 0
+    shift = int(round(fragment_size/2));
+    taglist = [];
+    print_return=""
+    for read in chrom_reads:
+        chrom = read[0]
+        start = read[1]
+        end = read[2]
+        name = read[3]
+        score = read[4]
+        strand = read[5]
+        if (start < 0):
+            print_return +=("Ilegitimate read with start less than zero is ignored \n"
+                            +chrom+"\t"+str(start)+"\t"+str(end)+"\t"+name+"\t"+score+"\t"+strand+"\n")
+        elif (end >= chrom_length):
+            print_return += ("Ilegitimate read with end beyond chromosome length "+str(chrom_length)+" is ignored \n"
+                            +chrom+"\t"+str(start)+"\t"+str(end)+"\t"+name+"\t"+score+"\t"+strand+"\n")
+        else:
+            if (strand == '+'):
+                position = start + shift;
+                #If the position is beyond limit then don't shift.
+                if (position >= chrom_length):
+                    position = chrom_length-1
+                taglist.append(position)
+                postive_tag_counts += 1
 
-			elif (strand == '-'):
-				position = end - 1 - shift;
-				# in case the shift move the positions
-				# beyond zero, use zero
-				if (position < 0):
-					position = 0; #UCSC genome coordinate is 0-based
-				taglist.append(position);
-				negative_tag_counts += 1
-	taglist.sort();
+            elif (strand == '-'):
+                position = end - 1 - shift;
+                # in case the shift move the positions
+                # beyond zero, use zero
+                if (position < 0):
+                    position = 0; #UCSC genome coordinate is 0-based
+                taglist.append(position);
+                negative_tag_counts += 1
+    taglist.sort();
 
-	total_tag_counts = postive_tag_counts + negative_tag_counts;
-	print_return += 'total tag count in '+file+' is: '+str(total_tag_counts)+' = '+str(postive_tag_counts)+'+'+str(negative_tag_counts)
+    total_tag_counts = postive_tag_counts + negative_tag_counts;
+    print_return += 'total count of '+chrom+' tags  is: '+str(total_tag_counts)+' = '+str(postive_tag_counts)+'+'+str(negative_tag_counts)
 
-	return (taglist,print_return)
+    return (taglist,print_return)
 
 def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size):
-	"""
-	taglist: sorted list of positions that includes every tag on a chromosome
-	window_size: the artificial bin size for binning the tags
-	bed_vals: a dictionary keyed by the start of tag_containing
-		windows, with value being the tag count in the window.
+    """
+    taglist: sorted list of positions that includes every tag on a chromosome
+    window_size: the artificial bin size for binning the tags
+    bed_vals: a dictionary keyed by the start of tag_containing
+        windows, with value being the tag count in the window.
 
-	In this function, the bins are set up using an absolute coordinate
-	system.  Namely [0, window_size-1),[window_size,
-	2*window_size-1). If the last window goes beyond the limit of the chromosome,
-	that window is ignored.
+    In this function, the bins are set up using an absolute coordinate
+    system.  Namely [0, window_size-1),[window_size,
+    2*window_size-1). If the last window goes beyond the limit of the chromosome,
+    that window is ignored.
 
-	The result writen into the file is guaranteed to be already sorted
-	within a chromosome.
-	"""
-	chrom_graph = []
-	total_tag_count = 0
+    The result writen into the file is guaranteed to be already sorted
+    within a chromosome.
+    """
+    chrom_graph = []
+    total_tag_count = 0
 
-	if(len(taglist)>0):
-		current_window_start = (taglist[0]//window_size)*window_size;
-		tag_count_in_current_window = 1;
+    if(len(taglist)>0):
+        current_window_start = (taglist[0]//window_size)*window_size;
+        tag_count_in_current_window = 1;
 
-		for i in range(1, len(taglist)):
-			start = (taglist[i]//window_size)*window_size;
+        for i in range(1, len(taglist)):
+            start = (taglist[i]//window_size)*window_size;
 
-			if start == current_window_start:
-				tag_count_in_current_window += 1;
+            if start == current_window_start:
+                tag_count_in_current_window += 1;
 
-			elif start > current_window_start:
-				# All the tags in the previous window have been counted
-				current_window_end = current_window_start + window_size -1;
-				# if the window goes beyond the chromsome limit, it is discarded.
+            elif start > current_window_start:
+                # All the tags in the previous window have been counted
+                current_window_end = current_window_start + window_size -1;
+                # if the window goes beyond the chromsome limit, it is discarded.
 
-				if current_window_end < chrom_length:
-					# write the window to file
-					output = (chrom, current_window_start, current_window_end, tag_count_in_current_window)
-					chrom_graph.append(output)
-					total_tag_count+=tag_count_in_current_window
+                if current_window_end < chrom_length:
+                    # write the window to file
+                    output = (chrom, current_window_start, current_window_end, tag_count_in_current_window)
+                    chrom_graph.append(output)
+                    total_tag_count+=tag_count_in_current_window
 
-				current_window_start = start;
-				tag_count_in_current_window = 1;
+                current_window_start = start;
+                tag_count_in_current_window = 1;
 
-			else:
-				sys.stderr.write("Error!");
-				sys.exit(1)
+            else:
+                sys.stderr.write("Error!");
+                sys.exit(1)
 
-		current_window_end = current_window_start + window_size -1;
-		# if the window goes beyond the chromsome limit, it is discarded.
-		if current_window_end < chrom_length:
-			output = (chrom, current_window_start, current_window_end, tag_count_in_current_window)
-			chrom_graph.append(output)
-			total_tag_count+=tag_count_in_current_window
+        current_window_end = current_window_start + window_size -1;
+        # if the window goes beyond the chromsome limit, it is discarded.
+        if current_window_end < chrom_length:
+            output = (chrom, current_window_start, current_window_end, tag_count_in_current_window)
+            chrom_graph.append(output)
+            total_tag_count+=tag_count_in_current_window
 
-	return (chrom_graph,total_tag_count)
+    return (chrom_graph,total_tag_count)
 
 
-def makeGraphFile(args, file, chrom, chrom_length):
-	bed_file_name = file+'_'+chrom+'.npy'   #name of the file that was generated in remove_redundant_reads.py
+def makeGraphFile(args,chrom, chrom_length):
+    file = args.treatment_file.replace('.bed','')   #removes the .bed extension
+    bed_file_name = file+'_'+chrom+'.npy'   #name of the file that was generated in remove_redundant_reads.py
 
-	chrom_reads = np.load(bed_file_name)
+    chrom_reads = np.load(bed_file_name)
 
-	bed_coord_result = get_bed_coords(chrom_reads,chrom_length, args.fragment_size, bed_file_name);
-	tag_list = bed_coord_result[0]
-	print_return = bed_coord_result[1]
+    bed_coord_result = get_bed_coords(chrom_reads,chrom_length, args.fragment_size, chrom)
+    tag_list = bed_coord_result[0]
+    print_return = bed_coord_result[1]
 
-	chrom_graph_and_tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size);
-	chrom_graph = chrom_graph_and_tag_count[0]
-	tag_count = chrom_graph_and_tag_count[1]
+    chrom_graph_and_tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size);
+    chrom_graph = chrom_graph_and_tag_count[0]
+    tag_count = chrom_graph_and_tag_count[1]
 
-	file_save_name = file+'_'+chrom+'_'+"graph.npy"
-	np_chrom_graph = np.array(chrom_graph,dtype=object)
-	np.save(file_save_name,np_chrom_graph)
-	return (tag_count, print_return)
+    file_save_name = file+'_'+chrom+'_'+"graph.npy"
+    np_chrom_graph = np.array(chrom_graph,dtype=object)
+    np.save(file_save_name,np_chrom_graph)
+    return (tag_count, print_return)
 
-def main(args, file):
-	chroms = GenomeData.species_chroms[args.species];
-	chrom_lengths = GenomeData.species_chrom_lengths[args.species];
-	file = file.replace('.bed','')   #removes the .bed extension
+def main(args):
+    chroms = GenomeData.species_chroms[args.species];
+    chrom_lengths = GenomeData.species_chrom_lengths[args.species];
 
-	list_of_args = []
-	for i,chrom in enumerate(chroms):
-		if chrom in chrom_lengths.keys():
-			chrom_length = chrom_lengths[chrom]
-		else:
-			print("Can not find the length of ", chrom)
-		list_of_args.append((chrom,chrom_length))
+    list_of_args = []
+    for i,chrom in enumerate(chroms):
+        if chrom in chrom_lengths.keys():
+            chrom_length = chrom_lengths[chrom]
+        else:
+            print("Can not find the length of ", chrom)
+        list_of_args.append((chrom,chrom_length))
 
-	#Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
-	pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
-	makeGraphFile_partial = partial(makeGraphFile, args,file)
-	makeGraphFile_result = pool.starmap(makeGraphFile_partial,list_of_args)
-	pool.close()
+    #Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
+    pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
+    makeGraphFile_partial = partial(makeGraphFile, args)
+    makeGraphFile_result = pool.starmap(makeGraphFile_partial,list_of_args)
+    pool.close()
 
-	total_tag_count=0
-	for result in makeGraphFile_result:
-		total_tag_count+=result[0]
-		print(result[1])
+    total_tag_count=0
+    for result in makeGraphFile_result:
+        total_tag_count+=result[0]
+        print(result[1])
 
-	return (total_tag_count)
+    return (total_tag_count)
 
 if __name__ == "__main__":
-	main(sys.argv)
+    main(sys.argv)

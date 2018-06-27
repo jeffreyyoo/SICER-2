@@ -14,12 +14,12 @@ def get_counts(graph_file):
         count += line[3]
     return count
 
-def main(args, file):
+def main(args, output_file_name):
 
     chroms = GenomeData.species_chroms[args.species];
     scaling_factor = 1000000
     total_count = 0  #total count of islands
-    file = file.replace('.bed','')
+    file = args.treatment_file.replace('.bed','')
 
     list_of_graph_files = []
     for chrom in chroms:
@@ -33,12 +33,11 @@ def main(args, file):
         total_count+=count
 
     scaling_factor = total_count/1000000*(args.window_size/1000)
-    file_name = args.treatment_file.replace('.bed','')
-    outfile_path = os.path.join(args.output_directory, (file_name+"-W"+str(args.window_size)+"-normalized.wig"))
+    outfile_path = os.path.join(args.output_directory, output_file_name)
 
     #Normalize tag count using the scaling factor and generate a file in WIG format
     with open(outfile_path,'w') as outfile:
-        outfile.write("track type=wiggle_0 name="+file_name+"\n")
+        outfile.write("track type=wiggle_0 name="+file+"\n")
         for i in range (0,len(chroms)):
             chrom_graph = np.load(list_of_graph_files[i])
             if(len(chrom_graph)>0):
