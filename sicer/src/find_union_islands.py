@@ -77,8 +77,11 @@ def main(args,temp_dir_1,temp_dir_2):
     pool.map(find_union_islands_partial, chroms)
     pool.close()
 
-    outfile_name = (args.treatment_file[0].replace('.bed','')+'-vs-'+args.treatment_file[1]+'-W'+str(args.window_size)+
-                    '-G'+str(args.gap_size)+'-E'+str(args.e_value)+'-union.island')
+    outfile_name = (args.treatment_file[0].replace('.bed','')+'-vs-'+args.treatment_file[1]+'-W'+str(args.window_size))
+    if(args.subcommand=="SICER"):
+        outfile_name += '-G'+str(args.gap_size)+'-E'+str(args.e_value)+'-union.island')
+    else:
+        outfile_name +='-union.island'
     outfile_path = args.output_directory+'/'+outfile_name
 
     with open(outfile_path,'w') as outfile:

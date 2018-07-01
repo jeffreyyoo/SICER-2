@@ -54,14 +54,22 @@ def main(args,columnindex):
 
     outfile_name = ''
     if(df_call and args.subcommand == "SICER"):
-        outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+
+        if(columnindex==9):
+            outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+
                         '-increased-islands-summary-FDR'+str(args.false_discovery_rate_df))
+        elif(columnindex==12):
+            outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+'-G'+str(args.gap_size)+
+                        '-decreased-islands-summary-FDR'+str(args.false_discovery_rate_df))
     elif(not(df_call) and args.subcommand == "SICER"):
         outfile_name = (args.treatment_file.replace('.bed','')+'-W'+str(args.window_size)+'-G'
                     +str(args.gap_size)+'-FDR'+str(args.false_discovery_rate)+'-island.bed')
     elif(df_call and args.subcommand == "RECOGNICER"):
-        outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+
-                        '-increased-islands-summary-FDR'+str(args.false_discovery_rate_df))
+        if(columnindex==9):
+            outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+
+                            '-increased-islands-summary-FDR'+str(args.false_discovery_rate_df))
+        elif(columnindex==12):
+            outfile_name = (args.treatment_file[0].replace('.bed','')+'-W'+str(args.window_size)+
+                            '-decreased-islands-summary-FDR'+str(args.false_discovery_rate_df))
     elif(not(df_call) and args.subcommand == "RECOGNICER"):
         outfile_name = (args.treatment_file.replace('.bed','')+'-W'+str(args.window_size)+'-FDR'+str(args.false_discovery_rate)+'-island.bed')
 

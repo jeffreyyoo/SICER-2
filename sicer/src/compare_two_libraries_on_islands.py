@@ -156,7 +156,11 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2,path_to_treatment_files):
     scaling_factor = 1000000;
     pseudo_count=1
     outfile_name = (args.treatment_file[0].replace('.bed','')+'-and-'+args.treatment_file[1].replace('.bed','')+
-                    '-W'+str(args.window_size)+'-G'+str(args.gap_size)+'-summary')
+                    '-W'+str(args.window_size))
+    if(args.subcommand=="SICER"):
+        outfile_name += ('-G'+str(args.gap_size)+'-summary')
+    else:
+        outfile_name += '-summary'
     outfile_path = os.path.join(args.output_directory,outfile_name)
     with open (outfile_path, 'w') as outfile:
         outline = ('#chrom' + "\t" + 'start' + "\t" + 'end' + "\t" + "Readcount_A" + "\t" + 'Normalized_Readcount_A' + "\t" + 'ReadcountB' + "\t" + 'Normalized_Readcount_B'
