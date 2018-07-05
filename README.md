@@ -1,7 +1,7 @@
 # SICER 2.0
 
 ## Introduction
-??
+*to be filled out*
 
 For more information about the original SICER algorithm, please see
 
@@ -9,7 +9,7 @@ For more information about the original SICER algorithm, please see
 >> ChIP-Seq data” Chongzhi Zang, Dustin E. Schones, Chen Zeng, Kairong Cui, Keji Zhao, and
 >> Weiqun Peng*, **Bioinformatics** 25, 1952 - 1958 (2009)
 
-In addition, we present a alternative algorithm for *insert description of recognicer*
+In addition, we present an alternative algorithm for *insert description of recognicer*
 
 For more information about the RECOGNICER algoirthm, please see
 
@@ -52,10 +52,46 @@ The file name can either just be the name or the full path of the file.
 Like the treatment file, control file must be in BED or BAM format. However, control library input is optional.
 
 ##### -s/--species (Required)
-EX) `-s hg38`
+ex) `-s hg38`
 
 ##### -rt/--redundancy_threshold (Optional)
 The number of copies of indentical reads allowed in a library. Default value is 1
+
+##### -w/--window_size (Optional)
+Resolution of SICER. Default value is 200 (bp)
+
+##### -f/--fragment_size (Optional)
+The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read. 
+Default value is 150 (bp).
+
+##### -egf/--effective_genome_faction (Optional)
+Effective genome as fraction of the genome size. Default value is 0.74.
+
+##### -fdr/--false_discovery_rate (Optional)
+Remove all islands with an false-discovery-rate below cutoff. Default value is 0.01.
+
+##### -g/--gap_size (Optional)
+The minimum length of a "gap" such that neighboring window is an "island." 
+Please note that this value must be a multiple of the window size.
+Default value is 600 (bp).
+
+##### -e/--e_value (Optional)
+E-value. Requires user input when no control library is provided. Default value is 1000
+
+##### -i/--input_directory (Optional)
+Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files.
+Default is the current working directory.
+
+##### -o/--output_directory (Optional)
+Path of the directory in which results will be stored. Default output directory is the current working directory.
+
+##### -opt_o/--optional_output (Optional)
+Additional Outputs: Enter "True" or "1" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
+
+
+
+
+### RECOGNICER
 
 To use the RECOGNICER algorithm type the subcommand `RECOGNICER` (e.g. `sicer RECOGNICER`)
 
