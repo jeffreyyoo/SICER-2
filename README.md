@@ -102,7 +102,26 @@ The number of windows in one graining unit. Default value is 3.
 ##### -s_score/--step_score (Optional)
 The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.
 
-### 
+### Differential Peak Calling
+The command for differential peak calling is `sicer_df`. So for example, if you wish to run differential peak calling
+using the RECOGNICER algorithm, you would type `sicer_df RECOGNICER`.
 
+#### Arguments
+Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
+
+##### -t/--treatment_file (Required)
+Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
+Both files must either be in BED or BAM format. 
+
+##### -c/--control_file (Optional)
+While optional, two files must be given as input if you decide to provide the input. The first file must be the control library corresponding to the knockout (KO) treatment file and the second file must be the control library corresponding to the wild-type (WT) treatment file. Both files must either be in BED or BAM format.
+
+Also, differential peak calling has one additioanl argument called `----false_discovery_rate_df`
+
+##### -fdr_df/--false_discovery_rate_df (Optional)
+Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01. 
+
+
+## Example Calls
 
 
