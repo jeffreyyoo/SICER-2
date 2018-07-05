@@ -107,7 +107,9 @@ The command for differential peak calling is `sicer_df`. So for example, if you 
 using the RECOGNICER algorithm, you would type `sicer_df RECOGNICER`.
 
 #### Arguments
-Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
+Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below. 
+
+Also, differential peak calling has one additioanl argument called `----false_discovery_rate_df`
 
 ##### -t/--treatment_file (Required)
 Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
@@ -116,12 +118,30 @@ Both files must either be in BED or BAM format.
 ##### -c/--control_file (Optional)
 While optional, two files must be given as input if you decide to provide the input. The first file must be the control library corresponding to the knockout (KO) treatment file and the second file must be the control library corresponding to the wild-type (WT) treatment file. Both files must either be in BED or BAM format.
 
-Also, differential peak calling has one additioanl argument called `----false_discovery_rate_df`
-
 ##### -fdr_df/--false_discovery_rate_df (Optional)
 Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01. 
 
 
 ## Example Calls
+1. Calling SICER with a control library. 
+*Default parameters are explicitly entered for the sake of demonstration.*
 
+`sicer SICER -t treatment.bed -c control.bed -s hg38 -w 200 -rt 1 -f 150 -egf 0.74 -fdr 0.01 -g 600 -e 1000`
 
+2. Calling SICER without a control library
+
+`sicer SICER -t treatment.bed -s hg38`
+
+3. Calling SICER with control libraries for differential peak calling.
+
+`sicer_df SICER -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38`
+
+4. Calling SICER without control libraries for differential peak calling.
+
+`sicer_df SICER -t treatment1.bed treatment2.bed -s hg38`
+
+Replace the second word "SICER" with "RECOGNICER" to use RECOGNICER algorithm.
+
+## Questions?
+For technical questions or issues, feel free to contact Jin Yong (Jeffrey) Yoo at jy2ma@virginia.edu.
+For questions about the methodology, please contact Chongzhi Zang, PhD. at zang@virginia.edu. 
