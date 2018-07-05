@@ -88,15 +88,21 @@ Path of the directory in which results will be stored. Default output directory 
 ##### -opt_o/--optional_output (Optional)
 Additional Outputs: Enter "True" or "1" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
 
-
-
-
 ### RECOGNICER
 
 To use the RECOGNICER algorithm type the subcommand `RECOGNICER` (e.g. `sicer RECOGNICER`)
 
+#### Arguments
+All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`. 
+Instead of these two arguments, RECOGNICER has two arguments called `step_size` and `step_score`.
+
+##### -s_size/--step_size (Optional)
+The number of windows in one graining unit. Default value is 3.
+
+##### -s_score/--step_score (Optional)
+The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.
+
 ### 
 
 
-### 2. Running SICER to Identify Differentially Enriched Regions
 
