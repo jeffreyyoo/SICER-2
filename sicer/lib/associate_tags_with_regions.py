@@ -14,19 +14,17 @@
 # Version 1.1  6/9/2010
 
 
-import re, os, sys, shutil
-from math import *
-from string import *
-import operator
 import bisect
 
+
 def tag_position(line, fragment_size):
-    shift = int(round(fragment_size/2))
+    shift = int(round(fragment_size / 2))
     strand = line[5]
     if strand == '+':
         return int(line[1]) + shift
     elif strand == '-':
         return int(line[2]) - 1 - shift
+
 
 def find_readcount_on_islands(island_start_list, island_end_list, tag_position):
     """
@@ -37,6 +35,6 @@ def find_readcount_on_islands(island_start_list, island_end_list, tag_position):
 
     index = bisect.bisect_right(island_start_list, tag_position);
     if index - bisect.bisect_left(island_end_list, tag_position) == 1:
-        return index-1;
+        return index - 1;
     else:
         return -1;

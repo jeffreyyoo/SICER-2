@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-import re, os, sys, shutil
-from math import *
-from string import *
-
 import multiprocessing as mp
+import os
 from functools import partial
+from math import *
+
 import numpy as np
 
 from sicer.lib import GenomeData
@@ -16,16 +15,17 @@ def write(item, out):
     write one line into outfile. The file openning and closing is handled by outside.
     item is a BED3 object
     """
-    #chrom, start, end, name, score, strand
+    # chrom, start, end, name, score, strand
     outline = item.chrom + "\t" + str(item.start) + "\t" + str(item.end) + "\n";
     out.write(outline);
 
-#Function designed for handling multiprocessing. Executes the redundancy removal algorithm
-#for each independent chromosome
-def find_union_islands (no_control, temp_dir_1, temp_dir_2, chrom ):
-    file_name_1 = temp_dir_1 + '_'+chrom
-    file_name_2 = temp_dir_2 + '_'+chrom
-    if(no_control == True):
+
+# Function designed for handling multiprocessing. Executes the redundancy removal algorithm
+# for each independent chromosome
+def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
+    file_name_1 = temp_dir_1 + '_' + chrom
+    file_name_2 = temp_dir_2 + '_' + chrom
+    if (no_control == True):
         file_name_1 += '_graph.npy'
         file_name_2 += '_graph.npy'
     else:
@@ -34,16 +34,16 @@ def find_union_islands (no_control, temp_dir_1, temp_dir_2, chrom ):
 
     island_list_1 = np.load(file_name_1)
     island_list_2 = np.load(file_name_2)
-    if(len(island_list_1)==0):
+    if (len(island_list_1) == 0):
         island_list = island_list_2
-    elif(len(island_list_2)==0):
+    elif (len(island_list_2) == 0):
         island_list = island_list_1
     else:
         island_list = np.concatenate((island_list_1, island_list_2))
 
     union_island_list = []
-    if(len(island_list)>0):
-        island_list = island_list[np.argsort(island_list[:,1])]
+    if (len(island_list) > 0):
+        island_list = island_list[np.argsort(island_list[:, 1])]
         current = island_list[0]
         i = 1
         while i < len(island_list):
@@ -58,38 +58,41 @@ def find_union_islands (no_control, temp_dir_1, temp_dir_2, chrom ):
                 i += 1
         union_island_list.append(current)
     np_union_island_list = np.array(union_island_list, dtype=object)
-    np.save(chrom+'_union_output.npy',np_union_island_list)
+    np.save(chrom + '_union_output.npy', np_union_island_list)
 
-def main(args,temp_dir_1,temp_dir_2):
+
+def main(args, temp_dir_1, temp_dir_2):
     chroms = GenomeData.species_chroms[args.species]
 
-    #Partially fill out the full directory of the files we want to access
-    temp_dir_1 += '/'+args.treatment_file[0].replace('.bed','')
-    temp_dir_2 += '/'+args.treatment_file[1].replace('.bed','')
+    # Partially fill out the full directory of the files we want to access
+    temp_dir_1 += '/' + args.treatment_file[0].replace('.bed', '')
+    temp_dir_2 += '/' + args.treatment_file[1].replace('.bed', '')
 
-    no_control=False #Default value
-    if(len(args.control_file)==0): #if there are no control libraries
+    no_control = False  # Default value
+    if (len(args.control_file) == 0):  # if there are no control libraries
         no_control = True
 
-    #Use multiprocessing module to run parallel processes for each chromosome
-    pool = mp.Pool(processes = min(mp.cpu_count(),len(chroms)))
-    find_union_islands_partial = partial(find_union_islands,no_control,temp_dir_1,temp_dir_2)
+    # Use multiprocessing module to run parallel processes for each chromosome
+    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    find_union_islands_partial = partial(find_union_islands, no_control, temp_dir_1, temp_dir_2)
     pool.map(find_union_islands_partial, chroms)
     pool.close()
 
-    outfile_name = (args.treatment_file[0].replace('.bed','')+'-vs-'+args.treatment_file[1]+'-W'+str(args.window_size))
-    if(args.subcommand=="SICER"):
-        outfile_name += '-G'+str(args.gap_size)+'-E'+str(args.e_value)+'-union.island')
+    outfile_name = (args.treatment_file[0].replace('.bed', '') + '-vs-' + args.treatment_file[1] + '-W' + str(
+        args.window_size))
+    if (args.subcommand == "SICER"):
+        outfile_name += '-G' + str(args.gap_size) + '-E' + str(args.e_value) + '-union.island'
     else:
-        outfile_name +='-union.island'
-    outfile_path = args.output_directory+'/'+outfile_name
+        outfile_name += '-union.island'
+    outfile_path = os.path.join(args.output_directory, outfile_name)
 
-    with open(outfile_path,'w') as outfile:
+    with open(outfile_path, 'w') as outfile:
         for chrom in chroms:
-            union_island_list=np.load(chrom+'_union_output.npy')
+            union_island_list = np.load(chrom + '_union_output.npy')
             for island in union_island_list:
-                output_line = island[0]+'\t'+str(island[1])+'\t'+str(island[2])+'\t'+str(island[3])+'\n'
+                output_line = island[0] + '\t' + str(island[1]) + '\t' + str(island[2]) + '\t' + str(island[3]) + '\n'
                 outfile.write(output_line)
+
 
 if __name__ == "__main__":
     main(sys.argv)

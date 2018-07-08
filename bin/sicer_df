@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
-#Developed by Zang Lab at University of Virginia - 2018
+# Developed by Zang Lab at University of Virginia - 2018
 
 import os
 import sys
+
 curr_path = os.getcwd()
 import subprocess
 
 import argparse
 from argparse import RawTextHelpFormatter
 
-#Imports from SICER package
+# Imports from SICER package
 from sicer.main import run_SICER_df
 from sicer.main import run_RECOGNICER_df
 from sicer.lib import Utility, GenomeData
 
 
-def sub_arg_SICER (sub_parser):
+def sub_arg_SICER(sub_parser):
     '''If subcommand is "SICER", parse these following arguments.'''
 
     parser = sub_parser.add_parser("SICER", help="Enter arguments for SICER algorithm")
@@ -26,7 +27,7 @@ def sub_arg_SICER (sub_parser):
         nargs='+',
         type=str,
         help='''Name of the sample file you wish to run SICER on. Must be in BED or BAM format.'''
-        )
+    )
 
     parser.add_argument(
         '--control_file',
@@ -35,7 +36,7 @@ def sub_arg_SICER (sub_parser):
         nargs='+',
         type=str,
         help='''Name of the control library in BED or BAM format. \nIf you wish to run SICER without a control library, simply do not enter the file. '''
-        )
+    )
 
     parser.add_argument(
         '--species',
@@ -43,7 +44,7 @@ def sub_arg_SICER (sub_parser):
         required=True,
         type=str,
         help='The species/genome used (ex: hg38)'
-        )
+    )
 
     parser.add_argument(
         '--redundancy_threshold',
@@ -52,7 +53,7 @@ def sub_arg_SICER (sub_parser):
         type=int,
         default=1,
         help='The number of copies of indentical reads allowed in a library.\nDefault value is 1'
-        )
+    )
 
     parser.add_argument(
         '--window_size',
@@ -69,7 +70,7 @@ def sub_arg_SICER (sub_parser):
         type=int,
         default=150,
         help='The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read.\nDefault value is 150 (bp).'
-        )
+    )
 
     parser.add_argument(
         '--effective_genome_fraction',
@@ -78,7 +79,7 @@ def sub_arg_SICER (sub_parser):
         type=float,
         default=0.74,
         help='Effective genome as fraction of the genome size.\nDefault value is 0.74'
-        )
+    )
 
     parser.add_argument(
         '--false_discovery_rate',
@@ -87,7 +88,7 @@ def sub_arg_SICER (sub_parser):
         default=0.01,
         type=float,
         help='''Remove all islands with an false_discovery_rate below cutoff.\nDefault value is 0.01.'''
-        )
+    )
 
     parser.add_argument(
         '--false_discovery_rate_df',
@@ -105,7 +106,7 @@ def sub_arg_SICER (sub_parser):
         default=curr_path,
         type=str,
         help='Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files'
-        )
+    )
 
     parser.add_argument(
         '--output_directory',
@@ -114,7 +115,7 @@ def sub_arg_SICER (sub_parser):
         default=curr_path,
         type=str,
         help='Path of the directory in which results will be stored.\nDefault path is the current path'
-        )
+    )
 
     parser.add_argument(
         '--gap_size',
@@ -123,7 +124,7 @@ def sub_arg_SICER (sub_parser):
         type=int,
         default=600,
         help='The minimum length of a \"gap\" such that neighboring window is an \"island.\"\nThis value must be a multiple of the window size.\nDefault value is 600 (bp)'''
-        )
+    )
     parser.add_argument(
         '--e_value',
         '-e',
@@ -131,7 +132,7 @@ def sub_arg_SICER (sub_parser):
         type=int,
         default=1000,
         help='E-value. Requires user input when no control library is provided.\nDefault value is 1000'
-        )
+    )
     parser.add_argument(
         '--opt_output',
         '-opt_o',
@@ -141,7 +142,8 @@ def sub_arg_SICER (sub_parser):
         help='Additional Outputs: Enter "True" or "1" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
-def sub_arg_RECOGNICER (sub_parser):
+
+def sub_arg_RECOGNICER(sub_parser):
     '''If subcommand is "RECOGNICER", parse these following arguments.'''
 
     parser = sub_parser.add_parser("RECOGNICER", help="Enter arguments for RECOGNICER algorithm")
@@ -152,7 +154,7 @@ def sub_arg_RECOGNICER (sub_parser):
         nargs='+',
         type=str,
         help='''Names of the sample file you wish to run RECOGNICER on. Must be in BED or BAM format.'''
-        )
+    )
 
     parser.add_argument(
         '--control_file',
@@ -161,7 +163,7 @@ def sub_arg_RECOGNICER (sub_parser):
         nargs='+',
         type=str,
         help='''Name of the control library in BED or BAM format. \nIf you wish to run RECOGNICER without a control library, simply do not enter the file. '''
-        )
+    )
 
     parser.add_argument(
         '--species',
@@ -169,7 +171,7 @@ def sub_arg_RECOGNICER (sub_parser):
         required=True,
         type=str,
         help='The species/genome used (ex: hg38)'
-        )
+    )
 
     parser.add_argument(
         '--redundancy_threshold',
@@ -178,7 +180,7 @@ def sub_arg_RECOGNICER (sub_parser):
         type=int,
         default=1,
         help='The number of copies of indentical reads allowed in a library.\nDefault value is 1'
-        )
+    )
 
     parser.add_argument(
         '--window_size',
@@ -195,7 +197,7 @@ def sub_arg_RECOGNICER (sub_parser):
         type=int,
         default=150,
         help='The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read.\nDefault value is 150 (bp).'
-        )
+    )
 
     parser.add_argument(
         '--effective_genome_fraction',
@@ -204,7 +206,7 @@ def sub_arg_RECOGNICER (sub_parser):
         type=float,
         default=0.74,
         help='Effective genome as fraction of the genome size.\nDefault value is 0.74'
-        )
+    )
 
     parser.add_argument(
         '--false_discovery_rate',
@@ -213,7 +215,7 @@ def sub_arg_RECOGNICER (sub_parser):
         default=0.01,
         type=float,
         help='''Remove all islands with an false_discovery_rate below cutoff.\nDefault value is 0.01.'''
-        )
+    )
 
     parser.add_argument(
         '--false_discovery_rate_df',
@@ -231,7 +233,7 @@ def sub_arg_RECOGNICER (sub_parser):
         default=curr_path,
         type=str,
         help='Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files'
-        )
+    )
 
     parser.add_argument(
         '--output_directory',
@@ -240,7 +242,7 @@ def sub_arg_RECOGNICER (sub_parser):
         default=curr_path,
         type=str,
         help='Path of the directory in which results will be stored.\nDefault path is the current path'
-        )
+    )
 
     parser.add_argument(
         '--step_size',
@@ -273,105 +275,108 @@ def main():
     '''The main function/pipeline for SICER-differential enrichment'''
     parser = argparse.ArgumentParser(description='Processing Arguments for SICER', formatter_class=RawTextHelpFormatter)
 
-    sub_parsers = parser.add_subparsers(dest = 'subcommand')
+    sub_parsers = parser.add_subparsers(dest='subcommand')
 
-    #Sub-parser for SICER algorithm
+    # Sub-parser for SICER algorithm
     sub_arg_SICER(sub_parsers)
 
-    #Sub-parser for RECOGNICER algorithm
+    # Sub-parser for RECOGNICER algorithm
     sub_arg_RECOGNICER(sub_parsers)
 
     args = parser.parse_args()
 
-    #check if valid subcommand has been entered
-    if(args.subcommand!="SICER" and args.subcommand!="RECOGNICER"):
-        sys,stderr.write("Error: no valid version of algorithm entered. Enter \"sicer_df SICER\" for original SICER algorithm or \"sicer_df RECOGNICER\" to use the RECOGNICER algorithm.\n")
+    # check if valid subcommand has been entered
+    if (args.subcommand != "SICER" and args.subcommand != "RECOGNICER"):
+        sys, stderr.write(
+            "Error: no valid version of algorithm entered. Enter \"sicer_df SICER\" for original SICER algorithm or \"sicer_df RECOGNICER\" to use the RECOGNICER algorithm.\n")
         sys.exit(1)
 
-    #Check if argument inputs are valid
+    # Check if argument inputs are valid
     if (not os.path.exists(args.input_directory)):
         sys.stderr.write("Error: Invalid input directory\n")
         sys.exit(1)
 
-    if(len(args.treatment_file)!=2):
+    if (len(args.treatment_file) != 2):
         sys.stderr.write("Error: SICER needs two treatment files as input\n")
         sys.exit(1)
 
-    if(len(args.control_file)>2):
+    if (len(args.control_file) > 2):
         sys.stderr.write("Error: Too many control file inputs. SICER accepts at max two files.\n")
         sys.exit(1)
 
-    #User cannot input 2 treatment libraries and only 1 control library
-    if(len(args.treatment_file)==2 and len(args.control_file)%2==1):
+    # User cannot input 2 treatment libraries and only 1 control library
+    if (len(args.treatment_file) == 2 and len(args.control_file) % 2 == 1):
         sys.stderr.write("Error: Mismatch between the number of treatment file inputs and control file inputs.\n")
 
     for file in args.treatment_file:
-        if(not(Utility.fileExists(os.path.join(args.input_directory,file)))):
-            sys.stderr.write("Error: "+file+" file is not found.\n")
+        if (not (Utility.fileExists(os.path.join(args.input_directory, file)))):
+            sys.stderr.write("Error: " + file + " file is not found.\n")
             sys.exit(1)
-        if(not(file.lower().endswith('.bed')) and not(file.lower().endswith('.bam'))):
-                sys.stderr.write("Error: Treatment file must be in BED or BAM format. \n")
-                sys.exit(1)
+        if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
+            sys.stderr.write("Error: Treatment file must be in BED or BAM format. \n")
+            sys.exit(1)
 
-    if(len(args.control_file)>0):
+    if (len(args.control_file) > 0):
         for file in args.control_file:
-            if(not(Utility.fileExists(os.path.join(args.input_directory,file)))):
-                sys.stderr.write("Error: "+file+" file is not found.\n")
+            if (not (Utility.fileExists(os.path.join(args.input_directory, file)))):
+                sys.stderr.write("Error: " + file + " file is not found.\n")
                 sys.exit(1)
 
-            if(not(file.lower().endswith('.bed')) and not(file.lower().endswith('.bam'))):
+            if (not (file.lower().endswith('.bed')) and not (file.lower().endswith('.bam'))):
                 sys.stderr.write("Error: Control library file must be in BED or BAM format. \n")
                 sys.exit(1)
 
-    if (not(args.species in GenomeData.species_chroms.keys())):
-        sys.stderr.write("Error: Species "+args.species+" not recognized.\n")
+    if (not (args.species in GenomeData.species_chroms.keys())):
+        sys.stderr.write("Error: Species " + args.species + " not recognized.\n")
         sys.exit(1)
 
-    if(not(args.effective_genome_fraction<=1 and args.effective_genome_fraction>=0)):
+    if (not (args.effective_genome_fraction <= 1 and args.effective_genome_fraction >= 0)):
         sys.stderr.write("Error: Effective genome fraction must be a value between 0 and 1.\n")
         sys.exit(1)
 
-    if(args.subcommand=="SICER"):
-        if(args.gap_size%args.window_size!=0):
+    if (args.subcommand == "SICER"):
+        if (args.gap_size % args.window_size != 0):
             sys.stderr.write("Error: Gap size is not a multiple of window size.\n")
             sys.exit(1)
 
-    if(args.subcommand=="RECOGNICER"):
-        if(args.step_score>args.step_size):
+    if (args.subcommand == "RECOGNICER"):
+        if (args.step_score > args.step_size):
             sys.stderr.write("Error: Cannot have the step score be larger than step size.\n")
             sys.exit(1)
 
-    if(not(args.opt_output==True or args.opt_output==False)):
-        sys.stderr.write("Error: Invalid input for additional output file option. Please enter \"True\" or \"False\" (1 or 0 also works).\n")
+    if (not (args.opt_output == True or args.opt_output == False)):
+        sys.stderr.write(
+            "Error: Invalid input for additional output file option. Please enter \"True\" or \"False\" (1 or 0 also works).\n")
         sys.exit(1)
 
-    if not os.path.exists( args.output_directory ):
+    if not os.path.exists(args.output_directory):
         try:
-            os.makedirs( args.output_directory )
+            os.makedirs(args.output_directory)
         except:
-            sys.exit( "Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
+            sys.exit("Output directory (%s) could not be created. Terminating program.\n" % args.output_directory)
 
-    for i,file in enumerate(args.treatment_file):
-        if(file.lower().endswith('.bam')):
-            bed_file_name = file.replace('.bam','.bed')
-            bed_file_name = file.replace('.BAM','.bed')
+    for i, file in enumerate(args.treatment_file):
+        if (file.lower().endswith('.bam')):
+            bed_file_name = file.replace('.bam', '.bed')
+            bed_file_name = file.replace('.BAM', '.bed')
             try:
-                subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
-                args.treatment_file[i]=bed_file_name
+                subprocess.call("bedtools bamtobed -i %s > %s" % (file, bed_file_name), shell=True)
+                args.treatment_file[i] = bed_file_name
             except:
-                sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
+                sys.exit(
+                    "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
 
-    if(len(args.control_file)>0):
-        for i,file in enumerate(args.control_file):
-            if(file.lower().endswith('.bam')):
-                bed_file_name = file.replace('.bam','.bed')
-                bed_file_name = file.replace('.BAM','.bed')
+    if (len(args.control_file) > 0):
+        for i, file in enumerate(args.control_file):
+            if (file.lower().endswith('.bam')):
+                bed_file_name = file.replace('.bam', '.bed')
+                bed_file_name = file.replace('.BAM', '.bed')
                 try:
-                    subprocess.call("bedtools bamtobed -i %s > %s" %(file,bed_file_name), shell=True)
-                    args.control_file[i]=bed_file_name
+                    subprocess.call("bedtools bamtobed -i %s > %s" % (file, bed_file_name), shell=True)
+                    args.control_file[i] = bed_file_name
                 except:
-                    sys.exit("Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
-
+                    sys.exit(
+                        "Cannot convert BAM file to BED file. Check if bedtools2 (https://github.com/arq5x/bedtools2) has been installed correctly\n")
 
     '''In this version of SICER, there are 2 different algorithms available for finding significant islands.
     The first one is the original SICER algorithm and the second one is RECOGNICER, which
@@ -379,11 +384,11 @@ def main():
     Whether to run SICER to identify differentially enriched regions or not is determined by the number of treatment
     libraries provided by the user.'''
 
-    if(args.subcommand=="SICER"):
+    if (args.subcommand == "SICER"):
         print("Running SICER with given arguments \n")
         run_SICER_df.main(args)
 
-    elif(args.subcommand=="RECOGNICER"):
+    elif (args.subcommand == "RECOGNICER"):
         print("Running RECOGNICER with given arguments \n")
         run_RECOGNICER_df.main(args)
 

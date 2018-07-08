@@ -1,4 +1,4 @@
-a#!/usr/bin/env python
+#!/usr/bin/env python
 # Copyright (c) 2010 The George Washington University
 # Author: Weiqun Peng
 #
