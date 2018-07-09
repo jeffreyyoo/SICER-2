@@ -109,7 +109,7 @@ using the RECOGNICER algorithm, you would type `sicer_df RECOGNICER`.
 #### Arguments
 Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below. 
 
-Also, differential peak calling has one additioanl argument called `----false_discovery_rate_df`
+Also, differential peak calling has one additional argument called `----false_discovery_rate_df`
 
 ##### -t/--treatment_file (Required)
 Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
@@ -140,7 +140,7 @@ Cutoff for identification of significant changes been wild-type library and knoc
 
 `sicer_df SICER -t treatment1.bed treatment2.bed -s hg38`
 
-Replace the second word "SICER" with "RECOGNICER" to use RECOGNICER algorithm.
+Replace the second word "SICER" with "RECOGNICER" to use the RECOGNICER algorithm.
 
 ## Questions?
 For technical questions or issues, feel free to contact Jin Yong (Jeffrey) Yoo at jy2ma@virginia.edu.
