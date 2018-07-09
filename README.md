@@ -19,7 +19,7 @@ For more information about the RECOGNICER algoirthm, please see
 ### Requirements
 #### Python Version
 Unlike the original version of SICER, SICER 2.0 runs in **Python 3**.
-Please use Python 3 to install and run SICER 2.0. The program should work with most of versions of python3.
+Please use Python 3 to install and run SICER 2.0. The program should work with most of versions of Python 3.
 
 #### Libraries
 Numpy and Scipy are required to run SICER. Please have these installed before installing SICER.
@@ -38,7 +38,7 @@ To update SICER, you can type in `pip install -U SICER`
 ## Using SICER
 The termianl command to run SICER is `sicer`.
 
-Note that SICER 2.0 has two algorithms for the users can use to find candidats for significant islands. Sub-commands `SICER` and `RECOGNICER` are used to decide which one to use.
+Note that SICER 2.0 has two algorithms for the users can use to find candidates for significant islands. Sub-commands `SICER` and `RECOGNICER` are used to decide which one to use.
 
 ### SICER
 To use the SICER algorithm, type the subcommand `SICER` after the `sicer` command (i.e. type `sicer SICER` in terminal).
