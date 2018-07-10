@@ -14,7 +14,7 @@ from sicer.lib import GenomeData
 def tag_position(read, fragment_size):
     shift = int(round(fragment_size / 2))
     if (read[5] == '+'):
-        return int(read + shift)
+        return read[1] + shift
     elif (read[5] == '-'):
         return read[2] - 1 - shift
 
