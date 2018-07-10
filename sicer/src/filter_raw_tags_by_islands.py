@@ -37,7 +37,7 @@ def filter_tags_by_islands(file_name, fragment_size, chrom):
             position = tag_position(read, fragment_size)
             if bisect.bisect_right(island_start_list, position) - bisect.bisect_left(island_end_list, position) == 1:
                 filtered_reads.append(read)
-        np_filtered_reads = np.array(filtered_reads, data=object)
+        np_filtered_reads = np.array(filtered_reads, dtype=object)
         np.save(file_name + '_' + chrom + '.npy', np_filtered_reads)
 
 
@@ -54,14 +54,14 @@ def main(args):
     output_file_name = treatment_file + '-W' + str(args.window_size)
     if (args.subcommand == "SICER"):
         output_file_name += '-G' + str(args.gap_size)
-    output_file_name += '-FDR' + args.false_discovery_rate + '-islandfiltered.bed'
+    output_file_name += '-FDR' + str(args.false_discovery_rate) + '-islandfiltered.bed'
     outfile_path = os.path.join(args.output_directory, output_file_name)
     with open(outfile_path, 'w') as outfile:
         for chrom in chroms:
             filtered_bed = np.load(treatment_file + '_' + chrom + '.npy')
             for read in filtered_bed:
-                output_line = read[0] + '\t' + read[1] + '\t' + read[2] + '\t' + read[3] + '\t' + read[4] + '\t' + read[
-                    5] + '\n'
+                output_line = str(read[0]) + '\t' + str(read[1]) + '\t' + str(read[2]) + '\t' + str(
+                    read[3]) + '\t' + str(read[4]) + '\t' + str(read[5]) + '\n'
                 outfile.write(output_line)
 
 

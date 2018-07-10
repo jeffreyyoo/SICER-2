@@ -14,7 +14,7 @@ ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c
 
 setup(
     name='SICER',
-    version='0.5.0',
+    version='0.5.4',
     description='Re-implementation of SICER algorithm. Still in development',
     long_description='Re-implementation of SICER algorithm. Still in development',
     url = 'https://github.com/jeffreyyoo/SICER-2',
