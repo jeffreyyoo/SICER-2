@@ -10,16 +10,6 @@ import numpy as np
 from sicer.lib import GenomeData
 
 
-def write(item, out):
-    """
-    write one line into outfile. The file openning and closing is handled by outside.
-    item is a BED3 object
-    """
-    # chrom, start, end, name, score, strand
-    outline = item.chrom + "\t" + str(item.start) + "\t" + str(item.end) + "\n";
-    out.write(outline);
-
-
 # Function designed for handling multiprocessing. Executes the redundancy removal algorithm
 # for each independent chromosome
 def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
@@ -90,7 +80,7 @@ def main(args, temp_dir_1, temp_dir_2):
         for chrom in chroms:
             union_island_list = np.load(chrom + '_union_output.npy')
             for island in union_island_list:
-                output_line = island[0] + '\t' + str(island[1]) + '\t' + str(island[2]) + '\t' + str(island[3]) + '\n'
+                output_line = island[0] + '\t' + str(island[1]) + '\t' + str(island[2]) + '\n'
                 outfile.write(output_line)
 
 
