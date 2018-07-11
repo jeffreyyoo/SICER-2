@@ -106,11 +106,8 @@ def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom)
     return (totalA, totalB)
 
 
-def main(args, path_to_tempdir_1, path_to_tempdir_2, path_to_treatment_files):
+def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_size):
     chroms = GenomeData.species_chroms[args.species]
-
-    A_library_size = Utility.get_total_tag_counts(os.path.join(path_to_treatment_files, args.treatment_file[0]))
-    B_library_size = Utility.get_total_tag_counts(os.path.join(path_to_treatment_files, args.treatment_file[1]))
 
     print("Library size of ", args.treatment_file[0], ":  ", A_library_size)
     print("Library size of ", args.treatment_file[1], ":  ", B_library_size)

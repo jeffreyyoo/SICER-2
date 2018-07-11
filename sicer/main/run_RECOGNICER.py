@@ -101,7 +101,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
 
     # Final Step
     if (df_run == True):
-        return temp_dir
+        return temp_dir, total_treatment_read_count
     else:
         print("Removing temporary directory and all files in it.")
         shutil.rmtree(temp_dir)

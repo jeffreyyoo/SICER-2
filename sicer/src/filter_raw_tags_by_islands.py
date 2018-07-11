@@ -38,7 +38,7 @@ def filter_tags_by_islands(file_name, fragment_size, chrom):
             if bisect.bisect_right(island_start_list, position) - bisect.bisect_left(island_end_list, position) == 1:
                 filtered_reads.append(read)
         np_filtered_reads = np.array(filtered_reads, dtype=object)
-        np.save(file_name + '_' + chrom + '.npy', np_filtered_reads)
+        np.save(file_name + '_' + chrom + '_filtered.npy', np_filtered_reads)
 
 
 def main(args):
@@ -58,7 +58,7 @@ def main(args):
     outfile_path = os.path.join(args.output_directory, output_file_name)
     with open(outfile_path, 'w') as outfile:
         for chrom in chroms:
-            filtered_bed = np.load(treatment_file + '_' + chrom + '.npy')
+            filtered_bed = np.load(treatment_file + '_' + chrom + '_filtered.npy')
             for read in filtered_bed:
                 output_line = str(read[0]) + '\t' + str(read[1]) + '\t' + str(read[2]) + '\t' + str(
                     read[3]) + '\t' + str(read[4]) + '\t' + str(read[5]) + '\n'

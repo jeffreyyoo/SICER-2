@@ -36,8 +36,8 @@ def main(args):
         args_2.control_file = str(args.control_file[1])
 
         # Execute run_SICER for each treatment library
-    temp_dir_1 = run_RECOGNICER.main(args_1, True)
-    temp_dir_2 = run_RECOGNICER.main(args_2, True)
+    temp_dir_1, library_size_file1 = run_RECOGNICER.main(args_1, True)
+    temp_dir_2, library_size_file2 = run_RECOGNICER.main(args_2, True)
 
     try:
         dir_prefix = "SICER_df_" + str(os.getpid()) + "_"
@@ -57,7 +57,7 @@ def main(args):
 
     # Compare two treatment libraries
     print("Comparing two treatment libraries.")
-    compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, args.input_directory)
+    compare_two_libraries_on_islands.main(args, temp_dir_1, temp_dir_2, library_size_file1, library_size_file2)
     print("\n")
 
     print("Identify significantly increased islands using BH corrected p-value cutoff")
