@@ -92,7 +92,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
 
         # Step 10: Produce graph file based on the filtered reads from step 9
         print("Make summary graph with filtered reads...\n")
-        run_make_graph_file_by_chrom.main(args)
+        run_make_graph_file_by_chrom.main(args, True)
         # Step 11: Produce Normalized WIG file
         print("Normalizing graphs by total island filitered reads per million and generating summary WIG file \n")
         output_WIG_name = (args.treatment_file.replace('.bed', '') + "-W" + str(args.window_size) + "-FDR" + str(

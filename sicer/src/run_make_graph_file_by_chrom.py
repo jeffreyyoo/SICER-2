@@ -24,8 +24,8 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
 
     postive_tag_counts = 0
     negative_tag_counts = 0
-    shift = int(round(fragment_size / 2));
-    taglist = [];
+    shift = int(round(fragment_size / 2))
+    taglist = []
     print_return = ""
     for read in chrom_reads:
         chrom = read[0]
@@ -45,7 +45,7 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
                     end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
         else:
             if (strand == '+'):
-                position = start + shift;
+                position = start + shift
                 # If the position is beyond limit then don't shift.
                 if (position >= chrom_length):
                     position = chrom_length - 1
@@ -53,16 +53,16 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
                 postive_tag_counts += 1
 
             elif (strand == '-'):
-                position = end - 1 - shift;
+                position = end - 1 - shift
                 # in case the shift move the positions
                 # beyond zero, use zero
                 if (position < 0):
-                    position = 0;  # UCSC genome coordinate is 0-based
-                taglist.append(position);
+                    position = 0  # UCSC genome coordinate is 0-based
+                taglist.append(position)
                 negative_tag_counts += 1
-    taglist.sort();
+    taglist.sort()
 
-    total_tag_counts = postive_tag_counts + negative_tag_counts;
+    total_tag_counts = postive_tag_counts + negative_tag_counts
     print_return += 'total count of ' + chrom + ' tags  is: ' + str(total_tag_counts) + ' = ' + str(
         postive_tag_counts) + '+' + str(negative_tag_counts)
 
@@ -88,18 +88,18 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size):
     total_tag_count = 0
 
     if (len(taglist) > 0):
-        current_window_start = (taglist[0] // window_size) * window_size;
-        tag_count_in_current_window = 1;
+        current_window_start = (taglist[0] // window_size) * window_size
+        tag_count_in_current_window = 1
 
         for i in range(1, len(taglist)):
-            start = (taglist[i] // window_size) * window_size;
+            start = (taglist[i] // window_size) * window_size
 
             if start == current_window_start:
-                tag_count_in_current_window += 1;
+                tag_count_in_current_window += 1
 
             elif start > current_window_start:
                 # All the tags in the previous window have been counted
-                current_window_end = current_window_start + window_size - 1;
+                current_window_end = current_window_start + window_size - 1
                 # if the window goes beyond the chromsome limit, it is discarded.
 
                 if current_window_end < chrom_length:
@@ -108,14 +108,14 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size):
                     chrom_graph.append(output)
                     total_tag_count += tag_count_in_current_window
 
-                current_window_start = start;
-                tag_count_in_current_window = 1;
+                current_window_start = start
+                tag_count_in_current_window = 1
 
             else:
-                sys.stderr.write("Error!");
+                sys.stderr.write("Error!")
                 sys.exit(1)
 
-        current_window_end = current_window_start + window_size - 1;
+        current_window_end = current_window_start + window_size - 1
         # if the window goes beyond the chromsome limit, it is discarded.
         if current_window_end < chrom_length:
             output = (chrom, current_window_start, current_window_end, tag_count_in_current_window)
@@ -125,9 +125,14 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size):
     return (chrom_graph, total_tag_count)
 
 
-def makeGraphFile(args, chrom, chrom_length):
+def makeGraphFile(args, filtered, chrom, chrom_length):
     file = args.treatment_file.replace('.bed', '')  # removes the .bed extension
-    bed_file_name = file + '_' + chrom + '.npy'  # name of the file that was generated in remove_redundant_reads.py
+
+    bed_file_name = file + '_' + chrom   # name of the ChIP-seq reads
+    if filtered:
+        bed_file_name = bed_file_name + '_filtered.npy'
+    else:
+        bed_file_name = bed_file_name + '.npy'
 
     chrom_reads = np.load(bed_file_name)
 
@@ -135,19 +140,24 @@ def makeGraphFile(args, chrom, chrom_length):
     tag_list = bed_coord_result[0]
     print_return = bed_coord_result[1]
 
-    chrom_graph_and_tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size);
+    chrom_graph_and_tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
     chrom_graph = chrom_graph_and_tag_count[0]
     tag_count = chrom_graph_and_tag_count[1]
 
-    file_save_name = file + '_' + chrom + '_' + "graph.npy"
+    file_save_name = file + '_' + chrom
+    if filtered:
+        file_save_name += '_filtered_graph.npy'
+    else:
+        file_save_name += '_graph.npy'
+
     np_chrom_graph = np.array(chrom_graph, dtype=object)
     np.save(file_save_name, np_chrom_graph)
     return (tag_count, print_return)
 
 
-def main(args):
-    chroms = GenomeData.species_chroms[args.species];
-    chrom_lengths = GenomeData.species_chrom_lengths[args.species];
+def main(args, filtered=False):
+    chroms = GenomeData.species_chroms[args.species]
+    chrom_lengths = GenomeData.species_chrom_lengths[args.species]
 
     list_of_args = []
     for i, chrom in enumerate(chroms):
@@ -159,7 +169,7 @@ def main(args):
 
     # Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
     pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
-    makeGraphFile_partial = partial(makeGraphFile, args)
+    makeGraphFile_partial = partial(makeGraphFile, args, filtered)
     makeGraphFile_result = pool.starmap(makeGraphFile_partial, list_of_args)
     pool.close()
 

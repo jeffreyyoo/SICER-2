@@ -22,9 +22,13 @@ def main(args, output_file_name):
     total_count = 0  # total count of islands
     file = args.treatment_file.replace('.bed', '')
 
+    filtered_mode = "islandfiltered" in output_file_name
     list_of_graph_files = []
     for chrom in chroms:
-        list_of_graph_files.append(file + '_' + chrom + '_graph.npy')
+        if filtered_mode:
+            list_of_graph_files.append(file + '_' + chrom + '_filtered_graph.npy')
+        else:
+            list_of_graph_files.append(file + '_' + chrom + '_graph.npy')
 
     # Use multiprocessing to count the number of islands
     pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
@@ -38,7 +42,7 @@ def main(args, output_file_name):
 
     # Normalize tag count using the scaling factor and generate a file in WIG format
     with open(outfile_path, 'w') as outfile:
-        if "islandfiltered" in output_file_name:
+        if filtered_mode:
             file = file + '-islandfiltered'
         outfile.write("track type=wiggle_0 name=" + file + "\n")
         for i in range(0, len(chroms)):
