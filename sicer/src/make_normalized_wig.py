@@ -38,6 +38,8 @@ def main(args, output_file_name):
 
     # Normalize tag count using the scaling factor and generate a file in WIG format
     with open(outfile_path, 'w') as outfile:
+        if "islandfiltered" in output_file_name:
+            file = file + '-islandfiltered'
         outfile.write("track type=wiggle_0 name=" + file + "\n")
         for i in range(0, len(chroms)):
             chrom_graph = np.load(list_of_graph_files[i])
