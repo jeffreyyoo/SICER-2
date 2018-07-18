@@ -35,9 +35,9 @@ def filter_by_fdr_SICER_df(args, columnindex, chrom):
             line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7], line[8], line[9], line[10],
             line[11], line[12])
             summary_bed.append(bed_line)
-
+    save_file_name = chrom + '_union_island_summary_filtered' + str(columnindex) + '.npy'
     np_summary_bed = np.array(summary_bed, dtype=object)
-    np.save(file_name, np_summary_bed)
+    np.save(save_file_name, np_summary_bed)
 
 
 def main(args, columnindex):
@@ -85,7 +85,7 @@ def main(args, columnindex):
         for chrom in chroms:
             island_file_name = ''
             if (df_call):
-                island_file_name = chrom + '_union_island_summary.npy'
+                island_file_name = chrom + '_union_island_summary_filtered' + str(columnindex) + '.npy'
             else:
                 island_file_name = args.treatment_file.replace('.bed', '') + '_' + chrom + '_island_summary.npy'
             island_list = np.load(island_file_name)
@@ -99,7 +99,7 @@ def main(args, columnindex):
                 total_read_count += island[3]
 
     print("Given significance", str(args.false_discovery_rate), ", there are", total_island_count,
-          "significant islands");
+          "significant islands")
     return total_read_count
 
 
