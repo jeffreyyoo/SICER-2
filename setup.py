@@ -14,7 +14,7 @@ ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c
 
 setup(
     name='SICER',
-    version='0.5.5',
+    version='1.0.0',
     description = 'SICER, a bioinformatics tool',
     long_description='Spatial Clustering for Identification of ChIP-Enriched Regions (SICER)',
     url = 'https://github.com/jeffreyyoo/SICER-2',
