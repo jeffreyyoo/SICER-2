@@ -46,10 +46,10 @@ To use the SICER algorithm, type the subcommand `SICER` after the `sicer` comman
 #### Arguments
 ##### -t/--treatment_file (Required)
 The file must either be in BED or BAM format (note that you need *bedtools* installed to directly enter BAM files).
-The file name can either just be the name or the full path of the file.
+The file name can either the relative path or the absolute path of the file.
 
 ##### -c/--control_file (Optional)
-Like the treatment file, control file must be in BED or BAM format. However, control library input is optional.
+Like the treatment file, control file must be in BED or BAM format and can be the relative path or the absolute path of the file. However, control library input is optional.
 
 ##### -s/--species (Required)
 ex) `-s hg38`
@@ -78,15 +78,14 @@ Default value is 600 (bp).
 ##### -e/--e_value (Optional)
 E-value. Requires user input when no control library is provided. Default value is 1000
 
-##### -i/--input_directory (Optional)
-Path of the directory in which input files are located in. Not required when running SICER in the same directory as input files.
-Default is the current working directory.
-
 ##### -o/--output_directory (Optional)
 Path of the directory in which results will be stored. Default output directory is the current working directory.
 
+##### -cpu/--cpu (Optional)
+The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal core count is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.
+
 ##### -opt_o/--optional_output (Optional)
-Additional Outputs: Enter "True" or "1" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
+Additional Outputs: Enter "y" or "n" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
 
 ### RECOGNICER
 
