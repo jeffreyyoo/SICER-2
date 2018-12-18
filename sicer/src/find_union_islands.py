@@ -59,11 +59,11 @@ def main(args, temp_dir_1, temp_dir_2):
     temp_dir_2 += '/' + args.treatment_file[1].replace('.bed', '')
 
     no_control = False  # Default value
-    if (len(args.control_file) == 0):  # if there are no control libraries
+    if args.control_file is None:  # if there are no control libraries
         no_control = True
 
     # Use multiprocessing module to run parallel processes for each chromosome
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     find_union_islands_partial = partial(find_union_islands, no_control, temp_dir_1, temp_dir_2)
     pool.map(find_union_islands_partial, chroms)
     pool.close()

@@ -47,7 +47,7 @@ def main(args):
     treatment_file = args.treatment_file.replace('.bed', '')
 
     # Use multiprocessing to filter raw tags by islands in parallel processes
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file, args.fragment_size)
     pool.map(filter_tags_by_islands_partial, chroms)
     pool.close()

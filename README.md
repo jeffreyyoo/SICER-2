@@ -32,8 +32,8 @@ C compiler is required to compile C codes that are part of the SICER package. Th
 Lastly, if you would like to directly pass BAM files as input files for SICER, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
 
 ### Installation
-To install SICER through PyPI, simply open the terminal and type `pip install SICER` (or pip3 if python2.7 is your default python). 
-To update SICER, you can type in `pip install -U SICER`
+To install SICER through PyPI, simply open the terminal and type `pip install SICER` (or pip3 if python2.7 is your default python).
+To update SICER, you can type in `pip install SICER --upgrade`
 
 ## Using SICER
 The termianl command to run SICER is `sicer`.
@@ -46,7 +46,7 @@ To use the SICER algorithm, type the subcommand `SICER` after the `sicer` comman
 #### Arguments
 ##### -t/--treatment_file (Required)
 The file must either be in BED or BAM format (note that you need *bedtools* installed to directly enter BAM files).
-The file name can either just be the name or the full path of the file. 
+The file name can either just be the name or the full path of the file.
 
 ##### -c/--control_file (Optional)
 Like the treatment file, control file must be in BED or BAM format. However, control library input is optional.
@@ -61,7 +61,7 @@ The number of copies of indentical reads allowed in a library. Default value is 
 Resolution of SICER. Default value is 200 (bp)
 
 ##### -f/--fragment_size (Optional)
-The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read. 
+The amount of shift from the beginning of a read to the center of the DNA fragment represented by the read.
 Default value is 150 (bp).
 
 ##### -egf/--effective_genome_faction (Optional)
@@ -71,7 +71,7 @@ Effective genome as fraction of the genome size. Default value is 0.74.
 Remove all islands with an false-discovery-rate below cutoff. Default value is 0.01.
 
 ##### -g/--gap_size (Optional)
-The minimum length of a "gap" such that neighboring window is an "island." 
+The minimum length of a "gap" such that neighboring window is an "island."
 Please note that this value must be a multiple of the window size.
 Default value is 600 (bp).
 
@@ -93,7 +93,7 @@ Additional Outputs: Enter "True" or "1" to have SICER produce a BED file of trea
 To use the RECOGNICER algorithm type the subcommand `RECOGNICER` (e.g. `sicer RECOGNICER`)
 
 #### Arguments
-All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`. 
+All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`.
 Instead of these two arguments, RECOGNICER has two arguments called `step_size` and `step_score`.
 
 ##### -s_size/--step_size (Optional)
@@ -107,23 +107,23 @@ The command for differential peak calling is `sicer_df`. So for example, if you 
 using the RECOGNICER algorithm, you would type `sicer_df RECOGNICER`.
 
 #### Arguments
-Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below. 
+Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
 
 Also, differential peak calling has one additional argument called `----false_discovery_rate_df`
 
 ##### -t/--treatment_file (Required)
 Two files must be given as input. The first file must be the knockout (KO) file and the second file must be the wild-type (WT) file.
-Both files must either be in BED or BAM format. 
+Both files must either be in BED or BAM format.
 
 ##### -c/--control_file (Optional)
 While optional, two files must be given as input if you decide to provide the input. The first file must be the control library corresponding to the knockout (KO) treatment file and the second file must be the control library corresponding to the wild-type (WT) treatment file. Both files must either be in BED or BAM format.
 
 ##### -fdr_df/--false_discovery_rate_df (Optional)
-Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01. 
+Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01.
 
 
 ## Example Calls
-1. Calling SICER with a control library. 
+1. Calling SICER with a control library.
 *Default parameters are explicitly entered for the sake of demonstration.*
 
 `sicer SICER -t treatment.bed -c control.bed -s hg38 -w 200 -rt 1 -f 150 -egf 0.74 -fdr 0.01 -g 600 -e 1000`
@@ -144,4 +144,4 @@ Replace the second word "SICER" with "RECOGNICER" to use the RECOGNICER algorith
 
 ## Questions?
 For technical questions or issues, feel free to contact Jin Yong (Jeffrey) Yoo at jy2ma@virginia.edu.
-For questions about the methodology, please contact Chongzhi Zang, PhD. at zang@virginia.edu. 
+For questions about the methodology, please contact Chongzhi Zang, PhD. at zang@virginia.edu.

@@ -47,7 +47,7 @@ def main(args, columnindex):
 
     df_call = (type(args.treatment_file) == list)  # Determines if this function was called by SICER or SICER-DF
 
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filtered_output = []
     if (df_call):
         filter_by_fdr_partial = partial(filter_by_fdr_SICER_df, args, columnindex)

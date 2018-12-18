@@ -31,7 +31,7 @@ def main(args, output_file_name):
             list_of_graph_files.append(file + '_' + chrom + '_graph.npy')
 
     # Use multiprocessing to count the number of islands
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     count_results = pool.map(get_counts, list_of_graph_files)
     pool.close()
     for count in count_results:

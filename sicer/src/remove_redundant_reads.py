@@ -128,7 +128,7 @@ def main(args, path_to_file):
     cutoff = args.redundancy_threshold
 
     # Use multiprocessing module to run parallel processes for each chromosome
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     find_and_filter_reads_partial = partial(find_and_filter_reads, path_to_file, cutoff)
     filtered_result = pool.map(find_and_filter_reads_partial, chroms)
     pool.close()

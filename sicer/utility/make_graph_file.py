@@ -8,7 +8,7 @@
 # this License.
 #
 # Disclaimer
-# 
+#
 # This software is distributed in the hope that it will be useful, but
 # WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -33,7 +33,7 @@ from optparse import OptionParser
 * There are two sizes that matter.
 1) a bin size for binning the tags: window_size
 2) the fragment size after CHIP, which determine the physical
-resolution of the CHIP experiment: fragment_size 
+resolution of the CHIP experiment: fragment_size
 
 ================================================================
 
@@ -60,11 +60,11 @@ def get_bed_coords(file, chrom_length, fragment_size):
         <- tag start (atoi(sline[2])) - 1 - fragment_size/2, the extra -1 is because that bed format has open-half, the sline[2] is not included.
     The stored positions are not the midpoint rathan than the start
     The interface is no longer the same as that for getBedCoords(file)
-    input:  
+    input:
         file:  the file that has the raw tag data from one chromosome
         fragment_size: the fragment size after CHIP experiment.
-    output: 
-        return: a sorted list of positions which might have redundent entries   
+    output:
+        return: a sorted list of positions which might have redundent entries
     """
     infile = open(file);
     postive_tag_counts = 0.0;
@@ -118,12 +118,12 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size, f
     window_size: the artificial bin size for binning the tags
     bed_vals: a dictionary keyed by the start of tag_containing
         windows, with value being the tag count in the window.
-    
+
     In this function, the bins are set up using an absolute coordinate
     system.  Namely [0, window_size-1),[window_size,
     2*window_size-1). If the last window goes beyond the limit of the chromosome,
-    that window is ignored. 
-    
+    that window is ignored.
+
     The result writen into the file is guaranteed to be already sorted
     within a chromosome.
     """
@@ -139,9 +139,9 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size, f
             if start == current_window_start:
                 tag_count_in_current_window += 1;
             elif start > current_window_start:
-                # All the tags in the previous window have been counted 
+                # All the tags in the previous window have been counted
                 current_window_end = current_window_start + window_size - 1;
-                # if the window goes beyond the chromsome limit, it is discarded. 
+                # if the window goes beyond the chromsome limit, it is discarded.
                 if current_window_end < chrom_length:
                     bed_vals[current_window_start] = tag_count_in_current_window;
                     # write the window to file
@@ -156,7 +156,7 @@ def Generate_windows_and_count_tags(taglist, chrom, chrom_length, window_size, f
                 'Something is wrong!!!!!!!';
 
         current_window_end = current_window_start + window_size - 1;
-        # if the window goes beyond the chromsome limit, it is discarded. 
+        # if the window goes beyond the chromsome limit, it is discarded.
         if current_window_end < chrom_length:
             bed_vals[current_window_start] = tag_count_in_current_window;
             outline = chrom + "\t" + str(current_window_start) + \

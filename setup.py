@@ -14,8 +14,8 @@ ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c
 
 setup(
     name='SICER',
-    version='1.0.0',
-    description = 'SICER, a bioinformatics tool',
+    version='2.0.0',
+    description = 'SICER 2.0, a bioinformatics tool',
     long_description='Spatial Clustering for Identification of ChIP-Enriched Regions (SICER)',
     url = 'https://github.com/jeffreyyoo/SICER-2',
     author = 'Jeffrey Yoo',
@@ -24,6 +24,7 @@ setup(
     packages=find_packages(),
     scripts=['bin/sicer','bin/sicer_df'],
     setup_requires=['numpy','scipy'],
+    install_requires=['numpy','scipy'],
     keywords = ['ChIP-Seq','SICER'],
     classifiers=["Programming Language :: Python :: 3",
         "Environment :: Other Environment",

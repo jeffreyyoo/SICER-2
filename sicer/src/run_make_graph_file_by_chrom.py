@@ -168,7 +168,7 @@ def main(args, filtered=False):
         list_of_args.append((chrom, chrom_length))
 
     # Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
-    pool = mp.Pool(processes=min(mp.cpu_count(), len(chroms)))
+    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     makeGraphFile_partial = partial(makeGraphFile, args, filtered)
     makeGraphFile_result = pool.starmap(makeGraphFile_partial, list_of_args)
     pool.close()
