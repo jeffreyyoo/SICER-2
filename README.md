@@ -82,7 +82,7 @@ E-value. Requires user input when no control library is provided. Default value 
 Path of the directory in which results will be stored. Default output directory is the current working directory.
 
 ##### -cpu/--cpu (Optional)
-The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal core count is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.
+The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal number of cores is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.
 
 ##### -opt_o/--optional_output (Optional)
 Additional Outputs: Enter "y" or "n" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
