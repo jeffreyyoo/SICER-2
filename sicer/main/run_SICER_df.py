@@ -1,7 +1,3 @@
-# author:Jeffrey Yoo
-# used python 3.5
-
-
 import copy
 import os
 import shutil

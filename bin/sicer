@@ -129,9 +129,8 @@ def sub_arg_SICER(sub_parser):
         '--opt_output',
         '-opt_o',
         required=False,
-        type=str,
-        default="n",
-        help='Additional Outputs: Enter \"y\"/\"n\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+        action='store_true',
+        help='Additional Outputs: Enter \"--opt_output\" or \"-opt_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
 
@@ -247,9 +246,8 @@ def sub_arg_RECOGNICER(sub_parser):
         '--opt_output',
         '-opt_o',
         required=False,
-        type=str,
-        default="n",
-        help='Additional Outputs: Enter \"y\"/\"n\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+        action='store_true',
+        help='Additional Outputs: Enter \"--opt_output\" or \"-opt_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
 

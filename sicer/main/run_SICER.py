@@ -104,6 +104,7 @@ def main(args, df_run=False):
             shutil.rmtree(temp_dir)
             print("End of SICER")
     except:
+        print("Encountered fatal error!")
         print("Removing temporary directory and all files in it.")
         shutil.rmtree(temp_dir)
         print("End of SICER")
