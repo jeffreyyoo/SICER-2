@@ -1,12 +1,14 @@
 language: python
 python:
+  - "3.3"
+  - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7"
 
 before_install:
   # install python 3.6.7
 install:
-  - pip install numpy
-  - pip install scipy
+  - pip install numpy, scipy
   - pip install -i https://test.pypi.org/simple/ SICER
+
+script: pytest
