@@ -12,4 +12,4 @@ install:
   - pip install -i https://test.pypi.org/simple/ SICER
 
 script:
-  - bash ./test/test.sh
+  - bash ./test/travisCI/test.sh

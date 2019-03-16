@@ -2,8 +2,9 @@ import re
 import sys
 import math
 
-control_file = "control.bed"
-treatment_file = "treatment.bed"
+control_file = "./test/control.bed"
+treatment_file = "./test/treatment.bed"
+current_dir = "./test/travisCI/"
 output_files = ['treatment-W200-G600.scoreisland', 'treatment-W200-G600-FDR0.01-island.bed',
                 'treatment-W200-G600-FDR0.01-islandfiltered.bed', 'treatment-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                 'treatment-W200-G600-islands-summary', 'treatment-W200-normalized.wig']
@@ -93,12 +94,12 @@ def check_scoreisland (file1_name, file2_name):
 
 
 def main():    
-    chk_score_island = check_scoreisland(output_files[0], './expected_output/'+output_files[0])
-    chk_island_bed = check_islandbed(output_files[1], './expected_output/'+output_files[1])
-    chk_filtered_bed = check_filteredbed(output_files[2], './expected_output/'+output_files[2])
-    chk_wig1 = check_WIG(output_files[3], './expected_output/'+output_files[3])
-    chk_island_summary = check_islandsummary(output_files[4], './expected_output/'+output_files[4])
-    chk_wig2 = check_WIG(output_files[5], './expected_output/'+output_files[5])
+    chk_score_island = check_scoreisland(output_files[0], current_dir+'expected_output/'+output_files[0])
+    chk_island_bed = check_islandbed(output_files[1], current_dir+'./expected_output/'+output_files[1])
+    chk_filtered_bed = check_filteredbed(output_files[2], current_dir+'./expected_output/'+output_files[2])
+    chk_wig1 = check_WIG(output_files[3], current_dir+'./expected_output/'+output_files[3])
+    chk_island_summary = check_islandsummary(output_files[4], current_dir+'./expected_output/'+output_files[4])
+    chk_wig2 = check_WIG(output_files[5], current_dir+'./expected_output/'+output_files[5])
 
     return chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2
 
