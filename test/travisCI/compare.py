@@ -1,6 +1,6 @@
 import re
 import sys
-import math
+
 
 control_file = "./test/control.bed"
 treatment_file = "./test/treatment.bed"
@@ -9,6 +9,9 @@ output_files = ['treatment-W200-G600.scoreisland', 'treatment-W200-G600-FDR0.01-
                 'treatment-W200-G600-FDR0.01-islandfiltered.bed', 'treatment-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                 'treatment-W200-G600-islands-summary', 'treatment-W200-normalized.wig']
 
+
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
 def check_islandsummary (file1_name, file2_name):
     file1 = open(file1_name,'r')
@@ -26,8 +29,8 @@ def check_islandsummary (file1_name, file2_name):
 
 
         equal = ((line1[0]==line2[0]) and (line1[1]==line2[1]) and (line1[2]==line2[2]) and (line1[3]==line2[3]) 
-                and (line1[4]==line2[4]) and (math.isclose(line1[5], line2[5], abs_tol=1e-7)) 
-                and (math.isclose(line1[6], line2[6], abs_tol=1e-5)) and (math.isclose(line1[7], line2[7], abs_tol=1e-7)))
+                and (line1[4]==line2[4]) and (math.isclose(line1[5], line2[5], abs_tol=1e-9)) 
+                and (math.isclose(line1[6], line2[6], abs_tol=1e-5)) and (isclose(line1[7], line2[7], abs_tol=1e-7)))
 
     return equal
 
@@ -47,7 +50,7 @@ def check_WIG (file1_name, file2_name):
             line2 = re.split('\t',line2)
             line2[1]= float(line2[1].replace('\n',''))
 
-            equal == (line1[0]==line2[0]) and (math.isclose(line1[1], line2[1], abs_tol=0.01))
+            equal == (line1[0]==line2[0]) and (isclose(line1[1], line2[1], abs_tol=0.01))
 
     return equal
 
@@ -88,7 +91,7 @@ def check_scoreisland (file1_name, file2_name):
         line2 = re.split('\t',line2)
         line2[3]= float(line2[3].replace('\n',''))
 
-        equal = (line1[0]==line2[0]) and (line1[1]==line2[1]) and (line1[2]==line2[2]) and (math.isclose(line1[3], line2[3], abs_tol=1e-6))
+        equal = (line1[0]==line2[0]) and (line1[1]==line2[1]) and (line1[2]==line2[2]) and (isclose(line1[3], line2[3], abs_tol=1e-6))
 
     return equal
 
