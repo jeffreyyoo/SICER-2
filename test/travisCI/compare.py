@@ -29,8 +29,8 @@ def check_islandsummary (file1_name, file2_name):
 
 
         equal = ((line1[0]==line2[0]) and (line1[1]==line2[1]) and (line1[2]==line2[2]) and (line1[3]==line2[3]) 
-                and (line1[4]==line2[4]) and (math.isclose(line1[5], line2[5], abs_tol=1e-9)) 
-                and (math.isclose(line1[6], line2[6], abs_tol=1e-5)) and (isclose(line1[7], line2[7], abs_tol=1e-7)))
+                and (line1[4]==line2[4]) and (isclose(line1[5], line2[5], abs_tol=1e-9)) 
+                and (isclose(line1[6], line2[6], abs_tol=1e-5)) and (isclose(line1[7], line2[7], abs_tol=1e-7)))
 
     return equal
 
