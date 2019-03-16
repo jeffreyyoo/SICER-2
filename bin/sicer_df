@@ -327,13 +327,6 @@ def main():
             sys.stderr.write("Error: Cannot have the step score be larger than step size.\n")
             sys.exit(1)
 
-    if args.opt_output.lower() == "y":
-        args.opt_output = True
-    elif args.opt_output.lower() == "n":
-        args.opt_output = False
-    else:
-        sys.exit("Invalid input for --opt_output argument. Please enter \"y\" or \"n\".\n")
-
     if args.cpu > cpu_available:
         args.cpu = cpu_available
         sys.stderr.write("WARNING: The number of CPU cores entered is greater than the number of cores available for this process. Executing SICER with the maximum number of cores available.\n")
