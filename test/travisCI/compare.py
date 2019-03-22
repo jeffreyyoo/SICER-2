@@ -208,9 +208,9 @@ def check_scoreisland (file1_name, file2_name):
 
 def run_compare(f):
     if f == 1:
-        tf = treatment_file_1.replace(".bed",'')
+        tf = os.path.basename(treatment_file_1).replace(".bed",'')
     elif f == 2:
-        tf = treatment_file_2.replace(".bed",'')
+        tf = os.path.basename(treatment_file_2).replace(".bed",'')
 
     chk_score_island = check_scoreisland(tf+output_files_suffix[0], current_dir+'expected_output/'+tf+output_files_suffix[0])
     chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'./expected_output/'+tf+output_files_suffix[1])
