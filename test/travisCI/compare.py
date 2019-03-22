@@ -220,8 +220,8 @@ def run_compare(f):
     chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'expected_output/'+tf+output_files_suffix[5])
 
     #Check for df execution
-    f1_name = os.path.basename(treatment_file_1)
-    f2_name = os.path.basename(treatment_file_2)
+    f1_name = os.path.basename(treatment_file_1).replace(".bed",'')
+    f2_name = os.path.basename(treatment_file_2).replace(".bed",'')
 
     summary_name = f1_name+'-and-'+f2_name+df_output_file_suffix[0]
     union_island_file_name = f1_name+'-vs-'+f2_name+df_output_file_suffix[1]
