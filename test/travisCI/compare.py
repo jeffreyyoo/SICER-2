@@ -7,7 +7,7 @@ control_file_1 = "./test/control_1.bed"
 treatment_file_1 = "./test/treatment_1.bed"
 
 control_file_2 = "./test/control_2.bed"
-control_file_2 = "./test/treatment_2.bed"
+treatment_file_2 = "./test/treatment_2.bed"
 
 current_dir = "./test/travisCI/"
 output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
