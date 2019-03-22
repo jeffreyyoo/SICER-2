@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+# Authors: Chongzhi Zang, Weiqun Peng
+
+# Modified by: Jin Yong Yoo
+
 import bisect
 import multiprocessing as mp
 import os

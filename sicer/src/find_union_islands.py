@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+#Authors: Chongzhi Zang, Weiqun Peng
+
+# Modified by: Jin Yong Yoo
 
 import multiprocessing as mp
 import os

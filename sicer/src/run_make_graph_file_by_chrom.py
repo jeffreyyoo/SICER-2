@@ -1,3 +1,7 @@
+# Authors: Dustin E Schones, Chongzhi Zang, Weiqun Peng and Keji Zhao
+
+# Modified by: Jin Yong Yoo
+
 import multiprocessing as mp
 from functools import partial
 from math import *

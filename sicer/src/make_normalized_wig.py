@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# Author: Jin Yong Yoo
+
 import multiprocessing as mp
 import os
 from math import *

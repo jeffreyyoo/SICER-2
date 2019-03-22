@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # Developed by Zang Lab at University of Virginia - 2018
 
+#Author: Jin Yong Yoo
+
 import os
 import sys
 
@@ -136,11 +138,11 @@ def sub_arg_SICER(sub_parser):
     )
 
     parser.add_argument(
-        '--opt_output',
-        '-opt_o',
+        '--wig_output',
+        '-wig_o',
         required=False,
         action='store_true',
-        help='Additional Outputs: Enter \"--opt_output\" or \"-opt_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+        help='Output WIG: Enter \"--wig_output\" or \"-wig_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
 
@@ -264,11 +266,11 @@ def sub_arg_RECOGNICER(sub_parser):
     )
 
     parser.add_argument(
-        '--opt_output',
-        '-opt_o',
+        '--wig_output',
+        '-wig_o',
         required=False,
         action='store_true',
-        help='Additional Outputs: Enter \"--opt_output\" or \"-opt_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+        help='Output WIG: Enter \"--wig_output\" or \"-wig_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
 

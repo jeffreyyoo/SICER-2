@@ -1,3 +1,7 @@
+# Developed by Zang Lab at University of Virginia - 2018
+
+#Author: Jin Yong Yoo
+
 import copy
 import os
 import shutil
