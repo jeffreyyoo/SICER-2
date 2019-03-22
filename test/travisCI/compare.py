@@ -208,9 +208,9 @@ def check_scoreisland (file1_name, file2_name):
 
 def run_compare(f):
     if f == 1:
-        tf = treatment_1
+        tf = treatment_file_1
     elif f == 2:
-        tf = treatment_2
+        tf = treatment_file_2
 
     chk_score_island = check_scoreisland(tf+output_files_suffix[0], current_dir+'expected_output/'+tf+output_files_suffix[0])
     chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'./expected_output/'+tf+output_files_suffix[1])
@@ -220,8 +220,8 @@ def run_compare(f):
     chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'./expected_output/'+tf+output_files_suffix[5])
 
     #Check for df execution
-    f1_name = os.path.basename(treatment_1)
-    f2_name = os.path.basename(treatment_2)
+    f1_name = os.path.basename(treatment_file_1)
+    f2_name = os.path.basename(treatment_file_2)
 
     summary_name = f1_name+'-and-'+f2_name+df_output_file_suffix[0]
     union_island_file_name = f1_name+'-vs-'+f2_name+df_output_file_suffix[1]
