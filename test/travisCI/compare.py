@@ -213,11 +213,11 @@ def run_compare(f):
         tf = os.path.basename(treatment_file_2).replace(".bed",'')
 
     chk_score_island = check_scoreisland(tf+output_files_suffix[0], current_dir+'expected_output/'+tf+output_files_suffix[0])
-    chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'./expected_output/'+tf+output_files_suffix[1])
-    chk_filtered_bed = check_filteredbed(tf+output_files_suffix[2], current_dir+'./expected_output/'+tf+output_files_suffix[2])
-    chk_wig1 = check_WIG(tf+output_files_suffix[3], current_dir+'./expected_output/'+tf+output_files_suffix[3])
-    chk_island_summary = check_islandsummary(tf+output_files_suffix[4], current_dir+'./expected_output/'+tf+output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'./expected_output/'+tf+output_files_suffix[5])
+    chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'expected_output/'+tf+output_files_suffix[1])
+    chk_filtered_bed = check_filteredbed(tf+output_files_suffix[2], current_dir+'expected_output/'+tf+output_files_suffix[2])
+    chk_wig1 = check_WIG(tf+output_files_suffix[3], current_dir+'expected_output/'+tf+output_files_suffix[3])
+    chk_island_summary = check_islandsummary(tf+output_files_suffix[4], current_dir+'expected_output/'+tf+output_files_suffix[4])
+    chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'expected_output/'+tf+output_files_suffix[5])
 
     #Check for df execution
     f1_name = os.path.basename(treatment_file_1)
