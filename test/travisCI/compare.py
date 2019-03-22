@@ -14,7 +14,7 @@ output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed'
                 '-W200-G600-FDR0.01-islandfiltered.bed', '-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                 '-W200-G600-islands-summary', '-W200-normalized.wig']
 
-df_output_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island', 'W200-G600-decreased-islands-summary-FDR0.01', '-W200-G600-increased-islands-summary-FDR0.01']
+df_output_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island', '-W200-G600-decreased-islands-summary-FDR0.01', '-W200-G600-increased-islands-summary-FDR0.01']
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
