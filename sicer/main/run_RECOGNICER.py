@@ -26,7 +26,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
 
     try:
         dir_prefix = "SICER_" + str(os.getpid()) + "_"
-        temp_dir = tempfile.mkdtemp(prefix=dir_prefix, dir=curr_path)
+        temp_dir = tempfile.mkdtemp()
         # Change current working directory to temp_dir
         os.chdir(temp_dir)
     except:
@@ -97,11 +97,8 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
         if (df_run == True):
             return temp_dir, total_treatment_read_count
         else:
+            print("End of SICER")
+    finally:
+        if df_run==False:
             print("Removing temporary directory and all files in it.")
             shutil.rmtree(temp_dir)
-            print("End of SICER")
-    except:
-        print("Encountered fatal error!")
-        print("Removing temporary directory and all files in it.")
-        shutil.rmtree(temp_dir)
-        print("End of SICER")
