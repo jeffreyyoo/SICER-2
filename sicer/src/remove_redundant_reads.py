@@ -94,8 +94,8 @@ def strand_broken_remove(chrom, cutoff, file, chrom_reads):
 
 def match_by_chrom(file, chrom):
     match = chrom + "[[:space:]]"
-    matched_reads = subprocess.check_output(['grep', match, file])
-    chrom_reads = matched_reads.decode('utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
+    matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE) #Use Popen so that if no matches are found, it doesn't throw an exception
+    chrom_reads = str(matched_reads.communicate(),'utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
     file_name = os.path.basename(file)
     for i, reads in enumerate(chrom_reads):
         reads = re.split('\t', reads)
