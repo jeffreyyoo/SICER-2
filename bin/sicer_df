@@ -344,7 +344,7 @@ def main():
             bed_file_name = file.replace('.bam', '.bed')
             bed_file_name = file.replace('.BAM', '.bed')
             try:
-                subprocess.call("bedtools bamtobed -i %s > %s" % (file, bed_file_name), shell=True)
+                subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
                 args.treatment_file[i] = bed_file_name
             except:
                 sys.exit(
@@ -377,7 +377,7 @@ def main():
                 bed_file_name = file.replace('.bam', '.bed')
                 bed_file_name = file.replace('.BAM', '.bed')
                 try:
-                    subprocess.call("bedtools bamtobed -i %s > %s" % (file, bed_file_name), shell=True)
+                    subprocess.call(['bedtools', 'bamtobed', '-i', file, '>', bed_file_name])
                     args.control_file[i] = bed_file_name
                 except:
                     sys.exit(
