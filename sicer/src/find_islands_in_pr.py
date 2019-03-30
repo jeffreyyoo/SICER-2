@@ -127,7 +127,7 @@ def filter_ineligible_windows(chrom_graph, min_tags_in_window, average):
     return np_filtered_chrom_graph
 
 
-def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, average, graph_file):
+def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, average, verbose, graph_file):
     '''Function for handling multiprocessing. Calls functions for filtering windows and finding islands.'''
     number_of_islands = 0
     print_return = ""
@@ -140,7 +140,7 @@ def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, avera
         islands = find_region_above_threshold(islands, score_threshold);
         number_of_islands += len(islands)
         if not (len(islands) > 0):
-            if arg.verbose:
+            if verbose:
                 print_return += chrom + " does not have any islands meeting the required significance"
         np.save(graph_file, islands)
 
@@ -194,7 +194,7 @@ def main(args, total_read_count):
         "Generating the enriched probscore summary graph and filtering the summary graph to eliminate ineligible windows... ");
     pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filter_and_find_islands_partial = partial(filter_and_find_islands, min_tags_in_window, args.gap_size,
-                                              score_threshold, average)
+                                              score_threshold, average, args.verbose)
     filtered_islands_result = pool.map(filter_and_find_islands_partial, list_of_graph_files)
     pool.close()
 

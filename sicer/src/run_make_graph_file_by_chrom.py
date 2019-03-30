@@ -11,7 +11,7 @@ import numpy as np
 from sicer.lib import GenomeData
 
 
-def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
+def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom, verbose):
     """
     *This takes into account the identical tags
     *Tags on different strands are positioned differently
@@ -39,12 +39,12 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
         score = read[4]
         strand = read[5]
         if (start < 0):
-            if arg.verbose:
+            if verbose:
                 print_return += ("Ilegitimate read with start less than zero is ignored \n"
                                  + chrom + "\t" + str(start) + "\t" + str(
                             end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
         elif (end >= chrom_length):
-            if arg.verbose:
+            if verbose:
                 print_return += (
                             "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
                             + chrom + "\t" + str(start) + "\t" + str(
@@ -70,7 +70,7 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
 
     total_tag_counts = postive_tag_counts + negative_tag_counts
     print_return += 'Total count of ' + chrom + ' tags: ' + str(total_tag_counts)
-    if arg.verbose:
+    if verbose:
         print_return += ('  ('+str(postive_tag_counts) + ' positive tags, ' + str(negative_tag_counts) + ' negative tags)')
 
     return (taglist, print_return)
@@ -143,7 +143,7 @@ def makeGraphFile(args, filtered, chrom, chrom_length):
 
     chrom_reads = np.load(bed_file_name)
 
-    bed_coord_result = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom)
+    bed_coord_result = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom, args.verbose)
     tag_list = bed_coord_result[0]
     print_return = bed_coord_result[1]
 
