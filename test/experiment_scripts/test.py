@@ -49,7 +49,7 @@ def test_time():
         control = data_path+'/'+c
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
         start = time.time()
-        subprocess.call(['sicer', 'SICER', '-t', 'treat', '-c', 'control' '-s', 'hg38', '-o', 'new_output_dir'])
+        subprocess.call(['sicer', 'SICER', '-t', 'treat', '-c', 'control', '-s', 'hg38', '-o', 'new_output_dir'])
         end = time.time()
         runtime = end-start
         new_runtime_dict[f] = runtime

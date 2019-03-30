@@ -59,24 +59,24 @@ def main(args, df_run=False):
             print('\n')
 
         # Step 3: Partition the genome in windows and generate graph files for each chromsome
-        print("Partition the genome in windows and generate summary files \n")
+        print("Partition the genome in windows and generate summary files... \n")
         total_tag_in_windows = run_make_graph_file_by_chrom.main(args)
         print("\n")
 
         # Step4+5: Normalize and generate WIG file
-        print("Normalizing graphs by total island filitered reads per million and generating summary WIG file \n")
+        print("Normalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
         output_WIG_name = (treatment_file_name.replace('.bed', '') + "-W" + str(args.window_size) + "-normalized.wig")
         make_normalized_wig.main(args, output_WIG_name)
 
         # Step 6: Find candidate islands exhibiting clustering
-        print("Finding candidate islands exhibiting clustering \n")
+        print("Finding candidate islands exhibiting clustering...\n")
         find_islands_in_pr.main(args, total_tag_in_windows)
         print("\n")
 
         # Running SICER with a control library
         if (control_lib_exists):
             # Step 7
-            print("Calculate significance of candidate islands using the control library \n")
+            print("Calculating significance of candidate islands using the control library... \n")
             associate_tags_with_chip_and_control_w_fc_q.main(args, total_treatment_read_count, total_control_read_count)
 
             # Step 8: Filter out any significant islands whose pvalue is greater than the false discovery rate
@@ -88,14 +88,14 @@ def main(args, df_run=False):
         # Optional Outputs
         if (args.wig_output):
             # Step 9: Filter treatment reads by the significant islands found from step 8
-            print("Filter reads with identified significant islands...\n")
+            print("Filtering reads with identified significant islands...\n")
             filter_raw_tags_by_islands.main(args)
 
             # Step 10: Produce graph file based on the filtered reads from step 9
-            print("Make summary graph with filtered reads...\n")
+            print("Making summary graph with filtered reads...\n")
             run_make_graph_file_by_chrom.main(args, True)
             # Step 11: Produce Normalized WIG file
-            print("Normalizing graphs by total island filitered reads per million and generating summary WIG file \n")
+            print("\nNormalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
             output_WIG_name = (treatment_file_name.replace('.bed', '') + "-W" + str(args.window_size) + "-G" + str(
                 args.gap_size) + "-FDR" + str(args.false_discovery_rate) + "-islandfiltered-normalized.wig")
             make_normalized_wig.main(args, output_WIG_name)

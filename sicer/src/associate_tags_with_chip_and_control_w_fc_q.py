@@ -84,8 +84,8 @@ def main(args, chip_library_size, control_library_size):
     genomesize = sum(GenomeData.species_chrom_lengths[args.species].values());
     genomesize = args.effective_genome_fraction * genomesize;
 
-    print("chip library size:  ", chip_library_size)
-    print("control library size:  ", control_library_size)
+    print("ChIP library read count:", chip_library_size)
+    print("Control library read count:", control_library_size)
 
     totalchip = 0;
     totalcontrol = 0;
@@ -142,8 +142,8 @@ def main(args, chip_library_size, control_library_size):
             np_modified_island = np.array(modified_island, dtype=object)
             np.save(island_file_name, np_modified_island)
 
-    print("Total number of chip reads on islands is: ", totalchip)
-    print("Total number of control reads on islands is: ", totalcontrol)
+    print("Total number of chip reads on islands is:", totalchip)
+    print("Total number of control reads on islands is:", totalcontrol)
 
 
 if __name__ == "__main__":

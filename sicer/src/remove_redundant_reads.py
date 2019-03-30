@@ -8,8 +8,6 @@ import re
 import sys
 import subprocess
 from functools import partial
-from math import *
-
 import numpy as np
 
 from sicer.lib import GenomeData
@@ -75,9 +73,11 @@ def strand_broken_remove(chrom, cutoff, file, chrom_reads):
     (p_total, p_retained, filtered_plus_reads) = remove_redundant_1chrom_single_strand_sorted(plus_reads, cutoff)
     (m_total, m_retained, filtered_minus_reads) = remove_redundant_1chrom_single_strand_sorted(minus_reads, cutoff)
 
-    print_return += (chrom + "\tPlus reads: " + str(p_total) + "\t\tRetained plus reads: " + str(
-        p_retained) + ";\tMinus reads: "
-                     + str(m_total) + "\tRetained minus reads: " + str(m_retained))
+    #print_return += (chrom + "\tPlus reads: " + str(p_total) + "\t\tRetained plus reads: " + str(
+    #    p_retained) + "\tMinus reads: "
+    #                 + str(m_total) + "\tRetained minus reads: " + str(m_retained))
+
+    print_return += ('{:<5s}{:^25d}{:^25d}{:^25d}{:^25d}'.format(chrom, p_total, p_retained, m_total, m_retained))
 
     filtered_output = filtered_plus_reads + filtered_minus_reads
     np_filtered_output = np.array(filtered_output, dtype=object)
@@ -136,8 +136,10 @@ def main(args, path_to_file):
     pool.close()
 
     total_read_count = 0
+    print(('-' *105))
+    print(('{:<5s}{:^25s}{:^25s}{:^25s}{:^25s}'.format("chrom", "Total plus reads", "Retained plus reads", "Total minus reads", "Retained minus reads")))
+    print(('-' *105))
     for result in filtered_result:
-        print (('-' *40))
         print(result[0])
         total_read_count += result[1]
 

@@ -140,7 +140,8 @@ def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, avera
         islands = find_region_above_threshold(islands, score_threshold);
         number_of_islands += len(islands)
         if not (len(islands) > 0):
-            print_return += chrom + " does not have any islands meeting the required significance"
+            if arg.verbose:
+                print_return += chrom + " does not have any islands meeting the required significance"
         np.save(graph_file, islands)
 
     return (graph_file, number_of_islands, print_return)
@@ -175,10 +176,10 @@ def main(args, total_read_count):
     print("Window pvalue:", window_pvalue)
     print("Minimum num of tags in a qualified window: ", min_tags_in_window)  # first threshold cutoff
 
-    print("Determine the score threshold from random background");
+    print("\nDetermining the score threshold from random background...");
     # determine threshold from random background
     score_threshold = background.find_island_threshold(args.e_value);
-    print("The score threshold is: ", score_threshold);
+    print("The score threshold is:", score_threshold);
 
     # generate the probscore summary graph file, only care about enrichment
     # filter the summary graph to get rid of windows whose scores are less than window_score_threshold
@@ -190,7 +191,7 @@ def main(args, total_read_count):
 
     # Use multiprocessing to filter windows with tag count below minimum requirement
     print(
-        "Generate the enriched probscore summary graph and filter the summary graph to eliminate ineligible windows ");
+        "Generating the enriched probscore summary graph and filtering the summary graph to eliminate ineligible windows... ");
     pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filter_and_find_islands_partial = partial(filter_and_find_islands, min_tags_in_window, args.gap_size,
                                               score_threshold, average)

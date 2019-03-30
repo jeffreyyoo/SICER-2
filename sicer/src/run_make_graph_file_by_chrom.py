@@ -39,14 +39,16 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
         score = read[4]
         strand = read[5]
         if (start < 0):
-            print_return += ("Ilegitimate read with start less than zero is ignored \n"
-                             + chrom + "\t" + str(start) + "\t" + str(
-                        end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
+            if arg.verbose:
+                print_return += ("Ilegitimate read with start less than zero is ignored \n"
+                                 + chrom + "\t" + str(start) + "\t" + str(
+                            end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
         elif (end >= chrom_length):
-            print_return += (
-                        "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
-                        + chrom + "\t" + str(start) + "\t" + str(
-                    end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
+            if arg.verbose:
+                print_return += (
+                            "Ilegitimate read with end beyond chromosome length " + str(chrom_length) + " is ignored \n"
+                            + chrom + "\t" + str(start) + "\t" + str(
+                        end) + "\t" + name + "\t" + score + "\t" + strand + "\n")
         else:
             if (strand == '+'):
                 position = start + shift
@@ -67,8 +69,10 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
     taglist.sort()
 
     total_tag_counts = postive_tag_counts + negative_tag_counts
-    print_return += 'total count of ' + chrom + ' tags  is: ' + str(total_tag_counts) + ' = ' + str(
-        postive_tag_counts) + '+' + str(negative_tag_counts)
+    print_return += 'Total count of ' + chrom + ' tags: ' + str(total_tag_counts)
+    if arg.verbose:
+        print_return += '  ('+str(postive_tag_counts) + ' positive tags, ' +
+                        str(negative_tag_counts) + ' negative tags)'
 
     return (taglist, print_return)
 
