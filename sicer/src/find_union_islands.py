@@ -61,9 +61,7 @@ def main(args, temp_dir_1, temp_dir_2):
     temp_dir_1 += '/' + args.treatment_file[0].replace('.bed', '')
     temp_dir_2 += '/' + args.treatment_file[1].replace('.bed', '')
 
-    no_control = False  # Default value
-    if args.control_file is None:  # if there are no control libraries
-        no_control = True
+    no_control = args.control_file is None 
 
     # Use multiprocessing module to run parallel processes for each chromosome
     pool = mp.Pool(processes=min(args.cpu, len(chroms)))
