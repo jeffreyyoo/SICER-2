@@ -45,10 +45,10 @@ def test_time():
             c = 'GSM733780_K562_input.bed'
 
         #Execution of SICER2.0
-        start = time.time()
         treat = data_path+'/'+f
         control = data_path+'/'+c
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
+        start = time.time()
         subprocess.call(['sicer', 'SICER', '-t', 'treat', '-c', 'control' '-s', 'hg38', '-o', 'new_output_dir'])
         end = time.time()
         runtime = end-start
@@ -56,9 +56,10 @@ def test_time():
 
 
         #Execution of old SICER
-        start = time.time()
         sicer_sh = os.path.join(old_sicer_path, "SICER.sh")
         old_output_dir = old_sicer_result_path + '/'+ f.replace('.bed','')
+        os.mkdir(old_output_dir)
+        start = time.time()
         subprocess.call([sicer_sh, data_path, f, c, old_output_dir, 'hg38', '1', '200', '150', '0.74', '600', '0.01'])
         end = time.time()
         runtime = end-start

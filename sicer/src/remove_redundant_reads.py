@@ -65,17 +65,17 @@ def strand_broken_remove(chrom, cutoff, file, chrom_reads):
             plus_reads.append(read)
         elif (read[5] == '-'):
             minus_reads.append(read)
-    if (not plus_reads):
-        sys.stderr.write(chrom + " + reads do not exist in " + file + "\n")
-    if (not minus_reads):
-        sys.stderr.write(chrom + " - reads do not exist in " + file + "\n")
+    #if (not plus_reads):
+    #    sys.stderr.write(chrom + " + reads do not exist in " + file + "\n")
+    #if (not minus_reads):
+    #    sys.stderr.write(chrom + " - reads do not exist in " + file + "\n")
 
     plus_reads = sorted(plus_reads, key=lambda x: (x[1], x[2]))
     minus_reads = sorted(minus_reads, key=lambda x: (x[1], x[2]))
     (p_total, p_retained, filtered_plus_reads) = remove_redundant_1chrom_single_strand_sorted(plus_reads, cutoff)
     (m_total, m_retained, filtered_minus_reads) = remove_redundant_1chrom_single_strand_sorted(minus_reads, cutoff)
 
-    print_return += (chrom + "\tPlus reads: " + str(p_total) + "\tRetained plus reads: " + str(
+    print_return += (chrom + "\tPlus reads: " + str(p_total) + "\t\tRetained plus reads: " + str(
         p_retained) + ";\tMinus reads: "
                      + str(m_total) + "\tRetained minus reads: " + str(m_retained))
 
@@ -137,6 +137,7 @@ def main(args, path_to_file):
 
     total_read_count = 0
     for result in filtered_result:
+        print (('-' *40))
         print(result[0])
         total_read_count += result[1]
 

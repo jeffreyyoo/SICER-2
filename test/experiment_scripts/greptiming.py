@@ -32,17 +32,19 @@ file = data_path+'/'+files[12]
 start = time.time()
 match = 'chr3' + "[[:space:]]"
 matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE, env=myenv)
-print(type(matched_reads))
+mv = matched_reads.communicate()
+print(len(mv))
+print(mv[])
 end = time.time()
 runtime = end-start
 print("Popen Grep: ", runtime)
-
-start = time.time()
-match = 'chr3' + "[[:space:]]"
-matched_reads = subprocess.check_output(['grep', match, file],env=myenv)
-print(type(matched_reads))
-end = time.time()
-runtime = end-start
-print("Checkoutput Grep: ", runtime)
-
-print(type(matched_reads))
+#
+# start = time.time()
+# match = 'chr3' + "[[:space:]]"
+# matched_reads = subprocess.check_output(['grep', match, file],env=myenv)
+# print(type(matched_reads))
+# end = time.time()
+# runtime = end-start
+# print("Checkoutput Grep: ", runtime)
+#
+# print(type(matched_reads))
