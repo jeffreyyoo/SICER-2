@@ -49,7 +49,7 @@ def main(args, columnindex):
     total_island_count = 0
     total_read_count = 0
 
-    df_call = (type(args.treatment_file) == list)  # Determines if this function was called by SICER or SICER-DF
+    df_call = args.df # Determines if this function was called by SICER or SICER-DF
 
     pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filtered_output = []

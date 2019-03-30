@@ -35,7 +35,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
     try:
         # Step 1: Remove redundancy reads in input file according to input threshold
         treatment_file_name = os.path.basename(args.treatment_file)
-        print("Preprocess the ", treatment_file_name, " file to remove redundancy with threshold of",
+        print("Preprocess the", treatment_file_name, "file to remove redundancy with threshold of",
               args.redundancy_threshold, "\n")
         total_treatment_read_count = remove_redundant_reads.main(args, args.treatment_file)
         args.treatment_file = treatment_file_name
@@ -45,7 +45,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
         total_control_reads = 0
         if (control_lib_exists):
             control_file_name = os.path.basename(args.control_file)
-            print("Preprocess the ", control_file_name, " file to remove redundancy with threshold of",
+            print("Preprocess the", control_file_name, "file to remove redundancy with threshold of",
                   args.redundancy_threshold, "\n")
             total_control_read_count = remove_redundant_reads.main(args, args.control_file)
             args.control_file = control_file_name

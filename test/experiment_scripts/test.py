@@ -38,7 +38,7 @@ def test_time():
     new_runtime_dict = {}
     old_runtime_dict = {}
 
-    for f in files[0:2]:
+    for f in files:
         if f in gm12878_ctrl_group:
             c = 'GSM733742_GM12878_input.bed'
         else:
@@ -49,7 +49,7 @@ def test_time():
         control = data_path+'/'+c
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
         start = time.time()
-        subprocess.call(['sicer', 'SICER', '-t', 'treat', '-c', 'control', '-s', 'hg38', '-o', 'new_output_dir'])
+        subprocess.call(['sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir])
         end = time.time()
         runtime = end-start
         new_runtime_dict[f] = runtime
@@ -58,7 +58,8 @@ def test_time():
         #Execution of old SICER
         sicer_sh = os.path.join(old_sicer_path, "SICER.sh")
         old_output_dir = old_sicer_result_path + '/'+ f.replace('.bed','')
-        os.mkdir(old_output_dir)
+        if not os.path.exists(old_output_dir):
+            os.mkdir(old_output_dir)
         start = time.time()
         subprocess.call([sicer_sh, data_path, f, c, old_output_dir, 'hg38', '1', '200', '150', '0.74', '600', '0.01'])
         end = time.time()
@@ -118,7 +119,7 @@ if __name__ == "__main__":
     print("TIME:",TIME)
     print("MEMORY:",MEMORY)
     print("CORRECTNESS:",CORRECTNESS)
-
+    print("==================================================================")
     if TIME:
         test_time()
     if MEMORY:
