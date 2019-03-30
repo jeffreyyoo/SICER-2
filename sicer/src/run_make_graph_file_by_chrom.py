@@ -71,8 +71,7 @@ def get_bed_coords(chrom_reads, chrom_length, fragment_size, chrom):
     total_tag_counts = postive_tag_counts + negative_tag_counts
     print_return += 'Total count of ' + chrom + ' tags: ' + str(total_tag_counts)
     if arg.verbose:
-        print_return += '  ('+str(postive_tag_counts) + ' positive tags, ' +
-                        str(negative_tag_counts) + ' negative tags)'
+        print_return += ('  ('+str(postive_tag_counts) + ' positive tags, ' + str(negative_tag_counts) + ' negative tags)')
 
     return (taglist, print_return)
 

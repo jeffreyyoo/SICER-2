@@ -135,12 +135,13 @@ def sub_arg_SICER(sub_parser):
         help='Output WIG: Enter \"--wig_output\" or \"-wig_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
-        parser.add_argument(
-            "--verbose",
-            "-v",
-            required=False,
-            help="increase console output verbosity",
-            action="store_true")
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        required=False,
+        help="increase console output verbosity",
+        action="store_true"
+    )
 
 
 def sub_arg_RECOGNICER(sub_parser):
@@ -264,7 +265,8 @@ def sub_arg_RECOGNICER(sub_parser):
         "-v",
         required=False,
         help="increase console output verbosity",
-        action="store_true")
+        action="store_true"
+    )
 
 
 def main():
