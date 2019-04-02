@@ -54,7 +54,7 @@ def main(args):
             "Temporary directory required for SICER_df cannot be created. Check if directories can be created in %s."
             % curr_path)
     try:
-        num_chroms = GenomeData.species_chroms[args.species]
+        num_chroms = len(GenomeData.species_chroms[args.species])
         pool = mp.Pool(processes=min(args.cpu, num_chroms))
 
         # Find the union island between two treatment files. It will generate a summary file
