@@ -162,7 +162,7 @@ def makeGraphFile(args, filtered, chrom, chrom_length):
     return (tag_count, print_return)
 
 
-def main(args, filtered=False):
+def main(args, filtered=False, pool):
     chroms = GenomeData.species_chroms[args.species]
     chrom_lengths = GenomeData.species_chrom_lengths[args.species]
 
@@ -175,10 +175,10 @@ def main(args, filtered=False):
         list_of_args.append((chrom, chrom_length))
 
     # Use multiprocessing to partition the gneome in windows and generate the summary files in parallel processes
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     makeGraphFile_partial = partial(makeGraphFile, args, filtered)
     makeGraphFile_result = pool.starmap(makeGraphFile_partial, list_of_args)
-    pool.close()
+    #pool.close()
 
     total_tag_count = 0
     for result in makeGraphFile_result:

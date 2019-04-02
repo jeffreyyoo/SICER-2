@@ -18,7 +18,7 @@ def get_counts(graph_file):
     return count
 
 
-def main(args, output_file_name):
+def main(args, output_file_name, pool):
     chroms = GenomeData.species_chroms[args.species];
     scaling_factor = 1000000
     total_count = 0  # total count of islands
@@ -33,9 +33,9 @@ def main(args, output_file_name):
             list_of_graph_files.append(file + '_' + chrom + '_graph.npy')
 
     # Use multiprocessing to count the number of islands
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     count_results = pool.map(get_counts, list_of_graph_files)
-    pool.close()
+    #pool.close()
     for count in count_results:
         total_count += count
 

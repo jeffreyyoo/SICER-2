@@ -46,15 +46,15 @@ def filter_tags_by_islands(file_name, fragment_size, chrom):
     np.save(file_name + '_' + chrom + '_filtered.npy', np_filtered_reads)
 
 
-def main(args):
+def main(args, pool):
     chroms = GenomeData.species_chroms[args.species];
     treatment_file = args.treatment_file.replace('.bed', '')
 
     # Use multiprocessing to filter raw tags by islands in parallel processes
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filter_tags_by_islands_partial = partial(filter_tags_by_islands, treatment_file, args.fragment_size)
     pool.map(filter_tags_by_islands_partial, chroms)
-    pool.close()
+    #pool.close()
 
     output_file_name = treatment_file + '-W' + str(args.window_size)
     if (args.subcommand == "SICER"):
