@@ -79,7 +79,7 @@ def associate_tag_count_to_regions(args, scaling_factor, control_library_size, g
     return pvalue_save_name
 
 
-def main(args, chip_library_size, control_library_size):
+def main(args, chip_library_size, control_library_size, pool):
     chroms = GenomeData.species_chroms[args.species];
     genomesize = sum(GenomeData.species_chrom_lengths[args.species].values());
     genomesize = args.effective_genome_fraction * genomesize;
@@ -95,11 +95,11 @@ def main(args, chip_library_size, control_library_size):
     island_control_readcount = {};
 
     # Use multiprocessing to associate each read with an island
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     associate_tag_count_to_regions_partial = partial(associate_tag_count_to_regions, args, scaling_factor,
                                                      control_library_size, genomesize)
     p_value_files = pool.map(associate_tag_count_to_regions_partial, chroms)
-    pool.close()
+    #pool.close()
 
     # Get the list of p-value from each parallel processes and concatenate them into one list of all p-values
     p_value_list = np.array([])

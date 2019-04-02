@@ -147,7 +147,7 @@ def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, avera
     return (graph_file, number_of_islands, print_return)
 
 
-def main(args, total_read_count):
+def main(args, total_read_count, pool):
     print("Species: ", args.species);
     print("Window_size: ", args.window_size);
     print("Gap size: ", args.gap_size);
@@ -192,11 +192,11 @@ def main(args, total_read_count):
     # Use multiprocessing to filter windows with tag count below minimum requirement
     print(
         "Generating the enriched probscore summary graph and filtering the summary graph to eliminate ineligible windows... ");
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filter_and_find_islands_partial = partial(filter_and_find_islands, min_tags_in_window, args.gap_size,
                                               score_threshold, average, args.verbose)
     filtered_islands_result = pool.map(filter_and_find_islands_partial, list_of_graph_files)
-    pool.close()
+    #pool.close()
 
     file_name = args.treatment_file.replace('.bed', '')
     outfile_path = os.path.join(args.output_directory, (file_name + '-W' + str(args.window_size)

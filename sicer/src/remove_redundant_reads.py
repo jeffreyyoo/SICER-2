@@ -125,15 +125,15 @@ def find_and_filter_reads(path_to_file, cutoff, chrom):
 '''path_to_file: complete path to the .bed file that needs to processed for redudant reads'''
 
 
-def main(args, path_to_file):
+def main(args, path_to_file, pool):
     chroms = GenomeData.species_chroms[args.species];  # list of chromsomes of the given species
     cutoff = args.redundancy_threshold
 
     # Use multiprocessing module to run parallel processes for each chromosome
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     find_and_filter_reads_partial = partial(find_and_filter_reads, path_to_file, cutoff)
     filtered_result = pool.map(find_and_filter_reads_partial, chroms)
-    pool.close()
+    #pool.close()
 
     total_read_count = 0
     print(('-' *105))

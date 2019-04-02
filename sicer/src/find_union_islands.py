@@ -54,20 +54,20 @@ def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
     np.save(chrom + '_union_output.npy', np_union_island_list)
 
 
-def main(args, temp_dir_1, temp_dir_2):
+def main(args, temp_dir_1, temp_dir_2, pool):
     chroms = GenomeData.species_chroms[args.species]
 
     # Partially fill out the full directory of the files we want to access
     temp_dir_1 += '/' + args.treatment_file[0].replace('.bed', '')
     temp_dir_2 += '/' + args.treatment_file[1].replace('.bed', '')
 
-    no_control = args.control_file is None 
+    no_control = args.control_file is None
 
     # Use multiprocessing module to run parallel processes for each chromosome
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     find_union_islands_partial = partial(find_union_islands, no_control, temp_dir_1, temp_dir_2)
     pool.map(find_union_islands_partial, chroms)
-    pool.close()
+    #pool.close()
 
     outfile_name = (args.treatment_file[0].replace('.bed', '') + '-vs-' + args.treatment_file[1].replace('.bed', '') + '-W' + str(
         args.window_size))

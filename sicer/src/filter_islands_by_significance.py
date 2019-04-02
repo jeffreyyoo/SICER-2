@@ -44,14 +44,14 @@ def filter_by_fdr_SICER_df(args, columnindex, chrom):
     np.save(save_file_name, np_summary_bed)
 
 
-def main(args, columnindex):
+def main(args, columnindex, pool):
     chroms = GenomeData.species_chroms[args.species];
     total_island_count = 0
     total_read_count = 0
 
     df_call = args.df # Determines if this function was called by SICER or SICER-DF
 
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     filtered_output = []
     if (df_call):
         filter_by_fdr_partial = partial(filter_by_fdr_SICER_df, args, columnindex)

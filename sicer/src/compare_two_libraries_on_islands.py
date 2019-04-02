@@ -110,7 +110,7 @@ def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom)
     return (totalA, totalB)
 
 
-def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_size):
+def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_size, pool):
     chroms = GenomeData.species_chroms[args.species]
 
     print("Library size of ", args.treatment_file[0], ":  ", A_library_size)
@@ -118,11 +118,11 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
 
     library_scaling_factor = A_library_size * 1.0 / B_library_size  # A vs B
 
-    pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+    #pool = mp.Pool(processes=min(args.cpu, len(chroms)))
     associate_tag_count_to_regions_partial = partial(associate_tags_count_to_regions, args, path_to_tempdir_1,
                                                      path_to_tempdir_2, library_scaling_factor)
     tag_counts = pool.map(associate_tag_count_to_regions_partial, chroms)
-    pool.close()
+    #pool.close()
 
     total_read_count_A = 0  # Count of all the reads of library A that belong in islands
     total_read_count_B = 0
