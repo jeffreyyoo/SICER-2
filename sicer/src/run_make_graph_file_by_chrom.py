@@ -162,7 +162,7 @@ def makeGraphFile(args, filtered, chrom, chrom_length):
     return (tag_count, print_return)
 
 
-def main(args, filtered=False, pool):
+def main(args, pool, filtered=False):
     chroms = GenomeData.species_chroms[args.species]
     chrom_lengths = GenomeData.species_chrom_lengths[args.species]
 

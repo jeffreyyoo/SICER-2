@@ -99,7 +99,7 @@ def main(args, df_run=False):
 
             # Step 10: Produce graph file based on the filtered reads from step 9
             print("Making summary graph with filtered reads...\n")
-            run_make_graph_file_by_chrom.main(args, True, pool)
+            run_make_graph_file_by_chrom.main(args, pool, True)
             # Step 11: Produce Normalized WIG file
             print("\nNormalizing graphs by total island filitered reads per million and generating summary WIG file...\n")
             output_WIG_name = (treatment_file_name.replace('.bed', '') + "-W" + str(args.window_size) + "-G" + str(
