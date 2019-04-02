@@ -11,6 +11,7 @@ import tempfile
 curr_path = os.getcwd()
 
 # From SICER Package
+from sicer.lib import GenomeData
 from sicer.main import run_SICER
 from sicer.src import find_union_islands
 from sicer.src import compare_two_libraries_on_islands
@@ -78,7 +79,7 @@ def main(args):
 
         pool.close()
         pool.join()
-        
+
     finally:
         print("Removing all temporary directories and all files in it.")
         shutil.rmtree(temp_dir)
