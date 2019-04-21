@@ -26,25 +26,15 @@ gm12878_ctrl_group = set(['45210_treat_rep1.bed','36626_treat_rep1.bed','36629_t
         '45220_treat_rep1.bed','36572_treat_rep1.bed','36582_treat_rep1.bed','45212_treat_rep1.bed'])
 
 
+file = data_path+'/'+files[12]
+
+
 myenv = os.environ.copy()
 myenv['LC_ALL'] = 'C'
-file = data_path+'/'+files[12]
-start = time.time()
 match = 'chr3' + "[[:space:]]"
+start = time.time()
 matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE, env=myenv)
 mv = matched_reads.communicate()
-print(len(mv))
-print(mv[])
 end = time.time()
 runtime = end-start
 print("Popen Grep: ", runtime)
-#
-# start = time.time()
-# match = 'chr3' + "[[:space:]]"
-# matched_reads = subprocess.check_output(['grep', match, file],env=myenv)
-# print(type(matched_reads))
-# end = time.time()
-# runtime = end-start
-# print("Checkoutput Grep: ", runtime)
-#
-# print(type(matched_reads))

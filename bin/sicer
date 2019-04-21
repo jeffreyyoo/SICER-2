@@ -126,7 +126,7 @@ def main():
 
     parser.add_argument(
         '--wig_output',
-        '-wig_o',
+        '-wig',
         required=False,
         action='store_true',
         help='Output WIG: Enter \"--wig_output\" or \"-wig_o\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'

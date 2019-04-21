@@ -277,7 +277,7 @@ def filter_and_find_islands(args, min_tag_count, chrom):
 
 	return (total_count_island, print_return)
 
-def main(args, read_count):
+def main(args, read_count, pool):
 	print("Coarse-graining approach to identify ChIP-Seq enriched domains:")
 	print("Species: %s" % args.species)
 	print("Window_size %d: " % args.window_size)
@@ -301,10 +301,10 @@ def main(args, read_count):
 	print("Generate preprocessed data list")
 	# read in the summary graph file
 	# Use multiprocessing to find islands separately by chromosome
-	pool = mp.Pool(processes=min(args.cpu, len(chroms)))
+	# pool = mp.Pool(processes=min(args.cpu, len(chroms)))
 	filter_and_find_islands_partial = partial(filter_and_find_islands, args, min_tags_in_window)
 	filtered_islands_result = pool.map(filter_and_find_islands_partial, chroms)
-	pool.close()
+	# pool.close()
 
 	file_name = args.treatment_file.replace('.bed', '')
 	outfile_path = os.path.join(args.output_directory, (file_name + '-W' + str(args.window_size) + '.cgisland'))

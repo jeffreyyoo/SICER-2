@@ -1,15 +1,8 @@
 import re
 import os
 import sys
+import subprocess
 
-
-control_file_1 = "./test/control_1.bed"
-treatment_file_1 = "./test/treatment_1.bed"
-
-control_file_2 = "./test/control_2.bed"
-treatment_file_2 = "./test/treatment_2.bed"
-
-current_dir = "./test/travisCI/"
 output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
                 '-W200-G600-FDR0.01-islandfiltered.bed', '-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                 '-W200-G600-islands-summary', '-W200-normalized.wig']
@@ -18,7 +11,6 @@ df_output_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island', 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
-
 
 def check_13columns(file1_name,file2_name):
     file1 = open(file1_name,'r')
@@ -205,46 +197,113 @@ def check_scoreisland (file1_name, file2_name):
 
     return equal
 
+def compare(new_path, old_path, file1):
+    file1_name = file1.replace('bed','')
+    new_path+='/'
+    old_path+='/'
+    #subprocess.call(['module', 'load', 'bedtools'])
+    try:
+        print("calling bedtools")
+        subprocess.call('bedtools sort -i %s > %s' %(old_path+file1_name+output_files_suffix[0],(old_path+file1_name+output_files_suffix[0]+'.s')),shell=True)
+        subprocess.call(['mv', (old_path+file1_name+output_files_suffix[0]+'.s'),(old_path+file1_name+output_files_suffix[0])])
+        print("done with bedtools")
+    except:
+        print("Error: bedtools not installed")
+    #subprocess.call(['sort', '-k', '1', '-V', ('sorted_'+old_path+file1_name+output_files_suffix[0]), '>', old_path+file1_name+output_files_suffix[0]],shell=True)
+    #subprocess.call(['rm', ('sorted_'+old_path+file1_name+output_files_suffix[0])])
 
-def run_compare(f):
-    if f == 1:
-        tf = os.path.basename(treatment_file_1).replace(".bed",'')
-    elif f == 2:
-        tf = os.path.basename(treatment_file_2).replace(".bed",'')
+    #Check file 1
+    chk_score_island_1 = check_scoreisland(new_path+file1_name+output_files_suffix[0], old_path+file1_name+output_files_suffix[0])
+    chk_island_bed_1 = check_islandbed(new_path+file1_name+output_files_suffix[1], old_path+file1_name+output_files_suffix[1])
+    chk_filtered_bed_1 = check_filteredbed(new_path+file1_name+output_files_suffix[2], old_path+file1_name+output_files_suffix[2])
+    chk_wig1_1 = check_WIG(new_path+file1_name+output_files_suffix[3], old_path+file1_name+output_files_suffix[3])
+    chk_island_summary_1 = check_islandsummary(new_path+file1_name+output_files_suffix[4], old_path+file1_name+output_files_suffix[4])
+    chk_wig2_1 = check_WIG(new_path+file1_name+output_files_suffix[5], old_path+file1_name+output_files_suffix[5])
 
-    chk_score_island = check_scoreisland(tf+output_files_suffix[0], current_dir+'expected_output/'+tf+output_files_suffix[0])
-    chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'expected_output/'+tf+output_files_suffix[1])
-    chk_filtered_bed = check_filteredbed(tf+output_files_suffix[2], current_dir+'expected_output/'+tf+output_files_suffix[2])
-    chk_wig1 = check_WIG(tf+output_files_suffix[3], current_dir+'expected_output/'+tf+output_files_suffix[3])
-    chk_island_summary = check_islandsummary(tf+output_files_suffix[4], current_dir+'expected_output/'+tf+output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'expected_output/'+tf+output_files_suffix[5])
+    file1_result = chk_score_island_1  and chk_island_bed_1 and chk_filtered_bed_1 and chk_wig1_1 and chk_island_summary_1 and chk_wig2_1
 
-    #Check for df execution
-    f1_name = os.path.basename(treatment_file_1).replace(".bed",'')
-    f2_name = os.path.basename(treatment_file_2).replace(".bed",'')
+    return file1_result
 
-    summary_name = f1_name+'-and-'+f2_name+df_output_file_suffix[0]
-    union_island_file_name = f1_name+'-vs-'+f2_name+df_output_file_suffix[1]
-    decreased_fname = f1_name+df_output_file_suffix[2]
-    increased_fname = f1_name+df_output_file_suffix[3]
+def df_compare(new_path, old_path, file1, file2):
+    file1_name = file1.replace('.bed','')
+    file2_name = file2.replace('.bed','')
+    new_path+='/'
+    old_path+='/'
+    #subprocess.call(['module', 'load', 'bedtools'])
+    ret_dir = os.getcwd()
+    #os.chdir(old_path)
+    try:
+        print("calling bedtools")
+        subprocess.call('bedtools sort -i %s > %s' %(old_path+file1_name+output_files_suffix[0],(old_path+file1_name+output_files_suffix[0]+'.s')),shell=True)
+        subprocess.call(['mv', (old_path+file1_name+output_files_suffix[0]+'.s'),(old_path+file1_name+output_files_suffix[0])])
+        print("done with bedtools")
+    except:
+        print("Error: bedtools not installed")
+    #subprocess.run(['sort', '-k', '1', '-V', (old_path+file1_name+output_files_suffix[0]+'.s'), '>', old_path+file1_name+output_files_suffix[0]],shell=True)
 
-    chk_unionisland = check_unionisland(union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
-    chk_summary = check_13columns(summary_name, current_dir+'expected_output/'+summary_name)
-    chk_decreased = check_13columns(decreased_fname, current_dir+'expected_output/'+decreased_fname)
-    chk_increased = check_13columns(increased_fname, current_dir+'expected_output/'+increased_fname)
+    #subprocess.call(['rm', (old_path+file1_name+output_files_suffix[0]+'.s')])
+    #os.chdir(ret_dir)
 
-    final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary
-                    and chk_wig2 and chk_unionisland and chk_summary and chk_decreased and chk_increased)
+    #Check file 1
+    print("=======Checking file 1=======")
+    print("Comparing .scoreisland...")
+    chk_score_island_1 = check_scoreisland(new_path+file1_name+output_files_suffix[0], old_path+file1_name+output_files_suffix[0])
+    print("Comparing island .bed...")
+    chk_island_bed_1 = check_islandbed(new_path+file1_name+output_files_suffix[1], old_path+file1_name+output_files_suffix[1])
+    print("Comparing filtered island .bed...")
+    chk_filtered_bed_1 = check_filteredbed(new_path+file1_name+output_files_suffix[2], old_path+file1_name+output_files_suffix[2])
+    print("Comparing .wig...")
+    chk_wig1_1 = check_WIG(new_path+file1_name+output_files_suffix[3], old_path+file1_name+output_files_suffix[3])
+    print("Comparing island summary...")
+    chk_island_summary_1 = check_islandsummary(new_path+file1_name+output_files_suffix[4], old_path+file1_name+output_files_suffix[4])
+    print("Comparing normalized .wig...")
+    chk_wig2_1 = check_WIG(new_path+file1_name+output_files_suffix[5], old_path+file1_name+output_files_suffix[5])
 
-    return final_result
+    file1_result = chk_score_island_1  and chk_island_bed_1 and chk_filtered_bed_1 and chk_wig1_1 and chk_island_summary_1 and chk_wig2_1
+    print("File 1 result:",file1_result)
 
-#def df_compare(f1,f2):
+    #subprocess.call(['module', 'load', 'bedtools'])
+    try:
+        print("calling bedtools")
+        subprocess.call('bedtools sort -i %s > %s' %(old_path+file2_name+output_files_suffix[0],(old_path+file2_name+output_files_suffix[0]+'.s')),shell=True)
+        subprocess.call(['mv', (old_path+file2_name+output_files_suffix[0]+'.s'),(old_path+file2_name+output_files_suffix[0])])
+        print("done with bedtools")
+    except:
+        print("Error: bedtools not installed")
+    #subprocess.run(['sort', '-k', '1', '-V', (old_path+file2_name+output_files_suffix[0]+'.s'), '>', old_path+file2_name+output_files_suffix[0]],shell=True)
+    #subprocess.call(['rm', (old_path+file1_name+output_files_suffix[0]+'.s')])
 
+    #Check file 2
+    print("=======Checking file 2=======")
+    print("Comparing .scoreisland...")
+    chk_score_island_2 = check_scoreisland(new_path+file2_name+output_files_suffix[0], old_path+file2_name+output_files_suffix[0])
+    print("Comparing island .bed...")
+    chk_island_bed_2 = check_islandbed(new_path+file2_name+output_files_suffix[1], old_path+file2_name+output_files_suffix[1])
+    print("Comparing filtered island .bed...")
+    chk_filtered_bed_2 = check_filteredbed(new_path+file2_name+output_files_suffix[2], old_path+file2_name+output_files_suffix[2])
+    print("Comparing .wig...")
+    chk_wig1_2 = check_WIG(new_path+file2_name+output_files_suffix[3], old_path+file2_name+output_files_suffix[3])
+    print("Comparing island summary...")
+    chk_island_summary_2 = check_islandsummary(new_path+file2_name+output_files_suffix[4], old_path+file2_name+output_files_suffix[4])
+    print("Comparing normalized .wig...")
+    chk_wig2_2 = check_WIG(new_path+file2_name+output_files_suffix[5], old_path+file2_name+output_files_suffix[5])
 
-if __name__ == "__main__":
-    result_1 = run_compare(1)
-    result_2 = run_compare(2)
-    if result_1 and result_2:
-        sys.exit(0)
-    else:
-        sys.exit(1)
+    file2_result = chk_score_island_2  and chk_island_bed_2 and chk_filtered_bed_2 and chk_wig1_2 and chk_island_summary_2 and chk_wig2_2
+    print("File 2 result:",file2_result)
+
+    #Check df result
+    summary_name = file1_name+'-and-'+file2_name+df_output_file_suffix[0]
+    union_island_file_name = file1_name+'-vs-'+file2_name+df_output_file_suffix[1]
+    old_union_island_name = file1_name+'-vs-'+file2_name+'-W200-G600-E-union.island'
+    decreased_fname = file1_name+df_output_file_suffix[2]
+    increased_fname = file1_name+df_output_file_suffix[3]
+
+    print("Comparing DF outputs...")
+    chk_unionisland = check_unionisland(new_path+union_island_file_name, old_path+old_union_island_name)
+    chk_summary = check_13columns(new_path+summary_name, old_path+summary_name)
+    chk_decreased = check_13columns(new_path+decreased_fname, old_path+decreased_fname)
+    chk_increased = check_13columns(new_path+increased_fname, old_path+increased_fname)
+
+    df_result = chk_unionisland and chk_summary and chk_decreased and chk_increased
+
+    return (file1_result and file2_result and df_result)
