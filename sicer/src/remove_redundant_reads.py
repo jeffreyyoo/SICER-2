@@ -21,7 +21,7 @@ def remove_redundant_1chrom_single_strand_sorted(reads, cutoff):
     current_count = 1
     total = 0
     retained = 0
-    filtered_reads = []
+    mask = []
 
     for i, read in enumerate(reads):
         total += 1
@@ -32,20 +32,19 @@ def remove_redundant_1chrom_single_strand_sorted(reads, cutoff):
             current_start = start
             current_end = end
             current_count = 1
-            filtered_reads.append(read)
         elif end != current_end:
             retained += 1
             current_start = start
             current_end = end
             current_count = 1
-            filtered_reads.append(read)
         else:
             current_count += 1
             if current_count <= cutoff:
                 retained += 1
-                filtered_reads.append(read)
+            else:
+                mask.append(i)
 
-    return (total, retained, filtered_reads)
+    return (total, retained, mask)
 
 
 '''Separates reads by positive and negative strands before filtering redudant reads.
@@ -56,22 +55,34 @@ def remove_redundant_1chrom_single_strand_sorted(reads, cutoff):
 def strand_broken_remove(chrom, cutoff, file, chrom_reads):
     # Use of multiprocessing means print statements will be out of order. Use print_return to hold them until the end
     print_return = ""
-    plus_reads = []
-    minus_reads = []
-    for read in chrom_reads:
-        if (read[5] == '+'):
-            plus_reads.append(read)
-        elif (read[5] == '-'):
-            minus_reads.append(read)
+    #plus_reads = []
+    #minus_reads = []
+    #for read in chrom_reads:
+    #    if (read[5] == '+'):
+    #        plus_reads.append(read)
+    #    elif (read[5] == '-'):
+    #        minus_reads.append(read)
     #if (not plus_reads):
     #    sys.stderr.write(chrom + " + reads do not exist in " + file + "\n")
     #if (not minus_reads):
     #    sys.stderr.write(chrom + " - reads do not exist in " + file + "\n")
 
-    plus_reads = sorted(plus_reads, key=lambda x: (x[1], x[2]))
-    minus_reads = sorted(minus_reads, key=lambda x: (x[1], x[2]))
-    (p_total, p_retained, filtered_plus_reads) = remove_redundant_1chrom_single_strand_sorted(plus_reads, cutoff)
-    (m_total, m_retained, filtered_minus_reads) = remove_redundant_1chrom_single_strand_sorted(minus_reads, cutoff)
+    #plus_reads = sorted(plus_reads, key=lambda x: (x[1], x[2]))
+    #minus_reads = sorted(minus_reads, key=lambda x: (x[1], x[2]))
+
+    sorted_reads = np.sort(chrom_reads, order=['strand','start','end'])
+
+    for i in range(len(sorted_reads)):
+        if sorted_reads[i][5] != '+':
+            mark = i
+            break
+
+    (p_total, p_retained, p_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[:i], cutoff)
+    (m_total, m_retained, m_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[i:], cutoff)
+    m_mask = [m_mask[i]+mark for i in range(len(m_mask))]
+    mask = p_mask + m_mask
+    filtered_reads = np.delete(sorted_reads, obj=mask)
+    del sorted_reads
 
     #print_return += (chrom + "\tPlus reads: " + str(p_total) + "\t\tRetained plus reads: " + str(
     #    p_retained) + "\tMinus reads: "
@@ -79,10 +90,10 @@ def strand_broken_remove(chrom, cutoff, file, chrom_reads):
 
     print_return += ('{:<5s}{:^25d}{:^25d}{:^25d}{:^25d}'.format(chrom, p_total, p_retained, m_total, m_retained))
 
-    filtered_output = filtered_plus_reads + filtered_minus_reads
-    np_filtered_output = np.array(filtered_output, dtype=object)
+    #filtered_output = filtered_plus_reads + filtered_minus_reads
+    #np_filtered_output = np.array(filtered_output, dtype=object)
     name_for_save = file + "_" + chrom + ".npy"
-    np.save(name_for_save, np_filtered_output)
+    np.save(name_for_save, filtered_reads)
     total_retained = p_retained + m_retained
 
     return (print_return, total_retained)
@@ -96,7 +107,11 @@ def match_by_chrom(file, chrom):
     match = chrom + "[[:space:]]"
     matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE) #Use Popen so that if no matches are found, it doesn't throw an exception
     chrom_reads = str(matched_reads.communicate()[0],'utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
+    del matched_reads
     file_name = os.path.basename(file)
+    read_dtype = np.dtype([('chrom', 'u5'), ('start', np.int32), ('end', np.int32), ('name', 'u20'), ('score', np.int16), ('strand', 'u1')])
+    processed_reads = np.empty(len(chrom_reads), dtype=read_dtype)
+
     for i, reads in enumerate(chrom_reads):
         reads = re.split('\t', reads)
         if (len(reads) < 6):
@@ -105,9 +120,10 @@ def match_by_chrom(file, chrom):
             sys.exit(1)
         reads[1] = int(reads[1])
         reads[2] = int(reads[2])
-        chrom_reads[i] = tuple(reads)
+        processed_reads[i] = np.rec.array(reads, dtype=read_dtype)
+    del chrome_reads
 
-    return chrom_reads
+    return processed_reads
 
 
 '''Function designed for handling multiprocessing. Separates all reads by chromosome

@@ -7,16 +7,22 @@ try:
 except:
     print("Error: Need \"compare.py\" module.")
 
+try:
+    import memory_profiler
+except:
+    print("Erorr: No memory profiler")
+
 #SICER Modes
 SICER = True
 RECOGNICER = False
 
 #Set one of these True
-COREvsTIME = True
-core_count = 4
+COREvsTIME = False
 TIME = False
-MEMORY = False
+MEMORY = True
 CORRECTNESS = False
+
+core_count = 4
 
 test_dir =  '/nv/vol190/zanglab/jy2ma/sicer2'
 data_path = test_dir+'/data'
@@ -40,7 +46,7 @@ gm12878_ctrl_group = set(['45210_treat_rep1.bed','36626_treat_rep1.bed','36629_t
         '36609_treat_rep1.bed','45216_treat_rep1.bed','36581_treat_rep1.bed','36598_treat_rep1.bed',
         '45220_treat_rep1.bed','36572_treat_rep1.bed','36582_treat_rep1.bed','45212_treat_rep1.bed'])
 
-def test_core_time(core=25):
+def test_time_based_core(core=25):
     new_runtime_dict = {}
     old_runtime_dict = {}
 
@@ -63,7 +69,6 @@ def test_core_time(core=25):
 
         print((f1.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n'))
         log.write(f1.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n')
-
 
     log.close()
 
@@ -172,39 +177,52 @@ def test_time():
 
 
 def test_memory():
-    # new_mem_dict = {}
-    # old_mem_dict = {}
-    #
-    # for f in files[0:2]:
-    #     if f in gm12878_ctrl_group:
-    #         c = 'GSM733742_GM12878_input.bed'
-    #     else:
-    #         c = 'GSM733780_K562_input.bed'
-    #
-    #     #Execution of SICER2.0
-    #     start = time.time()
-    #     new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
-    #     subprocess.call("valgrind --tool=massif --massif-out-file=%s --sicer SICER -t %s -c %s -s hg38 -o %s", f, c, new_output_dir)
-    #     end = time.time()
-    #     runtime = end-start
-    #     new_runtime_dict[f] = runtime
-    #
-    #
-    #     #Execution of old SICER
-    #     start = time.time()
-    #     sicer_sh = os.path.join(old_sicer_path, "SICER.sh")
-    #     old_output_dir = old_sicer_result_path + '/'+ f.replace('.bed','')
-    #     subprocess.call("%s %s %s %s %s hg38 1 200 150 0.74 600 0.01", sicer_sh, data_path, f, c, old_output_dir)
-    #     end = time.time()
-    #     runtime = end-start
-    #     old_runtime_dict[f] = runtime
-    #
-    # log = open("timing_log.txt", 'w+')
-    # for f in files:
-    #     log.write("Timing Figure for "+f.replace('.bed','')+':\nOld: '
-    #                 + old_runtime_dict[f] +' s\tNew: '+ new_runtime_dict[f] + ' s\n')
-    # log.close()
-    print("tbd")
+    new_mem_dict = {}
+    old_mem_dict = {}
+
+    log = open("memory_test_result.txt", 'w+')
+    for f in files[0:1]:
+        if f in gm12878_ctrl_group:
+            c = 'GSM733742_GM12878_input.bed'
+        else:
+            c = 'GSM733780_K562_input.bed'
+
+        #Execution of SICER2.0
+        treat = data_path+'/'+f
+        control = data_path+'/'+c
+        new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
+
+        subprocess.call(['mprof','run','--include-children','--interval','0.01','-o',(f.replace('.bed','')+'_new_mem.dat'),
+                        'sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--wig_output'])
+
+        ps = subprocess.Popen(['sort','-k2', '-n', '-r', (f.replace('.bed','')+'_new_mem.dat')], stdout=subprocess.PIPE)
+        output = subprocess.check_output(['head','-n','1'], stdin=ps.stdout)
+        memory_use = round(float(str(output, 'utf-8').split(' ')[1]))
+        print('New',f.replace('.bed',''),'memory usage:',memory_use)
+        new_mem_dict[f] = memory_use
+
+        #Execution of old SICER
+        sicer_sh = os.path.join(old_sicer_path, "SICER.sh")
+        old_output_dir = old_sicer_result_path + '/'+ f.replace('.bed','')
+        if not os.path.exists(old_output_dir):
+            os.mkdir(old_output_dir)
+        test_module_path = os.getcwd()
+        os.chdir(old_sicer_result_path)
+
+        subprocess.call(['mprof', 'run', '--include-children','--interval', '0.01', '-o', (test_module_path+'/'+f.replace('.bed','')+'_old_mem.dat'),
+                        'sh',sicer_sh, data_path, f, c, old_output_dir, 'hg38', '1', '200', '150', '0.74', '600', '0.01'])
+        os.chdir(test_module_path)
+
+        ps = subprocess.Popen(['sort','-k2', '-n', '-r', (f.replace('.bed','')+'_old_mem.dat')], stdout=subprocess.PIPE)
+        output = subprocess.check_output(['head','-n','1'], stdin=ps.stdout)
+        memory_use = round(float(str(output, 'utf-8').split(' ')[1]))
+        print('Old',f.replace('.bed',''),'memory usage:',memory_use)
+        old_mem_dict[f] = memory_use
+
+
+
+        log.write(f.replace('.bed','')+'\n'+'Old: '+str(old_mem_dict[f])+'\n'+'New: '+str(new_mem_dict[f])+'\n\n')
+    log.close()
 
 
 if __name__ == "__main__":
@@ -223,4 +241,4 @@ if __name__ == "__main__":
     if CORRECTNESS:
         test_correctness()
     if COREvsTIME:
-        test_core_time(core=core_count)
+        test_time_based_core(core=core_count)
