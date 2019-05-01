@@ -109,7 +109,7 @@ def match_by_chrom(file, chrom):
     chrom_reads = str(matched_reads.communicate()[0],'utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
     del matched_reads
     file_name = os.path.basename(file)
-    read_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('name', 'U20'), ('score', np.int16), ('strand', 'U1')])
+    read_dtype = np.dtype([('chrom', 'u5'), ('start', np.int32), ('end', np.int32), ('name', 'u20'), ('score', np.int16), ('strand', 'u1')])
     processed_reads = np.empty(len(chrom_reads), dtype=read_dtype)
 
     for i, reads in enumerate(chrom_reads):
