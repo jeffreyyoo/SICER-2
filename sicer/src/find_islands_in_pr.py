@@ -131,7 +131,7 @@ def filter_and_find_islands(min_tags_in_window, gap_size, score_threshold, avera
     '''Function for handling multiprocessing. Calls functions for filtering windows and finding islands.'''
     number_of_islands = 0
     print_return = ""
-    chrom_graph = np.load(graph_file)
+    chrom_graph = np.load(graph_file, allow_pickle=True)
 
     if (len(chrom_graph) > 0):
         chrom = chrom_graph[0][0]
@@ -205,7 +205,7 @@ def main(args, total_read_count, pool):
     path_to_filtered_graph = []
     with open(outfile_path, 'w') as outfile:
         for i in range(0, len(filtered_islands_result)):
-            filtered_chrom_graph = np.load(filtered_islands_result[i][0])
+            filtered_chrom_graph = np.load(filtered_islands_result[i][0],allow_pickle=True)
             path_to_filtered_graph.append(filtered_islands_result[i][0])
             total_number_islands += filtered_islands_result[i][1]
             if (filtered_islands_result[i][2] != ""):
@@ -217,7 +217,3 @@ def main(args, total_read_count, pool):
                 outfile.write(line)
 
     print("Total number of islands: ", total_number_islands);
-
-
-if __name__ == "__main__":
-    main(sys.argv, "")

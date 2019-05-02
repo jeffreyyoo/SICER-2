@@ -11,7 +11,7 @@ from sicer.lib import GenomeData
 
 
 def get_counts(graph_file):
-    chrom_graph = np.load(graph_file)
+    chrom_graph = np.load(graph_file, allow_pickle=True)
     count = 0
     for line in chrom_graph:
         count += line[3]
@@ -48,14 +48,10 @@ def main(args, output_file_name, pool):
             file = file + '-islandfiltered'
         outfile.write("track type=wiggle_0 name=" + file + "\n")
         for i in range(0, len(chroms)):
-            chrom_graph = np.load(list_of_graph_files[i])
+            chrom_graph = np.load(list_of_graph_files[i], allow_pickle=True)
             if (len(chrom_graph) > 0):
                 outfile.write("variableStep chrom=" + chroms[i] + " span=" + str(args.window_size) + "\n")
                 for window in chrom_graph:
                     normalized_tag_count = round(float(window[3] / scaling_factor), 2)
                     start_coord = window[1] + 1
                     outfile.write(str(start_coord) + "\t" + str(normalized_tag_count) + "\n")
-
-
-if __name__ == "__main__":
-    main(sys.argv)

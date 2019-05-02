@@ -15,7 +15,7 @@ from sicer.lib import GenomeData
 def filter_by_fdr_SICER(args, chrom):
     file_name = args.treatment_file.replace('.bed', '') + '_' + chrom + '_island_summary.npy'
     cutoff = args.false_discovery_rate
-    summary_graph = np.load(file_name)
+    summary_graph = np.load(file_name, allow_pickle=True)
     summary_bed = []
 
     for line in summary_graph:
@@ -30,7 +30,7 @@ def filter_by_fdr_SICER(args, chrom):
 def filter_by_fdr_SICER_df(args, columnindex, chrom):
     file_name = chrom + '_union_island_summary.npy'
     cutoff = args.false_discovery_rate_df
-    summary_graph = np.load(file_name)
+    summary_graph = np.load(file_name, allow_pickle=True)
     summary_bed = []
 
     for line in summary_graph:
@@ -92,7 +92,7 @@ def main(args, columnindex, pool):
                 island_file_name = chrom + '_union_island_summary_filtered' + str(columnindex) + '.npy'
             else:
                 island_file_name = args.treatment_file.replace('.bed', '') + '_' + chrom + '_island_summary.npy'
-            island_list = np.load(island_file_name)
+            island_list = np.load(island_file_name, allow_pickle=True)
             for island in island_list:
                 output_line = ''
                 for i in range(0, len(island)):
@@ -105,7 +105,3 @@ def main(args, columnindex, pool):
     print("Given significance", str(args.false_discovery_rate), ", there are", total_island_count,
           "significant islands")
     return total_read_count
-
-
-if __name__ == "__main__":
-    main(sys.argv)

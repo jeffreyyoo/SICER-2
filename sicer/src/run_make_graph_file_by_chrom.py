@@ -5,7 +5,7 @@
 import multiprocessing as mp
 from functools import partial
 from math import *
-
+import sys
 import numpy as np
 
 from sicer.lib import GenomeData
@@ -141,22 +141,20 @@ def makeGraphFile(args, filtered, chrom, chrom_length):
     else:
         bed_file_name = bed_file_name + '.npy'
 
-    chrom_reads = np.load(bed_file_name)
+    chrom_reads = np.load(bed_file_name, allow_pickle=True)
 
-    bed_coord_result = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom, args.verbose)
-    tag_list = bed_coord_result[0]
-    print_return = bed_coord_result[1]
+    tag_list, print_return = get_bed_coords(chrom_reads, chrom_length, args.fragment_size, chrom, args.verbose)
+    
+    chrom_graph, tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
 
-    chrom_graph_and_tag_count = Generate_windows_and_count_tags(tag_list, chrom, chrom_length, args.window_size)
-    chrom_graph = chrom_graph_and_tag_count[0]
-    tag_count = chrom_graph_and_tag_count[1]
 
     file_save_name = file + '_' + chrom
     if filtered:
         file_save_name += '_filtered_graph.npy'
     else:
         file_save_name += '_graph.npy'
-
+    
+    #graph_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('count', np.int32)])
     np_chrom_graph = np.array(chrom_graph, dtype=object)
     np.save(file_save_name, np_chrom_graph)
     return (tag_count, print_return)
@@ -186,7 +184,3 @@ def main(args, pool, filtered=False):
         print(result[1])
 
     return (total_tag_count)
-
-
-if __name__ == "__main__":
-    main(sys.argv)

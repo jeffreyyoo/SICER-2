@@ -249,7 +249,7 @@ def traceback(List, win_min, step, level, genome_length, chrom):
 
 def filter_and_find_islands(args, min_tag_count, chrom):
 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
-	chrom_windows = np.load(graph_file)
+	chrom_windows = np.load(graph_file, allow_pickle=True)
 	print_return = ''
 	total_count_island = 0
 	if (len(chrom_windows) > 0):
@@ -312,7 +312,7 @@ def main(args, read_count, pool):
 	path_to_filtered_graph = []
 	with open(outfile_path, 'w') as outfile:
 		for i in range(0, len(filtered_islands_result)):
-			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
 			total_number_islands += filtered_islands_result[i][0]
 			if (filtered_islands_result[i][1] != ""):
 				print(filtered_islands_result[i][1])
@@ -322,7 +322,3 @@ def main(args, read_count, pool):
 				outfile.write(line)
 
 	print("Total number of islands: %d" % total_number_islands);
-
-
-if __name__ == "__main__":
-	main(sys.argv)

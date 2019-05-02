@@ -1423,11 +1423,9 @@ static const char __pyx_k_key[] = "key";
 static const char __pyx_k_log[] = "log";
 static const char __pyx_k_map[] = "map";
 static const char __pyx_k_sum[] = "sum";
-static const char __pyx_k_sys[] = "sys";
 static const char __pyx_k_win[] = "win";
 static const char __pyx_k_List[] = "List";
 static const char __pyx_k_args[] = "args";
-static const char __pyx_k_argv[] = "argv";
 static const char __pyx_k_exit[] = "__exit__";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_join[] = "join";
@@ -1503,6 +1501,7 @@ static const char __pyx_k_output_list[] = "output_list";
 static const char __pyx_k_result_list[] = "result_list";
 static const char __pyx_k_start_right[] = "start_right";
 static const char __pyx_k_window_size[] = "window_size";
+static const char __pyx_k_allow_pickle[] = "allow_pickle";
 static const char __pyx_k_chrom_length[] = "chrom_length";
 static const char __pyx_k_outfile_path[] = "outfile_path";
 static const char __pyx_k_print_return[] = "print_return";
@@ -1583,8 +1582,8 @@ static PyObject *__pyx_kp_s__6;
 static PyObject *__pyx_n_s__8;
 static PyObject *__pyx_n_s_a;
 static PyObject *__pyx_n_s_addtional_islands;
+static PyObject *__pyx_n_s_allow_pickle;
 static PyObject *__pyx_n_s_args;
-static PyObject *__pyx_n_s_argv;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_average;
 static PyObject *__pyx_n_s_backlist;
@@ -1690,7 +1689,6 @@ static PyObject *__pyx_n_s_step;
 static PyObject *__pyx_n_s_step_score;
 static PyObject *__pyx_n_s_step_size;
 static PyObject *__pyx_n_s_sum;
-static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_total_count_island;
 static PyObject *__pyx_n_s_total_number_islands;
@@ -6627,7 +6625,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_16traceback(CYTHON_UNUSED
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):             # <<<<<<<<<<<<<<
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  */
 
 /* Python wrapper */
@@ -6722,12 +6720,12 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  int __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
+  PyObject *__pyx_t_4 = NULL;
+  Py_ssize_t __pyx_t_5;
+  int __pyx_t_6;
   Py_ssize_t __pyx_t_7;
-  int __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
+  Py_ssize_t __pyx_t_8;
+  int __pyx_t_9;
   PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   int __pyx_t_12;
@@ -6738,7 +6736,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'             # <<<<<<<<<<<<<<
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  * 	print_return = ''
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_treatment_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 251, __pyx_L1_error)
@@ -6764,36 +6762,34 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
   /* "sicer/src/coarsegraining.pyx":252
  * def filter_and_find_islands(args, min_tag_count, chrom):
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)             # <<<<<<<<<<<<<<
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)             # <<<<<<<<<<<<<<
  * 	print_return = ''
  * 	total_count_island = 0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_load); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 252, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_v_graph_file) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_graph_file);
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_load); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_v_graph_file);
+  __Pyx_GIVEREF(__pyx_v_graph_file);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_graph_file);
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_allow_pickle, Py_True) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_chrom_windows = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_chrom_windows = __pyx_t_4;
+  __pyx_t_4 = 0;
 
   /* "sicer/src/coarsegraining.pyx":253
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  * 	print_return = ''             # <<<<<<<<<<<<<<
  * 	total_count_island = 0
  * 	if (len(chrom_windows) > 0):
@@ -6802,7 +6798,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
   __pyx_v_print_return = __pyx_kp_s__3;
 
   /* "sicer/src/coarsegraining.pyx":254
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  * 	print_return = ''
  * 	total_count_island = 0             # <<<<<<<<<<<<<<
  * 	if (len(chrom_windows) > 0):
@@ -6817,9 +6813,9 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 		chrom_lengths = GenomeData.species_chrom_lengths[args.species][chrom]
  * 		eligible_start_list = []
  */
-  __pyx_t_4 = PyObject_Length(__pyx_v_chrom_windows); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 255, __pyx_L1_error)
-  __pyx_t_5 = ((__pyx_t_4 > 0) != 0);
-  if (__pyx_t_5) {
+  __pyx_t_5 = PyObject_Length(__pyx_v_chrom_windows); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_6 = ((__pyx_t_5 > 0) != 0);
+  if (__pyx_t_6) {
 
     /* "sicer/src/coarsegraining.pyx":256
  * 	total_count_island = 0
@@ -6828,22 +6824,22 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 		eligible_start_list = []
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_species_chrom_lengths); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_GenomeData); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_species_chrom_lengths); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_species); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_species); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_2, __pyx_v_chrom); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_t_1, __pyx_v_chrom); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_chrom_lengths = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __pyx_v_chrom_lengths = __pyx_t_4;
+    __pyx_t_4 = 0;
 
     /* "sicer/src/coarsegraining.pyx":257
  * 	if (len(chrom_windows) > 0):
@@ -6852,10 +6848,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * 		for i in range(0, len(chrom_windows)):
  */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_v_eligible_start_list = ((PyObject*)__pyx_t_2);
-    __pyx_t_2 = 0;
+    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 257, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_v_eligible_start_list = ((PyObject*)__pyx_t_4);
+    __pyx_t_4 = 0;
 
     /* "sicer/src/coarsegraining.pyx":259
  * 		eligible_start_list = []
@@ -6864,10 +6860,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			window = chrom_windows[i]
  * 			read_count = window[3]
  */
-    __pyx_t_4 = PyObject_Length(__pyx_v_chrom_windows); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
-    __pyx_t_6 = __pyx_t_4;
-    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-      __pyx_v_i = __pyx_t_7;
+    __pyx_t_5 = PyObject_Length(__pyx_v_chrom_windows); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
+    __pyx_t_7 = __pyx_t_5;
+    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_v_i = __pyx_t_8;
 
       /* "sicer/src/coarsegraining.pyx":260
  * 
@@ -6876,10 +6872,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			read_count = window[3]
  * 			if read_count >= min_tag_count:
  */
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_chrom_windows, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_XDECREF_SET(__pyx_v_window, __pyx_t_2);
-      __pyx_t_2 = 0;
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_chrom_windows, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 260, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_XDECREF_SET(__pyx_v_window, __pyx_t_4);
+      __pyx_t_4 = 0;
 
       /* "sicer/src/coarsegraining.pyx":261
  * 		for i in range(0, len(chrom_windows)):
@@ -6888,10 +6884,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			if read_count >= min_tag_count:
  * 				eligible_start_list.append(window[1])
  */
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_window, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_XDECREF_SET(__pyx_v_read_count, __pyx_t_2);
-      __pyx_t_2 = 0;
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_window, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 261, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_XDECREF_SET(__pyx_v_read_count, __pyx_t_4);
+      __pyx_t_4 = 0;
 
       /* "sicer/src/coarsegraining.pyx":262
  * 			window = chrom_windows[i]
@@ -6900,10 +6896,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 				eligible_start_list.append(window[1])
  * 		island_list = coarsegraining(eligible_start_list, args.window_size, args.step_size, args.step_score,
  */
-      __pyx_t_2 = PyObject_RichCompare(__pyx_v_read_count, __pyx_v_min_tag_count, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 262, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (__pyx_t_5) {
+      __pyx_t_4 = PyObject_RichCompare(__pyx_v_read_count, __pyx_v_min_tag_count, Py_GE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 262, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (__pyx_t_6) {
 
         /* "sicer/src/coarsegraining.pyx":263
  * 			read_count = window[3]
@@ -6912,10 +6908,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 		island_list = coarsegraining(eligible_start_list, args.window_size, args.step_size, args.step_score,
  * 									 chrom_lengths)
  */
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_window, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_eligible_start_list, __pyx_t_2); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(0, 263, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_window, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_eligible_start_list, __pyx_t_4); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 263, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
         /* "sicer/src/coarsegraining.pyx":262
  * 			window = chrom_windows[i]
@@ -6934,12 +6930,12 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 									 chrom_lengths)
  * 		islands = traceback(island_list, args.window_size, args.step_size, 0, chrom_lengths, chrom)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_coarsegraining); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_coarsegraining); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 264, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_window_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 264, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_step_size); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 264, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_step_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 264, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_step_score); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 264, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
 
@@ -6952,35 +6948,35 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  */
     __pyx_t_11 = NULL;
     __pyx_t_12 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_1);
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_2);
       if (likely(__pyx_t_11)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
         __Pyx_INCREF(__pyx_t_11);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
         __pyx_t_12 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_v_eligible_start_list, __pyx_t_3, __pyx_t_9, __pyx_t_10, __pyx_v_chrom_lengths};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 264, __pyx_L1_error)
+    if (PyFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_v_eligible_start_list, __pyx_t_3, __pyx_t_1, __pyx_t_10, __pyx_v_chrom_lengths};
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 264, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_v_eligible_start_list, __pyx_t_3, __pyx_t_9, __pyx_t_10, __pyx_v_chrom_lengths};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 264, __pyx_L1_error)
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[6] = {__pyx_t_11, __pyx_v_eligible_start_list, __pyx_t_3, __pyx_t_1, __pyx_t_10, __pyx_v_chrom_lengths};
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 264, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
@@ -6995,23 +6991,23 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
       PyTuple_SET_ITEM(__pyx_t_13, 0+__pyx_t_12, __pyx_v_eligible_start_list);
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_12, __pyx_t_3);
-      __Pyx_GIVEREF(__pyx_t_9);
-      PyTuple_SET_ITEM(__pyx_t_13, 2+__pyx_t_12, __pyx_t_9);
+      __Pyx_GIVEREF(__pyx_t_1);
+      PyTuple_SET_ITEM(__pyx_t_13, 2+__pyx_t_12, __pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_10);
       PyTuple_SET_ITEM(__pyx_t_13, 3+__pyx_t_12, __pyx_t_10);
       __Pyx_INCREF(__pyx_v_chrom_lengths);
       __Pyx_GIVEREF(__pyx_v_chrom_lengths);
       PyTuple_SET_ITEM(__pyx_t_13, 4+__pyx_t_12, __pyx_v_chrom_lengths);
       __pyx_t_3 = 0;
-      __pyx_t_9 = 0;
+      __pyx_t_1 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_13, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 264, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 264, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_island_list = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_v_island_list = __pyx_t_4;
+    __pyx_t_4 = 0;
 
     /* "sicer/src/coarsegraining.pyx":266
  * 		island_list = coarsegraining(eligible_start_list, args.window_size, args.step_size, args.step_score,
@@ -7020,40 +7016,40 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * 		if not (len(islands) > 0):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_traceback); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 266, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_traceback); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_window_size); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 266, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_args, __pyx_n_s_step_size); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 266, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_9 = NULL;
+    __pyx_t_1 = NULL;
     __pyx_t_12 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_9)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_9);
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
         __pyx_t_12 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[7] = {__pyx_t_9, __pyx_v_island_list, __pyx_t_13, __pyx_t_10, __pyx_int_0, __pyx_v_chrom_lengths, __pyx_v_chrom};
-      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_12, 6+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
+    if (PyFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[7] = {__pyx_t_1, __pyx_v_island_list, __pyx_t_13, __pyx_t_10, __pyx_int_0, __pyx_v_chrom_lengths, __pyx_v_chrom};
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 6+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[7] = {__pyx_t_9, __pyx_v_island_list, __pyx_t_13, __pyx_t_10, __pyx_int_0, __pyx_v_chrom_lengths, __pyx_v_chrom};
-      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_12, 6+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
-      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_GOTREF(__pyx_t_2);
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+      PyObject *__pyx_temp[7] = {__pyx_t_1, __pyx_v_island_list, __pyx_t_13, __pyx_t_10, __pyx_int_0, __pyx_v_chrom_lengths, __pyx_v_chrom};
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 6+__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
@@ -7061,8 +7057,8 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
     {
       __pyx_t_3 = PyTuple_New(6+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 266, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      if (__pyx_t_9) {
-        __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_9); __pyx_t_9 = NULL;
+      if (__pyx_t_1) {
+        __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1); __pyx_t_1 = NULL;
       }
       __Pyx_INCREF(__pyx_v_island_list);
       __Pyx_GIVEREF(__pyx_v_island_list);
@@ -7082,13 +7078,13 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
       PyTuple_SET_ITEM(__pyx_t_3, 5+__pyx_t_12, __pyx_v_chrom);
       __pyx_t_13 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 266, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 266, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_islands = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_v_islands = __pyx_t_4;
+    __pyx_t_4 = 0;
 
     /* "sicer/src/coarsegraining.pyx":268
  * 		islands = traceback(island_list, args.window_size, args.step_size, 0, chrom_lengths, chrom)
@@ -7097,9 +7093,9 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			print_return += chrom + " does not have any islands meeting the required significance"
  * 		for i in range(len(islands)):
  */
-    __pyx_t_4 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 268, __pyx_L1_error)
-    __pyx_t_5 = ((!((__pyx_t_4 > 0) != 0)) != 0);
-    if (__pyx_t_5) {
+    __pyx_t_5 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 268, __pyx_L1_error)
+    __pyx_t_6 = ((!((__pyx_t_5 > 0) != 0)) != 0);
+    if (__pyx_t_6) {
 
       /* "sicer/src/coarsegraining.pyx":269
  * 
@@ -7108,13 +7104,13 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 		for i in range(len(islands)):
  * 			island = islands[i]
  */
-      __pyx_t_2 = PyNumber_Add(__pyx_v_chrom, __pyx_kp_s_does_not_have_any_islands_meeti); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L1_error)
+      __pyx_t_4 = PyNumber_Add(__pyx_v_chrom, __pyx_kp_s_does_not_have_any_islands_meeti); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_print_return, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_1 = PyNumber_InPlaceAdd(__pyx_v_print_return, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_DECREF_SET(__pyx_v_print_return, __pyx_t_1);
-      __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF_SET(__pyx_v_print_return, __pyx_t_2);
+      __pyx_t_2 = 0;
 
       /* "sicer/src/coarsegraining.pyx":268
  * 		islands = traceback(island_list, args.window_size, args.step_size, 0, chrom_lengths, chrom)
@@ -7132,10 +7128,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			island = islands[i]
  * 			islands[i] = (island[0], int(island[1]), int(island[2]))
  */
-    __pyx_t_4 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 270, __pyx_L1_error)
-    __pyx_t_6 = __pyx_t_4;
-    for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-      __pyx_v_i = __pyx_t_7;
+    __pyx_t_5 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 270, __pyx_L1_error)
+    __pyx_t_7 = __pyx_t_5;
+    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
+      __pyx_v_i = __pyx_t_8;
 
       /* "sicer/src/coarsegraining.pyx":271
  * 			print_return += chrom + " does not have any islands meeting the required significance"
@@ -7144,10 +7140,10 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 			islands[i] = (island[0], int(island[1]), int(island[2]))
  * 
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_islands, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_XDECREF_SET(__pyx_v_island, __pyx_t_1);
-      __pyx_t_1 = 0;
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_islands, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_XDECREF_SET(__pyx_v_island, __pyx_t_2);
+      __pyx_t_2 = 0;
 
       /* "sicer/src/coarsegraining.pyx":272
  * 		for i in range(len(islands)):
@@ -7156,31 +7152,31 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * 		np_islands = np.array(islands, dtype=object)
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_island, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_island, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_island, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_island, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 272, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_island, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_10 = __Pyx_PyNumber_Int(__pyx_t_2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_island, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_10 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 272, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 272, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_GIVEREF(__pyx_t_1);
-      PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
+      PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_10);
-      PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_t_10);
-      __pyx_t_1 = 0;
+      PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_10);
+      __pyx_t_2 = 0;
       __pyx_t_3 = 0;
       __pyx_t_10 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_islands, __pyx_v_i, __pyx_t_2, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1) < 0)) __PYX_ERR(0, 272, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (unlikely(__Pyx_SetItemInt(__pyx_v_islands, __pyx_v_i, __pyx_t_4, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1) < 0)) __PYX_ERR(0, 272, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
 
     /* "sicer/src/coarsegraining.pyx":274
@@ -7190,26 +7186,26 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 		np.save(graph_file, np_islands)
  * 		total_count_island = len(islands)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 274, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 274, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_array); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 274, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 274, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_v_islands);
     __Pyx_GIVEREF(__pyx_v_islands);
-    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_islands);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_islands);
     __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 274, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_builtin_object) < 0) __PYX_ERR(0, 274, __pyx_L1_error)
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_v_np_islands = __pyx_t_1;
-    __pyx_t_1 = 0;
+    __pyx_v_np_islands = __pyx_t_2;
+    __pyx_t_2 = 0;
 
     /* "sicer/src/coarsegraining.pyx":275
  * 
@@ -7220,35 +7216,35 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 275, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_save); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_save); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 275, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
     __pyx_t_12 = 0;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
       if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
         __pyx_t_12 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_2)) {
+    if (PyFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_graph_file, __pyx_v_np_islands};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GOTREF(__pyx_t_2);
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
       PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_graph_file, __pyx_v_np_islands};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GOTREF(__pyx_t_2);
     } else
     #endif
     {
@@ -7263,12 +7259,12 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
       __Pyx_INCREF(__pyx_v_np_islands);
       __Pyx_GIVEREF(__pyx_v_np_islands);
       PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_12, __pyx_v_np_islands);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_10, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
     /* "sicer/src/coarsegraining.pyx":276
  * 		np_islands = np.array(islands, dtype=object)
@@ -7277,8 +7273,8 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * 	return (total_count_island, print_return)
  */
-    __pyx_t_4 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 276, __pyx_L1_error)
-    __pyx_v_total_count_island = __pyx_t_4;
+    __pyx_t_5 = PyObject_Length(__pyx_v_islands); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_v_total_count_island = __pyx_t_5;
 
     /* "sicer/src/coarsegraining.pyx":255
  * 	print_return = ''
@@ -7297,18 +7293,18 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * def main(args, read_count, pool):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_total_count_island); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t(__pyx_v_total_count_island); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
   __Pyx_INCREF(__pyx_v_print_return);
   __Pyx_GIVEREF(__pyx_v_print_return);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_print_return);
-  __pyx_t_1 = 0;
-  __pyx_r = __pyx_t_2;
+  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_print_return);
   __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_4;
+  __pyx_t_4 = 0;
   goto __pyx_L0;
 
   /* "sicer/src/coarsegraining.pyx":250
@@ -7316,7 +7312,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):             # <<<<<<<<<<<<<<
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  */
 
   /* function exit code */
@@ -7324,7 +7320,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_18filter_and_find_islands
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_13);
@@ -7971,7 +7967,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 	path_to_filtered_graph = []
  * 	with open(outfile_path, 'w') as outfile:             # <<<<<<<<<<<<<<
  * 		for i in range(0, len(filtered_islands_result)):
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  */
   /*with:*/ {
     __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 313, __pyx_L1_error)
@@ -8023,7 +8019,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 	path_to_filtered_graph = []
  * 	with open(outfile_path, 'w') as outfile:
  * 		for i in range(0, len(filtered_islands_result)):             # <<<<<<<<<<<<<<
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  * 			total_number_islands += filtered_islands_result[i][0]
  */
           __pyx_t_12 = PyObject_Length(__pyx_v_filtered_islands_result); if (unlikely(__pyx_t_12 == ((Py_ssize_t)-1))) __PYX_ERR(0, 314, __pyx_L7_error)
@@ -8034,48 +8030,45 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
             /* "sicer/src/coarsegraining.pyx":315
  * 	with open(outfile_path, 'w') as outfile:
  * 		for i in range(0, len(filtered_islands_result)):
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')             # <<<<<<<<<<<<<<
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)             # <<<<<<<<<<<<<<
  * 			total_number_islands += filtered_islands_result[i][0]
  * 			if (filtered_islands_result[i][1] != ""):
  */
-            __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_3);
-            __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_load); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_4);
-            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-            __pyx_t_3 = PyNumber_Add(__pyx_v_file_name, __pyx_n_s__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_3);
-            __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_chroms, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_7);
-            __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_1);
-            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-            __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_graph_npy); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L7_error)
-            __Pyx_GOTREF(__pyx_t_7);
-            __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __pyx_t_1 = NULL;
-            if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-              __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
-              if (likely(__pyx_t_1)) {
-                PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-                __Pyx_INCREF(__pyx_t_1);
-                __Pyx_INCREF(function);
-                __Pyx_DECREF_SET(__pyx_t_4, function);
-              }
-            }
-            __pyx_t_6 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_7);
-            __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-            if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L7_error)
             __Pyx_GOTREF(__pyx_t_6);
+            __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_load); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_3);
+            __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+            __pyx_t_6 = PyNumber_Add(__pyx_v_file_name, __pyx_n_s__5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_6);
+            __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_chroms, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_4);
+            __pyx_t_7 = PyNumber_Add(__pyx_t_6, __pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_7);
+            __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+            __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+            __pyx_t_4 = PyNumber_Add(__pyx_t_7, __pyx_kp_s_graph_npy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_4);
+            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+            __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_7);
+            __Pyx_GIVEREF(__pyx_t_4);
+            PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_4);
+            __pyx_t_4 = 0;
+            __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_4);
+            if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_allow_pickle, Py_True) < 0) __PYX_ERR(0, 315, __pyx_L7_error)
+            __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L7_error)
+            __Pyx_GOTREF(__pyx_t_6);
+            __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+            __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
             __Pyx_XDECREF_SET(__pyx_v_filtered_chrom_graph, __pyx_t_6);
             __pyx_t_6 = 0;
 
             /* "sicer/src/coarsegraining.pyx":316
  * 		for i in range(0, len(filtered_islands_result)):
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  * 			total_number_islands += filtered_islands_result[i][0]             # <<<<<<<<<<<<<<
  * 			if (filtered_islands_result[i][1] != ""):
  * 				print(filtered_islands_result[i][1])
@@ -8092,7 +8085,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
             __pyx_t_6 = 0;
 
             /* "sicer/src/coarsegraining.pyx":317
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  * 			total_number_islands += filtered_islands_result[i][0]
  * 			if (filtered_islands_result[i][1] != ""):             # <<<<<<<<<<<<<<
  * 				print(filtered_islands_result[i][1])
@@ -8123,7 +8116,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
               __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
               /* "sicer/src/coarsegraining.pyx":317
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  * 			total_number_islands += filtered_islands_result[i][0]
  * 			if (filtered_islands_result[i][1] != ""):             # <<<<<<<<<<<<<<
  * 				print(filtered_islands_result[i][1])
@@ -8194,31 +8187,31 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
               __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_island, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 320, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __pyx_t_1 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-              __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 320, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-              __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+              __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-              __pyx_t_4 = PyNumber_Add(__pyx_t_1, __pyx_kp_s__6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __pyx_t_4 = PyNumber_Add(__pyx_t_3, __pyx_kp_s__6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 320, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-              __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_island, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
-              __pyx_t_7 = __Pyx_PyNumber_Int(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+              __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_island, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
+              __pyx_t_7 = __Pyx_PyNumber_Int(__pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_7);
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-              __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+              __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-              __pyx_t_7 = PyNumber_Add(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L7_error)
+              __pyx_t_7 = PyNumber_Add(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_7);
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
               /* "sicer/src/coarsegraining.pyx":321
  * 			for island in filtered_chrom_graph:
@@ -8227,12 +8220,12 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 				outfile.write(line)
  * 
  */
-              __pyx_t_1 = PyNumber_Add(__pyx_t_7, __pyx_kp_s__6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_kp_s__6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 321, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-              __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_kp_s_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 321, __pyx_L7_error)
+              __pyx_t_7 = PyNumber_Add(__pyx_t_3, __pyx_kp_s_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 321, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_7);
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
               __Pyx_XDECREF_SET(__pyx_v_line, __pyx_t_7);
               __pyx_t_7 = 0;
 
@@ -8243,23 +8236,23 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 
  * 	print("Total number of islands: %d" % total_number_islands);
  */
-              __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_outfile, __pyx_n_s_write); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L7_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_outfile, __pyx_n_s_write); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 322, __pyx_L7_error)
+              __Pyx_GOTREF(__pyx_t_3);
               __pyx_t_4 = NULL;
-              if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-                __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+              if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+                __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
                 if (likely(__pyx_t_4)) {
-                  PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+                  PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
                   __Pyx_INCREF(__pyx_t_4);
                   __Pyx_INCREF(function);
-                  __Pyx_DECREF_SET(__pyx_t_1, function);
+                  __Pyx_DECREF_SET(__pyx_t_3, function);
                 }
               }
-              __pyx_t_7 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_v_line) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_line);
+              __pyx_t_7 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_line) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_line);
               __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
               if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 322, __pyx_L7_error)
               __Pyx_GOTREF(__pyx_t_7);
-              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+              __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
               __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
               /* "sicer/src/coarsegraining.pyx":319
@@ -8278,7 +8271,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 	path_to_filtered_graph = []
  * 	with open(outfile_path, 'w') as outfile:             # <<<<<<<<<<<<<<
  * 		for i in range(0, len(filtered_islands_result)):
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  */
         }
         __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -8294,11 +8287,11 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         /*except:*/ {
           __Pyx_AddTraceback("sicer.src.coarsegraining.main", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_7, &__pyx_t_1) < 0) __PYX_ERR(0, 313, __pyx_L9_except_error)
+          if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_7, &__pyx_t_3) < 0) __PYX_ERR(0, 313, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_6);
           __Pyx_GOTREF(__pyx_t_7);
-          __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_4 = PyTuple_Pack(3, __pyx_t_6, __pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 313, __pyx_L9_except_error)
+          __Pyx_GOTREF(__pyx_t_3);
+          __pyx_t_4 = PyTuple_Pack(3, __pyx_t_6, __pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 313, __pyx_L9_except_error)
           __Pyx_GOTREF(__pyx_t_4);
           __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_4, NULL);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -8312,14 +8305,14 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
           if (__pyx_t_19) {
             __Pyx_GIVEREF(__pyx_t_6);
             __Pyx_GIVEREF(__pyx_t_7);
-            __Pyx_XGIVEREF(__pyx_t_1);
-            __Pyx_ErrRestoreWithState(__pyx_t_6, __pyx_t_7, __pyx_t_1);
-            __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_1 = 0; 
+            __Pyx_XGIVEREF(__pyx_t_3);
+            __Pyx_ErrRestoreWithState(__pyx_t_6, __pyx_t_7, __pyx_t_3);
+            __pyx_t_6 = 0; __pyx_t_7 = 0; __pyx_t_3 = 0; 
             __PYX_ERR(0, 313, __pyx_L9_except_error)
           }
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-          __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
           goto __pyx_L8_exception_handled;
         }
         __pyx_L9_except_error:;
@@ -8360,13 +8353,11 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 				outfile.write(line)
  * 
  * 	print("Total number of islands: %d" % total_number_islands);             # <<<<<<<<<<<<<<
- * 
- * 
  */
-  __pyx_t_1 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Total_number_of_islands_d, __pyx_v_total_number_islands); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Total_number_of_islands_d, __pyx_v_total_number_islands); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "sicer/src/coarsegraining.pyx":280
  * 	return (total_count_island, print_return)
@@ -8622,8 +8613,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s__8, __pyx_k__8, sizeof(__pyx_k__8), 0, 0, 1, 1},
   {&__pyx_n_s_a, __pyx_k_a, sizeof(__pyx_k_a), 0, 0, 1, 1},
   {&__pyx_n_s_addtional_islands, __pyx_k_addtional_islands, sizeof(__pyx_k_addtional_islands), 0, 0, 1, 1},
+  {&__pyx_n_s_allow_pickle, __pyx_k_allow_pickle, sizeof(__pyx_k_allow_pickle), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
-  {&__pyx_n_s_argv, __pyx_k_argv, sizeof(__pyx_k_argv), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_average, __pyx_k_average, sizeof(__pyx_k_average), 0, 0, 1, 1},
   {&__pyx_n_s_backlist, __pyx_k_backlist, sizeof(__pyx_k_backlist), 0, 0, 1, 1},
@@ -8729,7 +8720,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_step_score, __pyx_k_step_score, sizeof(__pyx_k_step_score), 0, 0, 1, 1},
   {&__pyx_n_s_step_size, __pyx_k_step_size, sizeof(__pyx_k_step_size), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
-  {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_total_count_island, __pyx_k_total_count_island, sizeof(__pyx_k_total_count_island), 0, 0, 1, 1},
   {&__pyx_n_s_total_number_islands, __pyx_k_total_number_islands, sizeof(__pyx_k_total_number_islands), 0, 0, 1, 1},
@@ -8794,7 +8784,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'             # <<<<<<<<<<<<<<
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  * 	print_return = ''
  */
   __pyx_tuple__4 = PyTuple_Pack(2, __pyx_kp_s_bed, __pyx_kp_s__3); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 251, __pyx_L1_error)
@@ -8806,7 +8796,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 	path_to_filtered_graph = []
  * 	with open(outfile_path, 'w') as outfile:             # <<<<<<<<<<<<<<
  * 		for i in range(0, len(filtered_islands_result)):
- * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy')
+ * 			filtered_chrom_graph = np.load(file_name + '_' + chroms[i] + '_graph.npy', allow_pickle=True)
  */
   __pyx_tuple__7 = PyTuple_Pack(3, Py_None, Py_None, Py_None); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
@@ -8925,7 +8915,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):             # <<<<<<<<<<<<<<
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  */
   __pyx_tuple__27 = PyTuple_Pack(16, __pyx_n_s_args, __pyx_n_s_min_tag_count, __pyx_n_s_chrom, __pyx_n_s_graph_file, __pyx_n_s_chrom_windows, __pyx_n_s_print_return, __pyx_n_s_total_count_island, __pyx_n_s_chrom_lengths, __pyx_n_s_eligible_start_list, __pyx_n_s_i, __pyx_n_s_window, __pyx_n_s_read_count, __pyx_n_s_island_list, __pyx_n_s_islands, __pyx_n_s_island, __pyx_n_s_np_islands); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
@@ -9123,8 +9113,6 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec_coarsegraining(PyObject *__pyx_pyi
 {
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannyDeclarations
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
@@ -9439,7 +9427,7 @@ if (!__Pyx_RefNanny) {
  * 
  * def filter_and_find_islands(args, min_tag_count, chrom):             # <<<<<<<<<<<<<<
  * 	graph_file = args.treatment_file.replace('.bed', '') + '_' + chrom + '_graph.npy'
- * 	chrom_windows = np.load(graph_file)
+ * 	chrom_windows = np.load(graph_file, allow_pickle=True)
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5sicer_3src_14coarsegraining_19filter_and_find_islands, NULL, __pyx_n_s_sicer_src_coarsegraining); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -9458,53 +9446,15 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_main_2, __pyx_t_2) < 0) __PYX_ERR(0, 280, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "sicer/src/coarsegraining.pyx":327
- * 
- * 
- * if __name__ == "__main__":             # <<<<<<<<<<<<<<
- * 	main(sys.argv)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_name_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = (__Pyx_PyString_Equals(__pyx_t_2, __pyx_n_s_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 327, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__pyx_t_3) {
-
-    /* "sicer/src/coarsegraining.pyx":328
- * 
- * if __name__ == "__main__":
- * 	main(sys.argv)             # <<<<<<<<<<<<<<
- */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_main_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_sys); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_argv); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 328, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "sicer/src/coarsegraining.pyx":327
- * 
- * 
- * if __name__ == "__main__":             # <<<<<<<<<<<<<<
- * 	main(sys.argv)
- */
-  }
-
   /* "sicer/src/coarsegraining.pyx":1
  * #Author: Chongzhi Zang, Yiren Wang             # <<<<<<<<<<<<<<
  * #Edits made by Jeffrey Yoo
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /*--- Wrapped vars code ---*/
 
@@ -9512,7 +9462,6 @@ if (!__Pyx_RefNanny) {
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_4);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init sicer.src.coarsegraining", __pyx_clineno, __pyx_lineno, __pyx_filename);

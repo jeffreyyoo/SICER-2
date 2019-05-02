@@ -24,8 +24,8 @@ def tag_position(read, fragment_size):
 
 
 def filter_tags_by_islands(file_name, fragment_size, chrom):
-    island_list = np.load(file_name + '_' + chrom + '_island_summary.npy')
-    read_list = np.load(file_name + '_' + chrom + '.npy')
+    island_list = np.load(file_name + '_' + chrom + '_island_summary.npy', allow_pickle=True)
+    read_list = np.load(file_name + '_' + chrom + '.npy', allow_pickle=True)
     filtered_reads = []
     if (len(island_list) > 0):
         island_start_list = []
@@ -63,12 +63,9 @@ def main(args, pool):
     outfile_path = os.path.join(args.output_directory, output_file_name)
     with open(outfile_path, 'w') as outfile:
         for chrom in chroms:
-            filtered_bed = np.load(treatment_file + '_' + chrom + '_filtered.npy')
+            filtered_bed = np.load(treatment_file + '_' + chrom + '_filtered.npy', allow_pickle=True)
             for read in filtered_bed:
                 output_line = str(read[0]) + '\t' + str(read[1]) + '\t' + str(read[2]) + '\t' + str(
                     read[3]) + '\t' + str(read[4]) + '\t' + str(read[5]) + '\n'
                 outfile.write(output_line)
 
-
-if __name__ == "__main__":
-    main(sys.argv)

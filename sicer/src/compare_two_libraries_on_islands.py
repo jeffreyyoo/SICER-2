@@ -55,7 +55,7 @@ def fdr(pvalue_list):
 
 
 def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom):
-    island_list = np.load(chrom + '_union_output.npy')
+    island_list = np.load(chrom + '_union_output.npy', allow_pickle=True)
     island_start_list = []
     island_end_list = []
 
@@ -66,7 +66,7 @@ def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom)
     totalA = 0
     island_A_readcount_list = [0] * len(island_list)
     treatment_A_file_name = args.treatment_file[0].replace('.bed', '') + '_' + chrom + '.npy'
-    treatment_A_reads = np.load(os.path.join(path_A, treatment_A_file_name))
+    treatment_A_reads = np.load(os.path.join(path_A, treatment_A_file_name), allow_pickle=True)
     for read in treatment_A_reads:
         position = associate_tags_with_regions.tag_position(read, args.fragment_size)
         index = associate_tags_with_regions.find_readcount_on_islands(island_start_list, island_end_list, position)
@@ -77,7 +77,7 @@ def associate_tags_count_to_regions(args, path_A, path_B, scaling_factor, chrom)
     totalB = 0
     island_B_readcount_list = [0] * len(island_list)
     treatment_B_file_name = args.treatment_file[1].replace('.bed', '') + '_' + chrom + '.npy'
-    treatment_B_reads = np.load(os.path.join(path_B, treatment_B_file_name))
+    treatment_B_reads = np.load(os.path.join(path_B, treatment_B_file_name), allow_pickle=True)
     for read in treatment_B_reads:
         position = associate_tags_with_regions.tag_position(read, args.fragment_size)
         index = associate_tags_with_regions.find_readcount_on_islands(island_start_list, island_end_list, position)
@@ -141,10 +141,10 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
     for chrom in chroms:
         # These numpy arrays are the arrays stored by the parallel processes
         # Goal is to combine them into 4 arrays
-        A_readcount = np.load(chrom + '_readcount_A.npy')
-        B_readcount = np.load(chrom + '_readcount_B.npy')
-        pvalue_AB_list = np.load(chrom + '_pvalue_AB.npy')
-        pvalue_BA_list = np.load(chrom + '_pvalue_BA.npy')
+        A_readcount = np.load(chrom + '_readcount_A.npy', allow_pickle=True)
+        B_readcount = np.load(chrom + '_readcount_B.npy', allow_pickle=True)
+        pvalue_AB_list = np.load(chrom + '_pvalue_AB.npy', allow_pickle=True)
+        pvalue_BA_list = np.load(chrom + '_pvalue_BA.npy', allow_pickle=True)
 
         for i in range(0, len(A_readcount)):
             island_A_readcount.append(A_readcount[i])
@@ -173,7 +173,7 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
         outfile.write(outline)
         j = 0;
         for chrom in chroms:
-            island_list = np.load(chrom + '_union_output.npy')
+            island_list = np.load(chrom + '_union_output.npy', allow_pickle=True)
             complete_island_list = []
             for index in range(len(island_list)):
                 island = island_list[index]
@@ -208,7 +208,3 @@ def main(args, path_to_tempdir_1, path_to_tempdir_2, A_library_size, B_library_s
     print("Pearson's correlation is: ", pearson[0], " with p-value ", pearson[1])
     spearman = scipy.stats.spearmanr(A_array, B_array)
     print("Spearman's correlation is: ", spearman[0], " with p-value ", spearman[1])
-
-
-if __name__ == "__main__":
-    main(sys.argv)

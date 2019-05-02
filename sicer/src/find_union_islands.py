@@ -25,8 +25,8 @@ def find_union_islands(no_control, temp_dir_1, temp_dir_2, chrom):
         file_name_1 += '_island_summary.npy'
         file_name_2 += '_island_summary.npy'
 
-    island_list_1 = np.load(file_name_1)
-    island_list_2 = np.load(file_name_2)
+    island_list_1 = np.load(file_name_1, allow_pickle=True)
+    island_list_2 = np.load(file_name_2, allow_pickle=True)
     if (len(island_list_1) == 0):
         island_list = island_list_2
     elif (len(island_list_2) == 0):
@@ -79,11 +79,8 @@ def main(args, temp_dir_1, temp_dir_2, pool):
 
     with open(outfile_path, 'w') as outfile:
         for chrom in chroms:
-            union_island_list = np.load(chrom + '_union_output.npy')
+            union_island_list = np.load(chrom + '_union_output.npy', allow_pickle=True)
             for island in union_island_list:
                 output_line = island[0] + '\t' + str(island[1]) + '\t' + str(island[2]) + '\n'
                 outfile.write(output_line)
 
-
-if __name__ == "__main__":
-    main(sys.argv)

@@ -33,7 +33,6 @@ def main(args, df_run=False):
 
     # Creates temporary directory to contain all intermediate files.
     try:
-        dir_prefix = "SICER_" + str(os.getpid()) + "_"
         temp_dir = tempfile.mkdtemp()
         # Change current working directory to temp_dir
         os.chdir(temp_dir)
@@ -55,7 +54,6 @@ def main(args, df_run=False):
         print('\n')
 
         # Step 2: Remove redundancy reads in control library according to input threshold
-        total_control_reads = 0
         if (control_lib_exists):
             control_file_name = os.path.basename(args.control_file)
             print("Preprocess the", control_file_name, "file to remove redundancy with threshold of",

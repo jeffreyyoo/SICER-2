@@ -71,19 +71,17 @@ def strand_broken_remove(chrom, cutoff, file, chrom_reads):
     #minus_reads = sorted(minus_reads, key=lambda x: (x[1], x[2]))
 
     sorted_reads = np.sort(chrom_reads, order=['strand','start','end'])
-
+    mark = 0
     for i in range(len(sorted_reads)):
         if sorted_reads[i][5] != '+':
             mark = i
             break
 
-    (p_total, p_retained, p_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[:i], cutoff)
-    (m_total, m_retained, m_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[i:], cutoff)
+    (p_total, p_retained, p_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[:mark], cutoff)
+    (m_total, m_retained, m_mask) = remove_redundant_1chrom_single_strand_sorted(sorted_reads[mark:], cutoff)
     m_mask = [m_mask[i]+mark for i in range(len(m_mask))]
     mask = p_mask + m_mask
     filtered_reads = np.delete(sorted_reads, obj=mask)
-    del sorted_reads
-
     #print_return += (chrom + "\tPlus reads: " + str(p_total) + "\t\tRetained plus reads: " + str(
     #    p_retained) + "\tMinus reads: "
     #                 + str(m_total) + "\tRetained minus reads: " + str(m_retained))
@@ -107,9 +105,8 @@ def match_by_chrom(file, chrom):
     match = chrom + "[[:space:]]"
     matched_reads = subprocess.Popen(['grep', match, file], stdout=subprocess.PIPE) #Use Popen so that if no matches are found, it doesn't throw an exception
     chrom_reads = str(matched_reads.communicate()[0],'utf-8').splitlines()  # generates a list of each reads, which are represented by a string value
-    del matched_reads
     file_name = os.path.basename(file)
-    read_dtype = np.dtype([('chrom', 'u5'), ('start', np.int32), ('end', np.int32), ('name', 'u20'), ('score', np.int16), ('strand', 'u1')])
+    read_dtype = np.dtype([('chrom', 'U6'), ('start', np.int32), ('end', np.int32), ('name', 'U20'), ('score', np.int32), ('strand', 'U1')])
     processed_reads = np.empty(len(chrom_reads), dtype=read_dtype)
 
     for i, reads in enumerate(chrom_reads):
@@ -120,8 +117,7 @@ def match_by_chrom(file, chrom):
             sys.exit(1)
         reads[1] = int(reads[1])
         reads[2] = int(reads[2])
-        processed_reads[i] = np.rec.array(reads, dtype=read_dtype)
-    del chrome_reads
+        processed_reads[i] = tuple(reads)
 
     return processed_reads
 
@@ -160,7 +156,3 @@ def main(args, path_to_file, pool):
         total_read_count += result[1]
 
     return total_read_count
-
-
-if __name__ == "__main__":
-    main(sys.argv, "")
