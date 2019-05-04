@@ -48,9 +48,8 @@ gm12878_ctrl_group = set(['45210_treat_rep1.bed','36626_treat_rep1.bed','36629_t
 
 def test_time_based_core(core=25):
     new_runtime_dict = {}
-    old_runtime_dict = {}
 
-    log = open("timing_result.txt", 'w+')
+    
     for f in files:
         if f in gm12878_ctrl_group:
             c = 'GSM733742_GM12878_input.bed'
@@ -62,14 +61,16 @@ def test_time_based_core(core=25):
         control = data_path+'/'+c
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
         start = time.time()
-        subprocess.call(['sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--cpu', core,'--wig_output'])
+        subprocess.call(['sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--cpu', str(core),'--significant_reads'])
         end = time.time()
         runtime = end-start
         new_runtime_dict[f] = runtime
 
-        print((f1.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n'))
-        log.write(f1.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n')
-
+        print((f.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n'))
+        
+    log = open("timing_result.txt", 'w+')
+    for f in files:
+        log.write(f.replace('.bed','')+':\t'+str(new_runtime_dict[f]) + '\n')
     log.close()
 
 
@@ -101,7 +102,7 @@ def test_correctness():
         path_c2 = data_path+'/'+c2
         new_output_dir = new_sicer_result_path + '/'+ (f1.replace('.bed','')+'_and_'+f2.replace('.bed',''))
         start = time.time()
-        subprocess.call(['sicer_df', '-t', t1, t2, '-c', path_c1, path_c2, '-s', 'hg38', '-o', new_output_dir, '--wig_output'])
+        subprocess.call(['sicer_df', '-t', t1, t2, '-c', path_c1, path_c2, '-s', 'hg38', '-o', new_output_dir, '--significant_reads'])
         end = time.time()
         runtime = end-start
         new_runtime_dict[f1] = runtime
@@ -149,7 +150,7 @@ def test_time():
         control = data_path+'/'+c
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
         start = time.time()
-        subprocess.call(['sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--wig_output'])
+        subprocess.call(['sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--significant_reads'])
         end = time.time()
         runtime = end-start
         new_runtime_dict[f] = runtime
@@ -193,7 +194,7 @@ def test_memory():
         new_output_dir = new_sicer_result_path + '/'+ f.replace('.bed','')
 
         subprocess.call(['mprof','run','--include-children','--interval','0.01','-o',(f.replace('.bed','')+'_new_mem.dat'),
-                        'sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--wig_output'])
+                        'sicer', '-t', treat, '-c', control, '-s', 'hg38', '-o', new_output_dir, '--significant_reads'])
 
         ps = subprocess.Popen(['sort','-k2', '-n', '-r', (f.replace('.bed','')+'_new_mem.dat')], stdout=subprocess.PIPE)
         output = subprocess.check_output(['head','-n','1'], stdin=ps.stdout)

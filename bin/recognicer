@@ -125,11 +125,10 @@ def main():
     )
 
     parser.add_argument(
-        '--wig_output',
-        '-wig',
+        '--significant_reads',
         required=False,
         action='store_true',
-        help='Output WIG: Enter \"--wig_output\" or \"-wig_o\" to have RECOGNICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
+        help='Output Significant Reads: Enter \"--significant_reads\" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows'
     )
 
     parser.add_argument(

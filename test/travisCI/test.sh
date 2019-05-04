@@ -1,10 +1,10 @@
 #!/bin/bash
 
-sicer -t ./test/treatment_1.bed -c ./test/control_1.bed -s hg38 --wig_output
+sicer -t ./test/treatment_1.bed -c ./test/control_1.bed -s hg38 --significant_reads
 
-sicer -t ./test/treatment_2.bed -c ./test/control_2.bed -s hg38 --wig_output
+sicer -t ./test/treatment_2.bed -c ./test/control_2.bed -s hg38 --significant_reads
 
-sicer_df -t ./test/treatment_1.bed ./test/treatment_2.bed -c ./test/control_1.bed ./test/control_2.bed -s hg38 --wig_output
+sicer_df -t ./test/treatment_1.bed ./test/treatment_2.bed -c ./test/control_1.bed ./test/control_2.bed -s hg38 --significant_reads
 
 if python3 ./test/travisCI/compare.py; then
 	echo "Test success"

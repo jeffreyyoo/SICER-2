@@ -90,7 +90,7 @@ def main(args, df_run=False):
                   significant_read_count, " reads are in significant islands\n")
 
         # Optional Outputs
-        if (args.wig_output):
+        if (args.significant_reads):
             # Step 9: Filter treatment reads by the significant islands found from step 8
             print("Filtering reads with identified significant islands...\n")
             filter_raw_tags_by_islands.main(args, pool)

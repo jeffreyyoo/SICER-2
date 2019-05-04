@@ -4,6 +4,8 @@
 import os
 import shutil
 import tempfile
+import sys
+import multiprocessing as mp
 
 curr_path = os.getcwd()
 
@@ -26,7 +28,6 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
         control_lib_exists = False
 
     try:
-        dir_prefix = "SICER_" + str(os.getpid()) + "_"
         temp_dir = tempfile.mkdtemp()
         # Change current working directory to temp_dir
         os.chdir(temp_dir)
@@ -47,7 +48,6 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
         print('\n')
 
         # Step 2: Remove redundancy reads in control library according to input threshold
-        total_control_reads = 0
         if (control_lib_exists):
             control_file_name = os.path.basename(args.control_file)
             print("Preprocess the", control_file_name, "file to remove redundancy with threshold of",
@@ -84,7 +84,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
                   significant_read_count, " reads are in significant islands")
 
         # Optional Outputs
-        if (args.wig_output):
+        if (args.significant_reads):
             # Step 9: Filter treatment reads by the significant islands found from step 8
             print("Filter reads with identified significant islands...\n")
             filter_raw_tags_by_islands.main(args, pool)

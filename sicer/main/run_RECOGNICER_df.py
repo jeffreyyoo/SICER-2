@@ -7,6 +7,7 @@ import os
 import shutil
 import sys
 import tempfile
+import multiprocessing as mp
 
 curr_path = os.getcwd()
 
@@ -42,7 +43,6 @@ def main(args):
 
 
     try:
-        dir_prefix = "SICER_df_" + str(os.getpid()) + "_"
         temp_dir = tempfile.mkdtemp()
         # Change current working directory to temp_dir
         os.chdir(temp_dir)

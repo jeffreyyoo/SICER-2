@@ -129,7 +129,7 @@ def main(args, chip_library_size, control_library_size, pool):
                 island[i][7] = alpha_stat
                 outputline = (line[0] + '\t' + str(line[1]) + '\t' + str(line[2]) + '\t' + str(line[3]) + '\t' + str(
                     line[4]) + '\t' +
-                              str(line[5]) + '\t' + str(line[6]) + '\t' + str(island[i])[7] + '\n')
+                              str(line[5]) + '\t' + str(line[6]) + '\t' + str(alpha_stat)+ '\n')
                 outfile.write(outputline)
                 #modified_island.append(tuple(line))
                 index += 1
