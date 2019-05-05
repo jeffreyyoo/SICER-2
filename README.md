@@ -35,11 +35,10 @@ To install SICER through PyPI, simply open the terminal and type `pip install SI
 To update SICER, you can type in `pip install SICER --upgrade`
 
 ## Using SICER
-The terminal command to run SICER is `sicer`.
+The terminal command to run SICER is `sicer`. The command to run RECOGNICER is `recognicer`.
 
 
 ### SICER
-To use the SICER algorithm, type the subcommand `SICER` after the `sicer` command (i.e. type `sicer SICER` in terminal).
 
 #### Arguments
 ##### -t/--treatment_file (Required)
@@ -87,7 +86,7 @@ Significant Reads: Type "--significant_reads" flag to have SICER produce a BED f
 
 ### RECOGNICER
 
-To use the RECOGNICER algorithm type the subcommand `RECOGNICER` (e.g. `sicer RECOGNICER`)
+To use the RECOGNICER algorithm type `recognicer`.
 
 #### Arguments
 All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`.
@@ -123,19 +122,19 @@ Cutoff for identification of significant changes been wild-type library and knoc
 1. Calling SICER with a control library.
 *Default parameters are explicitly entered for the sake of demonstration.*
 
-`sicer SICER -t treatment.bed -c control.bed -s hg38 -w 200 -rt 1 -f 150 -egf 0.74 -fdr 0.01 -g 600 -e 1000`
+`sicer -t treatment.bed -c control.bed -s hg38 -w 200 -rt 1 -f 150 -egf 0.74 -fdr 0.01 -g 600 -e 1000`
 
 2. Calling SICER without a control library
 
-`sicer SICER -t treatment.bed -s hg38`
+`sicer -t treatment.bed -s hg38`
 
 3. Calling SICER with control libraries for differential peak calling.
 
-`sicer_df SICER -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38`
+`sicer_df -t treatment1.bed treatment2.bed -c control1.bed control2.bed -s hg38`
 
 4. Calling SICER without control libraries for differential peak calling.
 
-`sicer_df SICER -t treatment1.bed treatment2.bed -s hg38`
+`sicer_df -t treatment1.bed treatment2.bed -s hg38`
 
 Replace the second word "SICER" with "RECOGNICER" to use the RECOGNICER algorithm.
 
