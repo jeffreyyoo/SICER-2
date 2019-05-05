@@ -6,17 +6,13 @@ Chromatin immunoprecipitation combined with high-throughput sequencing (ChIP-seq
 
 Usability of the original SICER software has been affected by increased throughputs of ChIP-seq experiments over the years. We now present SICER 2.0, a more user-friendly version of SICER that has been redisgned and streamlined to handle large ChIP-seq data sets. This new Python package supports multiple job submissions on cluster systems and parallel processing on multicore architectures.
 
-For more information about the original SICER algorithm, please see
+For more information about the original SICER algorithm, please see,
 
->> “*A clustering approach for identification of enriched domains from histone modification
->> ChIP-Seq data” Chongzhi Zang, Dustin E. Schones, Chen Zeng, Kairong Cui, Keji Zhao, and
->> Weiqun Peng*, **Bioinformatics** 25, 1952 - 1958 (2009)
+“A clustering approach for identification of enriched domains from histone modification
+ ChIP-Seq data” Chongzhi Zang, Dustin E. Schones, Chen Zeng, Kairong Cui, Keji Zhao, and
+ Weiqun Peng, *Bioinformatics* 25, 1952 - 1958 (2009)
 
-In addition, we present an alternative algorithm for identification of broad domains from ChIP-seq data called RECOGNICER.
-
-For more information about the RECOGNICER algoirthm, please see
-
->> *insert citation for RECOGNICER paper*
+In addition, we present an alternative algorithm for identification of broad domains from ChIP-seq data called RECOGNICER. It uses a coarse-graining approach to identify broad domains on both fine and coarse scale. 
 
 ## Installation
 ### Requirements
@@ -86,8 +82,8 @@ Path of the directory in which results will be stored. Default output directory 
 ##### -cpu/--cpu (Optional)
 The number of CPU cores SICER program will use when executing multi-processing tasks. Optimal number of cores is the species' number of chromosomes. Default value is the maximum number of cores avaiable in the system.
 
-##### -opt_o/--optional_output (Optional)
-Additional Outputs: Enter "y" or "n" to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
+##### --significant_reads (Optional)
+Significant Reads: Type "--significant_reads" flag to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
 
 ### RECOGNICER
 
@@ -144,5 +140,4 @@ Cutoff for identification of significant changes been wild-type library and knoc
 Replace the second word "SICER" with "RECOGNICER" to use the RECOGNICER algorithm.
 
 ## Questions?
-For technical questions or issues, feel free to contact Jin Yong (Jeffrey) Yoo at jy2ma@virginia.edu.
-For questions about the methodology, please contact Chongzhi Zang, PhD. at zang@virginia.edu.
+Please contact Zang Lab at zang@virginia.edu.
