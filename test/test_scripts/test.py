@@ -134,6 +134,69 @@ def test_correctness():
     log.close()
     time_log.close()
 
+
+
+def test_recog_correctness():
+    new_runtime_dict = {}
+    old_runtime_dict = {}
+    output_str_lst =[]
+
+    log = open("recog_df_accuracy_result.txt", 'w+')
+    time_log = open("recog_df_timing_result.txt", 'w+')
+
+    for i in range(0,4,2):
+        f1 = files[i]
+        f2 = files[i+1]
+        if f1 in gm12878_ctrl_group:
+            c1 = 'GSM733742_GM12878_input.bed'
+        else:
+            c1 = 'GSM733780_K562_input.bed'
+
+        if f2 in gm12878_ctrl_group:
+            c2 = 'GSM733742_GM12878_input.bed'
+        else:
+            c2 = 'GSM733780_K562_input.bed'
+
+        #Execution of SICER2.0
+        t1 = data_path+'/'+f1
+        path_c1 = data_path+'/'+c1
+        t2 = data_path+'/'+f2
+        path_c2 = data_path+'/'+c2
+        new_output_dir = new_sicer_result_path + '/'+ (f1.replace('.bed','')+'_and_'+f2.replace('.bed',''))
+        start = time.time()
+        subprocess.call(['recognicer_df', '-t', t1, t2, '-c', path_c1, path_c2, '-s', 'hg38', '-o', new_output_dir, '--significant_reads'])
+        end = time.time()
+        runtime = end-start
+        new_runtime_dict[f1] = runtime
+
+        #Execution of old SICER
+        sicer_df_sh = os.path.join(old_sicer_path, "SICER-df.sh")
+        old_output_dir = old_sicer_result_path + '/'+ (f1.replace('.bed','')+'-and-'+f2.replace('.bed',''))
+        if not os.path.exists(old_output_dir):
+            os.mkdir(old_output_dir)
+        test_module_path = os.getcwd()
+        os.chdir(old_sicer_result_path)
+        start = time.time()
+        subprocess.call(['sh',sicer_df_sh, f1, c1, f2, c2, '200', '600', '0.01', '0.01'])
+        os.chdir(test_module_path)
+        end = time.time()
+        runtime = end-start
+        old_runtime_dict[f1] = runtime
+
+        result = compare.df_compare(new_output_dir, old_output_dir, f1,f2)
+        output_str = f1.replace('.bed','')+'-'+f2.replace('.bed','')+' Result: '+str(result)
+        output_str_lst.append(output_str)
+        print(output_str)
+
+        log.write(output_str+'\n')
+        time_log.write("Timing Figure for "+f1.replace('.bed','')+':\nOld: '
+                    + str(old_runtime_dict[f1]) +' s\tNew: '+ str(new_runtime_dict[f1]) + ' s\n')
+
+
+    log.close()
+    time_log.close()
+
+
 def test_time():
     new_runtime_dict = {}
     old_runtime_dict = {}
