@@ -1515,7 +1515,6 @@ static const char __pyx_k_is_list_sorted[] = "is_list_sorted";
 static const char __pyx_k_species_chroms[] = "species_chroms";
 static const char __pyx_k_treatment_file[] = "treatment_file";
 static const char __pyx_k_unequal_length[] = "unequal length";
-static const char __pyx_k_Finding_islands[] = "Finding islands...";
 static const char __pyx_k_multiprocessing[] = "multiprocessing";
 static const char __pyx_k_Window_average_f[] = "Window average: %f";
 static const char __pyx_k_output_directory[] = "output_directory";
@@ -1549,14 +1548,15 @@ static const char __pyx_k_does_not_have_any_islands_meeti[] = " does not have an
 static const char __pyx_k_filter_and_find_islands_partial[] = "filter_and_find_islands_partial";
 static const char __pyx_k_start_list_correlation_function[] = "start_list_correlation_function";
 static const char __pyx_k_Coarse_graining_approach_to_iden[] = "Coarse-graining approach to identify ChIP-Seq enriched domains:";
-static const char __pyx_k_Minimum_read_count_in_a_qualifie[] = "Minimum read count in a qualified window: %d";
+static const char __pyx_k_Finding_significant_islands_this[] = "Finding significant islands... (this might take some time)";
+static const char __pyx_k_Minimum_read_count_in_a_qualifie[] = "Minimum read count in a qualified window: %d\n";
 static const char __pyx_k_union_islands_to_list_locals_lam[] = "union_islands_to_list.<locals>.<lambda>";
 static PyObject *__pyx_kp_s_1;
 static PyObject *__pyx_kp_s_Coarse_graining_approach_to_iden;
 static PyObject *__pyx_kp_s_Coarse_graining_score_d;
 static PyObject *__pyx_kp_s_Coarse_graining_step_d;
 static PyObject *__pyx_kp_s_Effective_genome_length_d;
-static PyObject *__pyx_kp_s_Finding_islands;
+static PyObject *__pyx_kp_s_Finding_significant_islands_this;
 static PyObject *__pyx_n_s_GenomeData;
 static PyObject *__pyx_n_s_Length_list;
 static PyObject *__pyx_n_s_List;
@@ -7686,7 +7686,7 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
  * 	print("Window average: %f" % average)
  * 
  * 	min_tags_in_window = int(average) + 1             # <<<<<<<<<<<<<<
- * 	print("Minimum read count in a qualified window: %d" % min_tags_in_window)
+ * 	print("Minimum read count in a qualified window: %d\n" % min_tags_in_window)
  * 
  */
   __pyx_t_3 = __Pyx_PyNumber_Int(__pyx_v_average); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 298, __pyx_L1_error)
@@ -7700,9 +7700,9 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
   /* "sicer/src/coarsegraining.pyx":299
  * 
  * 	min_tags_in_window = int(average) + 1
- * 	print("Minimum read count in a qualified window: %d" % min_tags_in_window)             # <<<<<<<<<<<<<<
+ * 	print("Minimum read count in a qualified window: %d\n" % min_tags_in_window)             # <<<<<<<<<<<<<<
  * 
- * 	print("Finding islands...")
+ * 	print("Finding significant islands... (this might take some time)")
  */
   __pyx_t_4 = __Pyx_PyString_FormatSafe(__pyx_kp_s_Minimum_read_count_in_a_qualifie, __pyx_v_min_tags_in_window); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
@@ -7710,13 +7710,13 @@ static PyObject *__pyx_pf_5sicer_3src_14coarsegraining_20main(CYTHON_UNUSED PyOb
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "sicer/src/coarsegraining.pyx":301
- * 	print("Minimum read count in a qualified window: %d" % min_tags_in_window)
+ * 	print("Minimum read count in a qualified window: %d\n" % min_tags_in_window)
  * 
- * 	print("Finding islands...")             # <<<<<<<<<<<<<<
+ * 	print("Finding significant islands... (this might take some time)")             # <<<<<<<<<<<<<<
  * 	# read in the summary graph file
  * 	# Use multiprocessing to find islands separately by chromosome
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_Finding_islands) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_Finding_significant_islands_this) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
 
   /* "sicer/src/coarsegraining.pyx":305
  * 	# Use multiprocessing to find islands separately by chromosome
@@ -8587,7 +8587,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Coarse_graining_score_d, __pyx_k_Coarse_graining_score_d, sizeof(__pyx_k_Coarse_graining_score_d), 0, 0, 1, 0},
   {&__pyx_kp_s_Coarse_graining_step_d, __pyx_k_Coarse_graining_step_d, sizeof(__pyx_k_Coarse_graining_step_d), 0, 0, 1, 0},
   {&__pyx_kp_s_Effective_genome_length_d, __pyx_k_Effective_genome_length_d, sizeof(__pyx_k_Effective_genome_length_d), 0, 0, 1, 0},
-  {&__pyx_kp_s_Finding_islands, __pyx_k_Finding_islands, sizeof(__pyx_k_Finding_islands), 0, 0, 1, 0},
+  {&__pyx_kp_s_Finding_significant_islands_this, __pyx_k_Finding_significant_islands_this, sizeof(__pyx_k_Finding_significant_islands_this), 0, 0, 1, 0},
   {&__pyx_n_s_GenomeData, __pyx_k_GenomeData, sizeof(__pyx_k_GenomeData), 0, 0, 1, 1},
   {&__pyx_n_s_Length_list, __pyx_k_Length_list, sizeof(__pyx_k_Length_list), 0, 0, 1, 1},
   {&__pyx_n_s_List, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
