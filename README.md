@@ -15,6 +15,9 @@ For more information about the original SICER algorithm, please see,
 In addition, we present an alternative algorithm for identification of broad domains from ChIP-seq data called RECOGNICER. It uses a coarse-graining approach to identify broad domains on both fine and coarse scale. 
 
 ## Installation
+### Quick Installation
+Easiest way to install SICER2 is through `pip`. Simply open the terminal and type `pip install SICER2`.
+
 ### Requirements
 #### Python Version
 Unlike the original version of SICER, SICER2 runs in Python 3.
@@ -30,16 +33,16 @@ C compiler is required to compile C codes that are part of the SICER2 package. T
 #### BedTools
 Lastly, if you would like to directly pass BAM files as input files for SICER2, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
 
-### Installation
-To install SICER through PyPI, simply open the terminal and type `pip install SICER2` (or pip3 if python2.7 is your default python).
-To update SICER2, you can type in `pip install SICER2 --upgrade`
+### Other Installations
+For local installation, the source distribution file is available at Zang Lab website ([link](http://faculty.virginia.edu/zanglab/))
 
-## Using SICER
+
+## Using SICER2
 The terminal command to run SICER is `sicer`. The command to run RECOGNICER is `recognicer`.
 
-### SICER
+Both `sicer` command and `recognicer` command take several flag-based arguments as inputs. Two arguments are required: (1) name/path of treatment file, (2) species of reference genome. Arguments for each command are explained below.
 
-#### Arguments
+### SICER Arguments
 ##### -t/--treatment_file (Required)
 The file must either be in BED or BAM format (note that you need *bedtools* installed to directly enter BAM files).
 The file name can either the relative path or the absolute path of the file.
@@ -83,11 +86,7 @@ The number of CPU cores SICER program will use when executing multi-processing t
 ##### --significant_reads (Optional)
 Significant Reads: Type "--significant_reads" flag to have SICER produce a BED file of treatment reads filtered by significant islands and WIG file of filtered reads binned into windows.
 
-### RECOGNICER
-
-To use the RECOGNICER algorithm type `recognicer`.
-
-#### Arguments
+### RECOGNICER Arguments
 All of the arguments for RECOGNICER are identical to those of SICER except for `gap_size` and `e_value`.
 Instead of these two arguments, RECOGNICER has two arguments called `step_size` and `step_score`.
 
@@ -97,12 +96,12 @@ The number of windows in one graining unit. Default value is 3.
 ##### -s_score/--step_score (Optional)
 The minimum number of positive elements in the graining unit to call the unit positive. Default value is 2.
 
-### Differential Peak Calling
-The command for differential peak calling is `sicer_df`. So for example, if you wish to run differential peak calling
-using the RECOGNICER algorithm, you would type `sicer_df RECOGNICER`.
+
+## Using SICER2 for differential peak calling
+The commands for differential peak calling are `sicer_df` and `recognicer_df`.  
 
 #### Arguments
-Most of the arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
+The arguments for both SICER and RECOGNICER differential peak calling are identical to those of the regular peak callings except for the following arguments specified below.
 
 Also, differential peak calling has one additional argument called `----false_discovery_rate_df`
 
@@ -117,7 +116,7 @@ While optional, two files must be given as input if you decide to provide the in
 Cutoff for identification of significant changes been wild-type library and knockout library. Default value is 0.01.
 
 
-## Example Calls
+## Example Use
 1. Calling SICER with a control library.
 *Default parameters are explicitly entered for the sake of demonstration.*
 
@@ -135,7 +134,5 @@ Cutoff for identification of significant changes been wild-type library and knoc
 
 `sicer_df -t treatment1.bed treatment2.bed -s hg38`
 
-Replace the second word "SICER" with "RECOGNICER" to use the RECOGNICER algorithm.
-
-## Questions?
+## Contact
 Please contact Zang Lab at zang@virginia.edu.
