@@ -19,7 +19,7 @@ sicerdf_output_files_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.isl
 
 recog_output_files_suffix = ['-W200.cgisland', '-W200-FDR0.01-island.bed',
                 '-W200-FDR0.01-islandfiltered.bed', '-W200-FDR0.01-islandfiltered-normalized.wig',
-                '-W200-islands-summary', '-W200-cgnormalized.wig']
+                '-W200-islands-summary', '-W200-normalized.wig']
 recogdf_output_files_suffix = ['-W200-summary', '-W200-E1000-union.island', '-W200-decreased-islands-summary-FDR0.01', '-W200-increased-islands-summary-FDR0.01']
 
 
@@ -260,7 +260,7 @@ def compare_recog(f):
     chk_filtered_bed = check_filteredbed(tf+recog_output_files_suffix[2], current_dir+'expected_output/'+tf+recog_output_files_suffix[2])
     chk_wig1 = check_WIG(tf+recog_output_files_suffix[3], current_dir+'expected_output/'+tf+recog_output_files_suffix[3])
     chk_island_summary = check_islandsummary(tf+recog_output_files_suffix[4], current_dir+'expected_output/'+tf+recog_output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+recog_output_files_suffix[5], current_dir+'expected_output/'+tf+recog_output_files_suffix[5])
+    chk_wig2 = check_WIG(tf+recog_output_files_suffix[5], current_dir+'expected_output/'+tf+'-W200-cgnormalized.wig')
 
     final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2)
     return final_result

@@ -32,6 +32,8 @@ def main(args):
     # Format each args for SICER run
     args_1.treatment_file = str(args.treatment_file[0])
     args_2.treatment_file = str(args.treatment_file[1])
+    args_1.df = False
+    args_2.df = False
 
     if (control_lib_exists):
         args_1.control_file = str(args.control_file[0])

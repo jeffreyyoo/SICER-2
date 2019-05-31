@@ -79,7 +79,7 @@ def main(args, df_run=False):  # df_run indicates if run_RECOGNICER is being cal
 
             # Step 8:
             print("Identifying significant islands using FDR criterion...")
-            significant_read_count = filter_islands_by_significance.main(args, 7, pool)  # 7 represents the ith column we want to filtered by
+            significant_read_count = filter_islands_by_significance.main(args, 7, pool)  # 7 represents the n-th column we want to filtered by
             print("Out of the ", total_treatment_read_count, " reads in ", treatment_file_name, ", ",
                   significant_read_count, " reads are in significant islands")
 

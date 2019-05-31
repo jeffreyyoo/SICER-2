@@ -298,7 +298,7 @@ def main(args, read_count, pool):
 	min_tags_in_window = int(average) + 1
 	print("Minimum read count in a qualified window: %d\n" % min_tags_in_window)
 
-	print("Finding significant islands... (this might take some time)")
+	print("Running coarsegraining method... (this might take some time)")
 	# read in the summary graph file
 	# Use multiprocessing to find islands separately by chromosome
 	# pool = mp.Pool(processes=min(args.cpu, len(chroms)))
