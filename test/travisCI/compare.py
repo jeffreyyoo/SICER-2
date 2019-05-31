@@ -10,11 +10,19 @@ control_file_2 = "./test/control_2.bed"
 treatment_file_2 = "./test/treatment_2.bed"
 
 current_dir = "./test/travisCI/"
-output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
+
+sicer_output_files_suffix = ['-W200-G600.scoreisland', '-W200-G600-FDR0.01-island.bed',
                 '-W200-G600-FDR0.01-islandfiltered.bed', '-W200-G600-FDR0.01-islandfiltered-normalized.wig',
                 '-W200-G600-islands-summary', '-W200-normalized.wig']
+sicerdf_output_files_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island', '-W200-G600-decreased-islands-summary-FDR0.01', '-W200-G600-increased-islands-summary-FDR0.01']
 
-df_output_file_suffix = ['-W200-G600-summary', '-W200-G600-E1000-union.island', '-W200-G600-decreased-islands-summary-FDR0.01', '-W200-G600-increased-islands-summary-FDR0.01']
+
+recog_output_files_suffix = ['-W200.cgisland', '-W200-FDR0.01-island.bed',
+                '-W200-FDR0.01-islandfiltered.bed', '-W200-FDR0.01-islandfiltered-normalized.wig',
+                '-W200-islands-summary', '-W200-cgnormalized.wig']
+recogdf_output_files_suffix = ['-W200-summary', '-W200-E1000-union.island', '-W200-decreased-islands-summary-FDR0.01', '-W200-increased-islands-summary-FDR0.01']
+
+
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
@@ -96,7 +104,7 @@ def check_13columns(file1_name,file2_name):
             test12=isclose(line1[12],line2[12])
 
         equal = ((line1[0]==line2[0]) and (line1[1]==line2[1]) and (line1[2]==line2[2]) and (line1[3]==line2[3]) and (line1[5]==line2[5])
-                and test4 and test6 and test7 and test8 and test9 and test11 and test12)
+                and test4 and test6 and test7 and test8 and test9 and test10 and test11 and test12)
 
         if(equal == False):
             #print(line1,line2)
@@ -206,42 +214,88 @@ def check_scoreisland (file1_name, file2_name):
     return equal
 
 
-def run_compare(f):
+def compare_sicer(f):
     if f == 1:
         tf = os.path.basename(treatment_file_1).replace(".bed",'')
     elif f == 2:
         tf = os.path.basename(treatment_file_2).replace(".bed",'')
 
-    chk_score_island = check_scoreisland(tf+output_files_suffix[0], current_dir+'expected_output/'+tf+output_files_suffix[0])
-    chk_island_bed = check_islandbed(tf+output_files_suffix[1], current_dir+'expected_output/'+tf+output_files_suffix[1])
-    chk_filtered_bed = check_filteredbed(tf+output_files_suffix[2], current_dir+'expected_output/'+tf+output_files_suffix[2])
-    chk_wig1 = check_WIG(tf+output_files_suffix[3], current_dir+'expected_output/'+tf+output_files_suffix[3])
-    chk_island_summary = check_islandsummary(tf+output_files_suffix[4], current_dir+'expected_output/'+tf+output_files_suffix[4])
-    chk_wig2 = check_WIG(tf+output_files_suffix[5], current_dir+'expected_output/'+tf+output_files_suffix[5])
+    chk_score_island = check_scoreisland(tf+sicer_output_files_suffix[0], current_dir+'expected_output/'+tf+sicer_output_files_suffix[0])
+    chk_island_bed = check_islandbed(tf+sicer_output_files_suffix[1], current_dir+'expected_output/'+tf+sicer_output_files_suffix[1])
+    chk_filtered_bed = check_filteredbed(tf+sicer_output_files_suffix[2], current_dir+'expected_output/'+tf+sicer_output_files_suffix[2])
+    chk_wig1 = check_WIG(tf+sicer_output_files_suffix[3], current_dir+'expected_output/'+tf+sicer_output_files_suffix[3])
+    chk_island_summary = check_islandsummary(tf+sicer_output_files_suffix[4], current_dir+'expected_output/'+tf+sicer_output_files_suffix[4])
+    chk_wig2 = check_WIG(tf+sicer_output_files_suffix[5], current_dir+'expected_output/'+tf+sicer_output_files_suffix[5])
 
+    final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2)
+    return final_result
+
+def compare_sicer_df():
     #Check for df execution
     f1_name = os.path.basename(treatment_file_1).replace(".bed",'')
     f2_name = os.path.basename(treatment_file_2).replace(".bed",'')
 
-    summary_name = f1_name+'-and-'+f2_name+df_output_file_suffix[0]
-    union_island_file_name = f1_name+'-vs-'+f2_name+df_output_file_suffix[1]
-    decreased_fname = f1_name+df_output_file_suffix[2]
-    increased_fname = f1_name+df_output_file_suffix[3]
+    summary_name = f1_name+'-and-'+f2_name+sicerdf_output_files_suffix[0]
+    union_island_file_name = f1_name+'-vs-'+f2_name+sicerdf_output_files_suffix[1]
+    decreased_fname = f1_name+sicerdf_output_files_suffix[2]
+    increased_fname = f1_name+sicerdf_output_files_suffix[3]
 
     chk_unionisland = check_unionisland(union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
     chk_summary = check_13columns(summary_name, current_dir+'expected_output/'+summary_name)
     chk_decreased = check_13columns(decreased_fname, current_dir+'expected_output/'+decreased_fname)
     chk_increased = check_13columns(increased_fname, current_dir+'expected_output/'+increased_fname)
 
-    final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary
-                    and chk_wig2 and chk_unionisland and chk_summary and chk_decreased and chk_increased)
+    final_result = (chk_unionisland and chk_summary and chk_decreased and chk_increased)
+
+    return final_result
+
+def compare_recog(f):
+    if f == 1:
+        tf = os.path.basename(treatment_file_1).replace(".bed",'')
+    elif f == 2:
+        tf = os.path.basename(treatment_file_2).replace(".bed",'')
+
+    chk_score_island = check_scoreisland(tf+recog_output_files_suffix[0], current_dir+'expected_output/'+tf+recog_output_files_suffix[0])
+    chk_island_bed = check_islandbed(tf+recog_output_files_suffix[1], current_dir+'expected_output/'+tf+recog_output_files_suffix[1])
+    chk_filtered_bed = check_filteredbed(tf+recog_output_files_suffix[2], current_dir+'expected_output/'+tf+recog_output_files_suffix[2])
+    chk_wig1 = check_WIG(tf+recog_output_files_suffix[3], current_dir+'expected_output/'+tf+recog_output_files_suffix[3])
+    chk_island_summary = check_islandsummary(tf+recog_output_files_suffix[4], current_dir+'expected_output/'+tf+recog_output_files_suffix[4])
+    chk_wig2 = check_WIG(tf+recog_output_files_suffix[5], current_dir+'expected_output/'+tf+recog_output_files_suffix[5])
+
+    final_result = (chk_score_island and chk_island_bed and chk_filtered_bed and chk_wig1 and chk_island_summary and chk_wig2)
+    return final_result
+
+def compare_recog_df():
+    #Check for df execution
+    f1_name = os.path.basename(treatment_file_1).replace(".bed",'')
+    f2_name = os.path.basename(treatment_file_2).replace(".bed",'')
+
+    summary_name = f1_name+'-and-'+f2_name+recogdf_output_files_suffix[0]
+    union_island_file_name = f1_name+'-vs-'+f2_name+recogdf_output_files_suffix[1]
+    decreased_fname = f1_name+recogdf_output_files_suffix[2]
+    increased_fname = f1_name+recogdf_output_files_suffix[3]
+
+    chk_unionisland = check_unionisland(union_island_file_name, current_dir+'expected_output/'+union_island_file_name)
+    chk_summary = check_13columns(summary_name, current_dir+'expected_output/'+summary_name)
+    chk_decreased = check_13columns(decreased_fname, current_dir+'expected_output/'+decreased_fname)
+    chk_increased = check_13columns(increased_fname, current_dir+'expected_output/'+increased_fname)
+
+    final_result = (chk_unionisland and chk_summary and chk_decreased and chk_increased)
 
     return final_result
 
 if __name__ == "__main__":
-    result_1 = run_compare(1)
-    result_2 = run_compare(2)
-    if result_1 and result_2:
+    sicer_result_1 = compare_sicer(1)
+    sicer_result_2 = compare_sicer(2)
+    sicer_df_result = compare_sicer_df()
+    sicer = (sicer_result_1 and sicer_result_2 and sicer_df_result)
+    
+    recog_result_1 = compare_recog(1)
+    recog_result_2 = compare_recog(2)
+    recog_df_result = compare_recog_df()
+    recog = (recog_result_1 and recog_result_2 and recog_df_result)
+    
+    if sicer and recog:
         sys.exit(0)
     else:
         sys.exit(1)

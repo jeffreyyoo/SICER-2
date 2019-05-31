@@ -296,9 +296,9 @@ def main(args, read_count, pool):
 	print("Window average: %f" % average)
 
 	min_tags_in_window = int(average) + 1
-	print("Minimum read count in a qualified window: %d" % min_tags_in_window)
+	print("Minimum read count in a qualified window: %d\n" % min_tags_in_window)
 
-	print("Finding islands...")
+	print("Finding significant islands... (this might take some time)")
 	# read in the summary graph file
 	# Use multiprocessing to find islands separately by chromosome
 	# pool = mp.Pool(processes=min(args.cpu, len(chroms)))
@@ -308,7 +308,7 @@ def main(args, read_count, pool):
 
 	file_name = args.treatment_file.replace('.bed', '')
 	outfile_path = os.path.join(args.output_directory, (file_name + '-W' + str(args.window_size) + '.cgisland'))
-	total_number_islands = 0
+	total_number_islands = 0	
 	path_to_filtered_graph = []
 	with open(outfile_path, 'w') as outfile:
 		for i in range(0, len(filtered_islands_result)):
