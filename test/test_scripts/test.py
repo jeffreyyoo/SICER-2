@@ -10,7 +10,7 @@ except:
 try:
     import memory_profiler
 except:
-    print("Erorr: No memory profiler")
+    print("Error: No memory profiler")
 
 #SICER Modes
 SICER = True

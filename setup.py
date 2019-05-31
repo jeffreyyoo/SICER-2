@@ -13,16 +13,16 @@ extra_c_args = ["-w","-O3","-ffast-math"]
 ext_modules = [Extension("sicer.src.coarsegraining",["sicer/src/coarsegraining.c"],extra_compile_args=extra_c_args)]
 
 setup(
-    name='SICER',
-    version='2.2.0',
+    name='SICER2',
+    version='0.1.dev1',
     description = 'SICER 2.0, a bioinformatics tool',
-    long_description='Spatial Clustering for Identification of ChIP-Enriched Regions (SICER)',
+    long_description='Spatial Clustering for Identification of ChIP-Enriched Regions (SICER) & Coarse-graining Approach for Identifying Broad Domains from ChIP-Enriched Regions (RECOGNICER)',
     url = 'https://github.com/jeffreyyoo/SICER-2',
-    author = 'Jeffrey Yoo',
-    author_email = 'jy2ma@virginia.edu',
+    author = 'Jin Yong Yoo, Yiren Wang, Chongzhi Zang*',
+    author_email = 'zang@virginia.edu',
     license = 'MIT',
     packages=find_packages(),
-    scripts=['bin/sicer','bin/sicer_df'],
+    scripts=['bin/sicer','bin/sicer_df', 'bin/recognicer', 'bin/recognicer_df'],
     setup_requires=['numpy','scipy>=1.0.0'],
     install_requires=['numpy','scipy>=1.0.0'],
     keywords = ['ChIP-Seq','SICER'],

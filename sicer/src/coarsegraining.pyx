@@ -280,7 +280,7 @@ def filter_and_find_islands(args, min_tag_count, chrom):
 def main(args, read_count, pool):
 	print("Coarse-graining approach to identify ChIP-Seq enriched domains:")
 	print("Species: %s" % args.species)
-	print("Window_size %d: " % args.window_size)
+	print("Window_size: %d " % args.window_size)
 	print("Coarse graining step: %d" % args.step_size)
 	print("Coarse graining score: %d " % args.step_score)
 
@@ -298,7 +298,7 @@ def main(args, read_count, pool):
 	min_tags_in_window = int(average) + 1
 	print("Minimum read count in a qualified window: %d" % min_tags_in_window)
 
-	print("Generate preprocessed data list")
+	print("Finding islands...")
 	# read in the summary graph file
 	# Use multiprocessing to find islands separately by chromosome
 	# pool = mp.Pool(processes=min(args.cpu, len(chroms)))
