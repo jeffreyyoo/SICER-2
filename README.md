@@ -1,10 +1,10 @@
-# SICER 2.0
+# SICER2
 [![Build Status](https://travis-ci.org/jeffreyyoo/SICER-2.svg?branch=master)](https://travis-ci.org/jeffreyyoo/SICER-2)
 
 ## Introduction
 Chromatin immunoprecipitation combined with high-throughput sequencing (ChIP-seq) can be used to map binding sites of a protein of interest in the genome. Histone modifications usually occupy broad chromatin domains and result in diffuse patterns in ChIP-seq data that make it difficult to identify signal enrichment. SICER, a spatial clustering approach for the identification of ChIP-enriched regions, was developed for calling broad peaks from ChIP-seq data. 
 
-Usability of the original SICER software has been affected by increased throughputs of ChIP-seq experiments over the years. We now present SICER 2.0, a more user-friendly version of SICER that has been redisgned and streamlined to handle large ChIP-seq data sets. This new Python package supports multiple job submissions on cluster systems and parallel processing on multicore architectures.
+Usability of the original SICER software has been affected by increased throughputs of ChIP-seq experiments over the years. We now present SICER2, a more user-friendly version of SICER that has been redisgned and streamlined to handle large ChIP-seq data sets. This new Python package supports multiple job submissions on cluster systems and parallel processing on multicore architectures.
 
 For more information about the original SICER algorithm, please see,
 
@@ -17,26 +17,25 @@ In addition, we present an alternative algorithm for identification of broad dom
 ## Installation
 ### Requirements
 #### Python Version
-Unlike the original version of SICER, SICER 2.0 runs in **Python 3**.
-Please use Python 3 to install and run SICER 2.0. The program should work with most of versions of Python 3.
+Unlike the original version of SICER, SICER2 runs in Python 3.
+Please use Python 3 to install and run SICER 2.0.
 
 #### Libraries
-Numpy and Scipy are required to run SICER. Please have these installed before installing SICER.
+Numpy and Scipy are required to run SICER2. Please have these installed before installing SICER2.
 This can be done by simply typing `pip install numpy scipy` under command line (if python2.7 is your default python version, use `pip3`).
 
 #### C Compiler
-C compiler is required to compile C codes that are part of the SICER package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommended that you install Xcode.
+C compiler is required to compile C codes that are part of the SICER2 package. This also means that python header files (e.g. Python.h) are needed. For Linux users, make sure to have python-dev installed. For Mac OS X users, it is recommended that you install Xcode.
 
 #### BedTools
-Lastly, if you would like to directly pass BAM files as input files for SICER, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
+Lastly, if you would like to directly pass BAM files as input files for SICER2, you need to have *bedtools* installed. Please refer to this [link](http://bedtools.readthedocs.io/en/latest/) for more details on installing bedtools. This is not required if you will intend to only pass BED files as input files.
 
 ### Installation
-To install SICER through PyPI, simply open the terminal and type `pip install SICER` (or pip3 if python2.7 is your default python).
-To update SICER, you can type in `pip install SICER --upgrade`
+To install SICER through PyPI, simply open the terminal and type `pip install SICER2` (or pip3 if python2.7 is your default python).
+To update SICER2, you can type in `pip install SICER2 --upgrade`
 
 ## Using SICER
 The terminal command to run SICER is `sicer`. The command to run RECOGNICER is `recognicer`.
-
 
 ### SICER
 
