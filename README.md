@@ -1,4 +1,6 @@
 # SICER2
+To checkout the official release, visit https://github.com/zanglab/SICER2/
+
 [![Build Status](https://travis-ci.org/jeffreyyoo/SICER2.svg?branch=master)](https://travis-ci.org/jeffreyyoo/SICER2)
 
 ## Introduction
